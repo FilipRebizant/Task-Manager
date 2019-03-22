@@ -20,8 +20,13 @@ class AbstractController
         $this->template = new Template();
     }
 
-
-    protected function getView($controller, array $variables = [])
+    /**
+     * @param AbstractController $controller
+     * @param array $variables
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function getView(AbstractController $controller, array $variables = [])
     {
         return $this->template->getView($controller, $variables);
     }
