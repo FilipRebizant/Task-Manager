@@ -21,17 +21,6 @@ services:
       - "80:80"
       - "443:443"
 
-  database:
-    build:
-      context: ./database
-    environment:
-      - MYSQL_DATABASE=mydb
-      - MYSQL_USER=myuser
-      - MYSQL_PASSWORD=secret
-      - MYSQL_ROOT_PASSWORD=docker
-    volumes:
-      - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
-
   composer:
     image: composer:latest
     volumes:
