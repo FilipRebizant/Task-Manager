@@ -26,11 +26,12 @@ class Template
 
     }
 
+
     /**
      * @param AbstractController $controller
-     * @return mixed
+     * @return string
      */
-    private function getDirectory(AbstractController $controller)
+    private function getDirectory(AbstractController $controller): string
     {
         $parts = explode('\\', $controller);
 
@@ -38,10 +39,10 @@ class Template
     }
     
     /**
-     * @param $controller
-     * @return mixed
+     * @param AbstractController $controller
+     * @return string|array
      */
-    private function getFile($controller)
+    private function getFile(AbstractController $controller)
     {
         return str_replace(APP_CONTROLLER_METHOD_SUFFIX, null, $controller);
     }
