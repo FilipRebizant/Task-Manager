@@ -1,3 +1,5 @@
+<?php
+
 define('APP_NAME', 'upskilling');
 define('APP_DOMAIN', '127.0.0.1');
 define('APP_INNER_DIRECTORY', '/mix/mvc');
