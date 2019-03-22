@@ -2,7 +2,6 @@
 
 namespace Core;
 
-use Controller\AbstractController;
 use Exception;
 
 class Template
@@ -20,17 +19,18 @@ class Template
     }
 
     /**
-     * @param AbstractController $controller
+     * @param string $controller
      * @param array $variables
      * @return mixed
      * @throws Exception
      */
-    public function getView(AbstractController $controller, array $variables = [])
+    public function getView(string $controller, array $variables = [])
     {
         $variables = $this->validateVariables($variables);
-
         $parts = explode('::', $controller);
-        $directory = $this->getDirectory($parts[0]);
+
+        $directory = str_replace('Controller', "", $parts[0]);
+        $directory = $this->getDirectory($directory);
         $file = $this->getFile($parts[1]);
 
         $viewPath = $this->viewPath . '/' . $directory . '/' . $file . '.html';
@@ -64,17 +64,16 @@ class Template
                 throw new Exception('Unacceptable view variable given: [body]', 409);
             }
         }
-
         $variables['application_name'] = APP_NAME;
 
         return $variables;
     }
 
     /**
-     * @param AbstractController $controller
+     * @param string $controller
      * @return string
      */
-    private function getDirectory(AbstractController $controller): string
+    private function getDirectory(string $controller): string
     {
         $parts = explode('\\', $controller);
 
@@ -82,10 +81,10 @@ class Template
     }
     
     /**
-     * @param AbstractController $controller
+     * @param string $controller
      * @return string|array
      */
-    private function getFile(AbstractController $controller)
+    private function getFile(string $controller)
     {
         return str_replace(APP_CONTROLLER_METHOD_SUFFIX, null, $controller);
     }

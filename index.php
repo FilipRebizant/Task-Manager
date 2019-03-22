@@ -3,21 +3,25 @@
 require_once __DIR__.'/app/config.php';
 require_once __DIR__.'/src/autoload.php';
 
+use Core\Request;
 
-$value = "World";
+$request = new Request($_SERVER, $_POST, $_GET, $_FILES);
 
-$db = new PDO('mysql:host=database;dbname=mydb;charset=utf8mb4', 'myuser', 'secret');
+try {
 
-$databaseTest = ($db->query('SELECT * FROM dockerSample'))->fetchAll(PDO::FETCH_OBJ);
+    $controller = $request->getController();
+    $method = $request->getMethod($controller);
 
-?>
+    $controller = new $controller;
 
-<html>
-<body>
-<h1>Hello, <?= $value ?>!</h1>
+    echo $controller->$method();
 
-<?php foreach($databaseTest as $row): ?>
-    <p>Hello, <?= $row->name ?></p>
-<?php endforeach; ?>
-</body>
-</html>
+} catch (Exception $e) {
+    sprintf(
+        '<h3>%s</h3><h4>%s</h4><h5>%s:%s</h5>',
+        $e->getCode(),
+        $e->getMessage(),
+        $e->getFile(),
+        $e->getLine()
+    );
+}

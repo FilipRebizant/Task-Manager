@@ -6,7 +6,6 @@ use Core\Template;
 
 class AbstractController
 {
-
     /**
      * @var Template $template
      */
@@ -21,12 +20,12 @@ class AbstractController
     }
 
     /**
-     * @param AbstractController $controller
+     * @param string $controller
      * @param array $variables
      * @return mixed
      * @throws \Exception
      */
-    protected function getView(AbstractController $controller, array $variables = [])
+    protected function getView(string $controller, array $variables = [])
     {
         return $this->template->getView($controller, $variables);
     }
