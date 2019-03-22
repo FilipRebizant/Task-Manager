@@ -1,4 +1,7 @@
 {
+  "name": "vendor/upskilling",
+  "type": "project",
+  "require": {},
   "autoload": {
     "psr-4": {
       "": "src/"

@@ -1,6 +1,12 @@
-#MVC
+# MVC
 
 
-##Komendy
-    docker exec -it docker_database_1 bash - odpalenie kontenera mysql
-    mysql -uroot -p - odpalenie mysql
+## Commands
+
+### Docker
+    docker-compose run composer install - dependency installation
+### Database
+    docker exec -it docker_database_1 bash - run mysql container
+    mysql -uroot -p - run mysql
+    show databases;
+    use <database name>
