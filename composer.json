@@ -1,10 +1,4 @@
 {
-  "name": "vendor/upskilling",
-  "type": "project",
-  "require": {},
-  "autoload": {
-    "psr-4": {
-      "": "src/"
-    }
-  }
+  "name": "vendor/task-manager",
+  "type": "project"
 }
