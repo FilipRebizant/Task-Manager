@@ -1,4 +1,9 @@
 {
   "name": "vendor/task-manager",
-  "type": "project"
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  }
 }
