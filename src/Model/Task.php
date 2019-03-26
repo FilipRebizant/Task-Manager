@@ -63,6 +63,22 @@ class Task
     }
 
     /**
+     * @param User $user
+     * @return Task
+     */
+    public function removeUser(User $user): Task
+    {
+        $users = $this->users;
+
+        if (in_array($user, $users)) {
+            $index = array_search($user, $users);
+            array_splice($users, $index, 1);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Status
      */
     public function getStatus(): Status

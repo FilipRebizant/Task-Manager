@@ -143,4 +143,19 @@ class User
         return $this;
     }
 
+    /**
+     * @param Task $task
+     * @return User
+     */
+    public function removeTask(Task $task): User
+    {
+        $tasks = $this->tasks;
+
+        if (in_array($task, $tasks)) {
+            $index = array_search($task, $tasks);
+            array_splice($tasks, $index, 1);
+        }
+
+        return $this;
+    }
 }
