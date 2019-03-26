@@ -33,16 +33,6 @@ class Status
     }
 
     /**
-     * @param int $id
-     * @return Status
-     */
-    public function setId(int $id): Status
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string

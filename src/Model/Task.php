@@ -39,16 +39,6 @@ class Task
     }
 
     /**
-     * @param int $id
-     * @return Task
-     */
-    public function setId(int $id): Task
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * @return User
      */
     public function getUser(): User
