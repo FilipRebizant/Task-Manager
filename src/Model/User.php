@@ -134,7 +134,11 @@ class User
     public function addTask(Task $task): User
     {
         $tasks = $this->tasks;
-        array_push($tasks, $task);
+
+        if (!in_array($task, $tasks)) {
+            array_push($tasks, $task);
+            $task->addUser($this);
+        }
 
         return $this;
     }
