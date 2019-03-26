@@ -122,7 +122,7 @@ class Task
     /**
      * @return Task
      */
-    public function setIsDone(): Task
+    public function setDone(): Task
     {
         $this->status->setStatus('Done');
         
@@ -132,9 +132,19 @@ class Task
     /**
      * @return Task
      */
-    public function setIsPending(): Task
+    public function setPending(): Task
     {
         $this->status->setStatus('Pending');
+
+        return $this;
+    }
+
+    /**
+     * @return Task
+     */
+    public function setToDo(): Task
+    {
+        $this->status->setStatus('To do');
 
         return $this;
     }
