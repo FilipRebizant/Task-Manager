@@ -30,6 +30,12 @@ class User
     private $createdAt;
 
     /**
+     * @var array
+     */
+    private $tasks;
+
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -52,6 +58,7 @@ class User
     public function setUserName(string $userName): User
     {
         $this->userName = $userName;
+
         return $this;
     }
 
@@ -70,6 +77,7 @@ class User
     public function setEmail(string $email): User
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -88,6 +96,7 @@ class User
     public function setPassword(string $password): User
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -106,6 +115,28 @@ class User
     public function setCreatedAt(\DateTime $createdAt): User
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getTasks(): array
+    {
+        return $this->tasks;
+    }
+
+    /**
+     * @param array $tasks
+     * @return User
+     */
+    public function addTask(Task $task): User
+    {
+        $tasks = $this->tasks;
+        array_push($tasks, $task);
+
+        return $this;
+    }
+
 }

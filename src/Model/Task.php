@@ -11,9 +11,9 @@ class Task
     private $id;
 
     /**
-     * @var User
+     * @var array
      */
-    private $user;
+    private $users;
 
     /**
      * @var Status
@@ -39,20 +39,22 @@ class Task
     }
 
     /**
-     * @return User
+     * @return array
      */
-    public function getUser(): User
+    public function getUsers(): array
     {
-        return $this->user;
+        return $this->users;
     }
 
     /**
      * @param User $user
      * @return Task
      */
-    public function setUser(User $user): Task
+    public function addUser(User $user): Task
     {
-        $this->user = $user;
+        $users = $this->users;
+        array_push($users, $user);
+
         return $this;
     }
 
@@ -71,6 +73,7 @@ class Task
     public function setStatus(Status $status): Task
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -89,6 +92,7 @@ class Task
     public function setPriority(int $priority): Task
     {
         $this->priority = $priority;
+
         return $this;
     }
 
@@ -107,6 +111,7 @@ class Task
     public function setDescription(string $description): Task
     {
         $this->description = $description;
+
         return $this;
     }
 }
