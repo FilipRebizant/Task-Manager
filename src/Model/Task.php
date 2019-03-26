@@ -118,4 +118,24 @@ class Task
 
         return $this;
     }
+
+    /**
+     * @return Task
+     */
+    public function setIsDone(): Task
+    {
+        $this->status->setStatus('Done');
+        
+        return $this;
+    }
+
+    /**
+     * @return Task
+     */
+    public function setIsPending(): Task
+    {
+        $this->status->setStatus('Pending');
+
+        return $this;
+    }
 }

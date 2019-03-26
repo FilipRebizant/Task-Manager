@@ -12,7 +12,7 @@ class Status
     /**
      * @var string
      */
-    private $name;
+    private $status;
 
     /**
      * @var \DateTime
@@ -35,18 +35,18 @@ class Status
     /**
      * @return string
      */
-    public function getName(): string
+    public function getStatus(): string
     {
-        return $this->name;
+        return $this->status;
     }
 
     /**
-     * @param string $name
+     * @param string $status
      * @return Status
      */
-    public function setName(string $name): Status
+    public function setStatus(string $status): Status
     {
-        $this->name = $name;
+        $this->status = $status;
         return $this;
     }
 
