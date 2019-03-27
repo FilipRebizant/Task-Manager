@@ -114,6 +114,10 @@ class User
      */
     public function getAssignedTasks(): array
     {
+        if (is_null($this->tasks)) {
+            return array();
+        }
+
         return $this->tasks;
     }
 
@@ -123,10 +127,11 @@ class User
      */
     public function assignTask(Task $task): User
     {
-        $tasks = $this->tasks;
+        $tasks = $this->getAssignedTasks();
 
         if (!in_array($task, $tasks)) {
             array_push($tasks, $task);
+            $this->tasks = $tasks;
             $task->assignUser($this);
         }
 
@@ -139,11 +144,13 @@ class User
      */
     public function unassignTask(Task $task): User
     {
-        $tasks = $this->tasks;
+        $tasks = $this->getAssignedTasks();
 
         if (in_array($task, $tasks)) {
             $index = array_search($task, $tasks);
             array_splice($tasks, $index, 1);
+            $task->unassignUser($this);
+            $this->tasks = $tasks;
         }
 
         return $this;

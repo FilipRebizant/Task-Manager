@@ -2,7 +2,6 @@
 
 namespace App\Tests\Domain;
 
-
 use App\Domain\Task;
 use App\Domain\User;
 use PHPUnit\Framework\TestCase;
@@ -14,11 +13,68 @@ class UserTest extends TestCase
         $user = new User();
         $task = new Task();
 
-        $assignedTask = $user->assignTask($task);
-        $obj = $this->getMockBuilder(Task::class)
-            ->setMethods(array('getStatus'))
-            ->getMock();
+        $user->assignTask($task);
+        $assignedTask = end($user->getAssignedTasks());
 
-        $this->assertEquals($obj, $assignedTask);
+        $this->assertEquals($task, $assignedTask);
+    }
+
+    public function testUserCanGetAssignedTasks()
+    {
+        $user = new User();
+        $task = new Task();
+        $secondTask = new Task();
+
+        $task->setDescription('task1');
+        $secondTask->setDescription('task2');
+
+        $user->assignTask($task);
+        $user->assignTask($secondTask);
+
+        $expectedCount = 2;
+        $actualCount = count($user->getAssignedTasks());
+
+        $this->assertEquals($expectedCount, $actualCount);
+    }
+
+    public function testUserCanUnassignTask()
+    {
+        $user = new User();
+        $task = new Task();
+        $secondTask = new Task();
+
+        $task->setDescription('task1');
+        $secondTask->setDescription('task2');
+
+        $user->assignTask($task);
+        $user->assignTask($secondTask);
+
+        $user->unassignTask($secondTask);
+
+        $actualCount = end($user->getAssignedTasks());
+
+        $this->assertEquals($task, $actualCount);
+    }
+
+    public function testUserCanNotRemoveUnassignedTasks()
+    {
+        $user = new User();
+        $task = new Task();
+        $secondTask = new Task();
+        $thirdTask = new Task;
+
+        $task->setDescription('task1');
+        $secondTask->setDescription('task2');
+        $thirdTask->setDescription('unassignedTask');
+
+        $user->assignTask($task);
+        $user->assignTask($secondTask);
+
+        $user->unassignTask($thirdTask);
+
+        $expectedCount = 2;
+        $actualCount = count($user->getAssignedTasks());
+
+        $this->assertEquals($expectedCount, $actualCount);
     }
 }

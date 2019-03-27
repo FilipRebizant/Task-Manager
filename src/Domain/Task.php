@@ -37,9 +37,9 @@ class Task
     }
 
     /**
-     * @return User
+     * @return null|User
      */
-    public function getAssignedUser(): User
+    public function getAssignedUser(): ? User
     {
         return $this->user;
     }
@@ -50,7 +50,9 @@ class Task
      */
     public function assignUser(User $user): Task
     {
-        $this->user = $user;
+        if (is_null($this->getAssignedUser())){
+            $this->user = $user;
+        }
 
         return $this;
     }
