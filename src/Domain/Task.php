@@ -13,7 +13,7 @@ class Task
     /** @var User */
     private $user;
 
-     /** @var Status */
+     /** @var int */
     private $status;
 
     /** @var int */
@@ -69,22 +69,11 @@ class Task
     }
 
     /**
-     * @return Status
+     * @return int
      */
-    public function getStatus(): Status
+    public function getStatus(): int
     {
         return $this->status;
-    }
-
-    /**
-     * @param Status $status
-     * @return Task
-     */
-    public function setStatus(Status $status): Task
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     /**
@@ -130,7 +119,7 @@ class Task
      */
     public function setDone(): Task
     {
-        $this->status::Done;
+        $this->status = status::Done;
         
         return $this;
     }
@@ -140,7 +129,7 @@ class Task
      */
     public function setPending(): Task
     {
-        $this->status::Pending;
+        $this->status = status::Pending;
 
         return $this;
     }
@@ -150,7 +139,7 @@ class Task
      */
     public function setToDo(): Task
     {
-        $this->status::Todo;
+        $this->status = Status::Todo;
 
         return $this;
     }
