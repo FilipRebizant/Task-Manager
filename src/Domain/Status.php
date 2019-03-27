@@ -2,40 +2,19 @@
 
 namespace Domain;
 
-class Status
+class Status extends \SplEnum
 {
-    /**
-     * @var string
-     */
-    private $status;
+    const __default = self::Todo;
 
-    /**
-     * @var \DateTime
-     */
+    const Todo = 1;
+    const Pending = 2;
+    const Done = 3;
+
+    /** @var \DateTime */
     private $cratedAt;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     private $updatedAt;
-
-    /**
-     * @return string
-     */
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $status
-     * @return Status
-     */
-    public function setStatus(string $status): Status
-    {
-        $this->status = $status;
-        return $this;
-    }
 
     /**
      * @return \DateTime

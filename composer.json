@@ -2,6 +2,7 @@
   "name": "vendor/task-manager",
   "type": "project",
   "require": {
-    "ramsey/uuid": "^3.8"
+    "ramsey/uuid": "^3.8",
+    "ext-spltype": "*"
   }
 }

@@ -28,7 +28,7 @@ class User
     /**
      * @return UUid
      */
-    public function getId(): ? UUid
+    public function getId():  UUid
     {
         return $this->id;
     }
