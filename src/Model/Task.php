@@ -2,11 +2,13 @@
 
 namespace Model;
 
+use Ramsey\Uuid\Uuid;
+
 class Task
 {
 
     /**
-     * @var int
+     * @var Uuid
      */
     private $id;
 

@@ -1,4 +1,7 @@
 {
   "name": "vendor/task-manager",
-  "type": "project"
+  "type": "project",
+  "require": {
+    "ramsey/uuid": "^3.8"
+  }
 }

@@ -5,11 +5,6 @@ namespace Model;
 class Status
 {
     /**
-     * @var int
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $status;
@@ -23,14 +18,6 @@ class Status
      * @var \DateTime
      */
     private $updatedAt;
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     /**
      * @return string
