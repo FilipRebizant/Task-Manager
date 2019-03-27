@@ -22,6 +22,12 @@ class Task
     /** @var string */
     private $description;
 
+    /** @var \DateTime */
+    private $createdAt;
+
+    /** @var \DateTime */
+    private $updatedAt;
+
     /**
      * @return Uuid
      */
@@ -145,6 +151,44 @@ class Task
     public function setToDo(): Task
     {
         $this->status::Todo;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     * @return Task
+     */
+    public function setCreatedAt(\DateTime $createdAt): Task
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     * @return Task
+     */
+    public function setUpdatedAt(\DateTime $updatedAt): Task
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
