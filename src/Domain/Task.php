@@ -6,7 +6,6 @@ use Ramsey\Uuid\Uuid;
 
 class Task
 {
-
     /** @var Uuid */
     private $id;
 
@@ -22,11 +21,12 @@ class Task
     /** @var string */
     private $description;
 
-    /** @var \DateTime */
+    /** @var \DateTimeImmutable */
     private $createdAt;
 
-    /** @var \DateTime */
+    /** @var \DateTimeImmutable */
     private $updatedAt;
+
 
     /**
      * @return Uuid
@@ -77,6 +77,17 @@ class Task
     }
 
     /**
+     * @param Status $status
+     * @return Task
+     */
+    public function setStatus(Status $status): Task
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getPriority(): int
@@ -119,8 +130,8 @@ class Task
      */
     public function setDone(): Task
     {
-        $this->status = status::Done;
-        
+        $this->status = Status::Done;
+
         return $this;
     }
 
@@ -129,7 +140,7 @@ class Task
      */
     public function setPending(): Task
     {
-        $this->status = status::Pending;
+        $this->status = Status::Pending;
 
         return $this;
     }
@@ -145,18 +156,18 @@ class Task
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param \DateTimeImmutable $createdAt
      * @return Task
      */
-    public function setCreatedAt(\DateTime $createdAt): Task
+    public function setCreatedAt(\DateTimeImmutable $createdAt): Task
     {
         $this->createdAt = $createdAt;
 
@@ -164,18 +175,18 @@ class Task
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param \DateTimeImmutable $updatedAt
      * @return Task
      */
-    public function setUpdatedAt(\DateTime $updatedAt): Task
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): Task
     {
         $this->updatedAt = $updatedAt;
 
