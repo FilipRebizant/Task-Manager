@@ -28,7 +28,7 @@ class User
     /**
      * @return UUid
      */
-    public function getId():  UUid
+    public function getId(): UUid
     {
         return $this->id;
     }
@@ -112,7 +112,7 @@ class User
     /**
      * @return array
      */
-    public function getTasks(): array
+    public function getAssignedTasks(): array
     {
         return $this->tasks;
     }
@@ -121,13 +121,13 @@ class User
      * @param array $tasks
      * @return User
      */
-    public function addTask(Task $task): User
+    public function assignTask(Task $task): User
     {
         $tasks = $this->tasks;
 
         if (!in_array($task, $tasks)) {
             array_push($tasks, $task);
-            $task->addUser($this);
+            $task->assignUser($this);
         }
 
         return $this;
@@ -137,7 +137,7 @@ class User
      * @param Task $task
      * @return User
      */
-    public function removeTask(Task $task): User
+    public function unassignTask(Task $task): User
     {
         $tasks = $this->tasks;
 

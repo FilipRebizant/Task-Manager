@@ -25,7 +25,7 @@ class Task
     /**
      * @return Uuid
      */
-    public function getId(): ? Uuid
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -124,7 +124,7 @@ class Task
      */
     public function setDone(): Task
     {
-        $this->status->setStatus('Done');
+        $this->status::Done;
         
         return $this;
     }
@@ -134,7 +134,7 @@ class Task
      */
     public function setPending(): Task
     {
-        $this->status->setStatus('Pending');
+        $this->status::Pending;
 
         return $this;
     }
@@ -144,7 +144,7 @@ class Task
      */
     public function setToDo(): Task
     {
-        $this->status->setStatus('To do');
+        $this->status::Todo;
 
         return $this;
     }
