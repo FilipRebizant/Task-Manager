@@ -7,59 +7,44 @@ use Ramsey\Uuid\Uuid;
 class Task
 {
 
-    /**
-     * @var Uuid
-     */
+    /** @var Uuid */
     private $id;
 
-    /**
-     * @var array
-     */
-    private $users;
+    /** @var User */
+    private $user;
 
-    /**
-     * @var Status
-     */
+     /** @var Status */
     private $status;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $priority;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $description;
 
     /**
-     * @return int
+     * @return Uuid
      */
-    public function getId(): int
+    public function getId(): ? Uuid
     {
         return $this->id;
     }
 
     /**
-     * @return array
+     * @return User
      */
-    public function getUsers(): array
+    public function getAssignedUser(): User
     {
-        return $this->users;
+        return $this->user;
     }
 
     /**
      * @param User $user
      * @return Task
      */
-    public function addUser(User $user): Task
+    public function assignUser(User $user): Task
     {
-        $users = $this->users;
-
-        if (!in_array($user, $users)) {
-            array_push($users, $user);
-            $user->addTask($this);
-        }
+        $this->user = $user;
 
         return $this;
     }
@@ -68,13 +53,10 @@ class Task
      * @param User $user
      * @return Task
      */
-    public function removeUser(User $user): Task
+    public function unassignUser(User $user): Task
     {
-        $users = $this->users;
-
-        if (in_array($user, $users)) {
-            $index = array_search($user, $users);
-            array_splice($users, $index, 1);
+        if ($this->user === $user) {
+            $this->user = null;
         }
 
         return $this;

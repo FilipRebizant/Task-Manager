@@ -2,43 +2,33 @@
 
 namespace Model;
 
+use Ramsey\Uuid\Uuid;
+
 class User
 {
-    /**
-     * @var int
-     */
+    /** @var Uuid */
     private $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $userName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $email;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $password;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     private $createdAt;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $tasks;
 
 
     /**
-     * @return int
+     * @return UUid
      */
-    public function getId(): int
+    public function getId(): ? UUid
     {
         return $this->id;
     }
