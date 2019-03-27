@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-class Status extends \SplEnum
+abstract class Status
 {
     const __default = self::Todo;
 

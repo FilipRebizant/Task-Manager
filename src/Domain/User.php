@@ -18,7 +18,7 @@ class User
     /** @var string */
     private $password;
 
-    /** @var \DateTime */
+    /** @var \DateTimeImmutable */
     private $createdAt;
 
     /** @var array */
@@ -91,18 +91,18 @@ class User
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param \DateTimeImmutable $createdAt
      * @return User
      */
-    public function setCreatedAt(\DateTime $createdAt): User
+    public function setCreatedAt(\DateTimeImmutable $createdAt): User
     {
         $this->createdAt = $createdAt;
 
