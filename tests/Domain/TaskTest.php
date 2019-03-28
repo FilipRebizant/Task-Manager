@@ -8,12 +8,23 @@ use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
 {
+
+    /** @var User */
+    protected $user;
+
+    /** @var Task */
+    protected $task;
+
+    public function setUp(): void
+    {
+        $this->task = new Task();
+        $this->user = new User();
+    }
+
     public function testAssignTaskIsToDo()
     {
-        $task = new Task();
-
-        $task->setToDo();
-        $status = $task->getStatus();
+        $this->task->setToDo();
+        $status = $this->task->getStatus();
         $expectedStatus = 1;
 
         $this->assertEquals($expectedStatus, $status);
@@ -21,10 +32,8 @@ class TaskTest extends TestCase
 
     public function testAssignTaskIsPending()
     {
-        $task = new Task();
-
-        $task->setPending();
-        $status = $task->getStatus();
+        $this->task->setPending();
+        $status = $this->task->getStatus();
         $expectedStatus = 2;
 
         $this->assertEquals($expectedStatus, $status);
@@ -32,10 +41,8 @@ class TaskTest extends TestCase
 
     public function testAssignTaskIsDone()
     {
-        $task = new Task();
-
-        $task->setDone();
-        $status = $task->getStatus();
+        $this->task->setDone();
+        $status = $this->task->getStatus();
         $expectedStatus = 3;
         
         $this->assertEquals($expectedStatus, $status);
@@ -43,23 +50,17 @@ class TaskTest extends TestCase
 
     public function testTaskCanGetAssignedUser()
     {
-        $task = new Task();
-        $user = new User();
+        $this->user->assignTask($this->task);
+        $assignedUser = $this->task->getAssignedUser();
 
-        $user->assignTask($task);
-        $assignedUser = $task->getAssignedUser();
-
-        $this->assertEquals($user, $assignedUser);
+        $this->assertEquals($this->user, $assignedUser);
     }
 
     public function testTaskCanAssignUser()
     {
-        $user = new User();
-        $task = new Task();
-
-        $user->setUserName('username');
-        $task->assignUser($user);
-        $username = $task->getAssignedUser()->getUserName();
+        $this->user->setUserName('username');
+        $this->task->assignUser($this->user);
+        $username = $this->task->getAssignedUser()->getUserName();
         $expectedUserName = 'username';
 
         $this->assertEquals($expectedUserName, $username);
@@ -67,46 +68,39 @@ class TaskTest extends TestCase
 
     public function testTaskCanUnassignUser()
     {
-        $user = new User();
-        $task = new Task();
-
-        $user->assignTask($task);
-        $task->unassignUser($user);
-        $assignedUser = $task->getAssignedUser();
+        $this->user->assignTask($this->task);
+        $this->task->unassignUser($this->user);
+        $assignedUser = $this->task->getAssignedUser();
 
         $this->assertEquals(null, $assignedUser);
     }
 
     public function testTaskWillNotUnassignWrongUser()
     {
-        $user = new User();
         $wrongUser = new User();
-        $task = new Task();
 
-        $user->setUserName('username');
+        $this->user->setUserName('username');
         $wrongUser->setUserName('wrongUsername');
 
-        $user->assignTask($task);
-        $task->unassignUser($wrongUser);
-        $assignedUser = $task->getAssignedUser();
+        $this->user->assignTask($this->task);
+        $this->task->unassignUser($wrongUser);
+        $assignedUser = $this->task->getAssignedUser();
 
-        $this->assertEquals($user, $assignedUser);
+        $this->assertEquals($this->user, $assignedUser);
     }
 
     public function testTaskWillNotBeReassigned()
     {
-        $user = new User();
         $wrongUser = new User();
-        $task = new Task();
 
-        $user->setUserName('user');
+        $this->user->setUserName('user');
         $wrongUser->setUserName('wrongUser');
 
-        $task->assignUser($user);
-        $task->assignUser($wrongUser);
+        $this->task->assignUser($this->user);
+        $this->task->assignUser($wrongUser);
 
-        $assignedUser = $task->getAssignedUser();
+        $assignedUser = $this->task->getAssignedUser();
 
-        $this->assertEquals($user, $assignedUser);
+        $this->assertEquals($this->user, $assignedUser);
     }
 }
