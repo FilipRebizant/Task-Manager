@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Domain;
+namespace App\Domain;
 
 use Ramsey\Uuid\Uuid;
 
@@ -74,17 +74,6 @@ class Task
     public function getStatus(): int
     {
         return $this->status;
-    }
-
-    /**
-     * @param Status $status
-     * @return Task
-     */
-    public function setStatus(Status $status): Task
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     /**
