@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 
+use App\Domain\Repository\TaskRepository;
 use App\Domain\Task;
 use Doctrine\ORM\EntityManager;
 
