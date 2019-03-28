@@ -79,17 +79,6 @@ class Task
     }
 
     /**
-     * @param Status $status
-     * @return Task
-     */
-    public function setStatus(Status $status): Task
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getPriority(): int
