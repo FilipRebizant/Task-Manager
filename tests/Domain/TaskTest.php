@@ -4,6 +4,7 @@ namespace App\Tests\Domain;
 
 use App\Domain\Task;
 use App\Domain\User;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
@@ -15,10 +16,13 @@ class TaskTest extends TestCase
     /** @var Task */
     protected $task;
 
+    /** @var MockObject */
+    protected $userMock;
+
     public function setUp(): void
     {
         $this->task = new Task();
-        $this->user = new User();
+        $this->userMock = $this->getMockBuilder(User::class)->getMock();
     }
 
     public function testAssignTaskIsToDo()
@@ -50,26 +54,26 @@ class TaskTest extends TestCase
 
     public function testTaskCanGetAssignedUser()
     {
-        $this->user->assignTask($this->task);
+        $this->task->assignUser($this->userMock);
+
         $assignedUser = $this->task->getAssignedUser();
 
-        $this->assertEquals($this->user, $assignedUser);
+        $this->assertEquals($this->userMock, $assignedUser);
     }
 
     public function testTaskCanAssignUser()
     {
-        $this->user->setUserName('username');
-        $this->task->assignUser($this->user);
-        $username = $this->task->getAssignedUser()->getUserName();
-        $expectedUserName = 'username';
+        $this->task->assignUser($this->userMock);
+        $user = $this->task->getAssignedUser();
 
-        $this->assertEquals($expectedUserName, $username);
+        $this->assertEquals($this->userMock, $user);
     }
 
     public function testTaskCanUnassignUser()
     {
-        $this->user->assignTask($this->task);
-        $this->task->unassignUser($this->user);
+        $this->task->assignUser($this->userMock);
+
+        $this->task->unassignUser($this->userMock);
         $assignedUser = $this->task->getAssignedUser();
 
         $this->assertEquals(null, $assignedUser);
@@ -77,30 +81,25 @@ class TaskTest extends TestCase
 
     public function testTaskWillNotUnassignWrongUser()
     {
-        $wrongUser = new User();
+        $wrongUserMock = $this->getMockBuilder(User::class)->getMock();
 
-        $this->user->setUserName('username');
-        $wrongUser->setUserName('wrongUsername');
-
-        $this->user->assignTask($this->task);
-        $this->task->unassignUser($wrongUser);
+        $this->task->assignUser($this->userMock);
+        $this->task->unassignUser($wrongUserMock);
         $assignedUser = $this->task->getAssignedUser();
 
-        $this->assertEquals($this->user, $assignedUser);
+        $this->assertEquals($this->userMock, $assignedUser);
     }
 
     public function testTaskWillNotBeReassigned()
     {
-        $wrongUser = new User();
+        $wrongUserMock = $this->getMockBuilder(User::class)->getMock();
 
-        $this->user->setUserName('user');
-        $wrongUser->setUserName('wrongUser');
+        $this->task->assignUser($this->userMock);
 
-        $this->task->assignUser($this->user);
-        $this->task->assignUser($wrongUser);
+        $this->task->assignUser($wrongUserMock);
 
         $assignedUser = $this->task->getAssignedUser();
 
-        $this->assertEquals($this->user, $assignedUser);
+        $this->assertEquals($this->userMock, $assignedUser);
     }
 }

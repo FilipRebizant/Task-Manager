@@ -5,6 +5,7 @@ namespace App\Tests\Domain;
 use App\Domain\Task;
 
 use App\Domain\User;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
@@ -16,29 +17,30 @@ class UserTest extends TestCase
     /** @var Task */
     protected $task;
 
+    /** @var MockObject */
+    protected $taskMock;
+
     public function setUp(): void
     {
         $this->user = new User();
-        $this->task = new Task();
+        $this->taskMock = $this->getMockBuilder(Task::class)->getMock();
+        var_dump(get_class($this->taskMock));
     }
 
     public function testUserCanAssignTask()
     {
-        $this->user->assignTask($this->task);
+        $this->user->assignTask($this->taskMock);
         $assignedTask = end($this->user->getAssignedTasks());
 
-        $this->assertEquals($this->task, $assignedTask);
+        $this->assertEquals($this->taskMock, $assignedTask);
     }
 
     public function testUserCanGetAssignedTasks()
     {
-        $secondTask = new Task();
+        $secondTaskMock = $this->getMockBuilder(Task::class)->getMock();
 
-        $this->task->setDescription('task1');
-        $secondTask->setDescription('task2');
-
-        $this->user->assignTask($this->task);
-        $this->user->assignTask($secondTask);
+        $this->user->assignTask($this->taskMock);
+        $this->user->assignTask($secondTaskMock);
 
         $expectedCount = 2;
         $actualCount = count($this->user->getAssignedTasks());
@@ -48,34 +50,27 @@ class UserTest extends TestCase
 
     public function testUserCanUnassignTask()
     {
-        $secondTask = new Task();
+        $secondTaskMock = $this->getMockBuilder(Task::class)->getMock();
 
-        $this->task->setDescription('task1');
-        $secondTask->setDescription('task2');
+        $this->user->assignTask($this->taskMock);
+        $this->user->assignTask($secondTaskMock);
 
-        $this->user->assignTask($this->task);
-        $this->user->assignTask($secondTask);
-
-        $this->user->unassignTask($secondTask);
+        $this->user->unassignTask($secondTaskMock);
 
         $actualCount = end($this->user->getAssignedTasks());
 
-        $this->assertEquals($this->task, $actualCount);
+        $this->assertEquals($this->taskMock, $actualCount);
     }
 
     public function testUserCanNotRemoveUnassignedTasks()
     {
-        $secondTask = new Task();
-        $thirdTask = new Task;
+        $secondTaskMock = $this->getMockBuilder(Task::class)->getMock();
+        $thirdTaskMock = $this->getMockBuilder(Task::class)->getMock();
 
-        $this->task->setDescription('task1');
-        $secondTask->setDescription('task2');
-        $thirdTask->setDescription('unassignedTask');
+        $this->user->assignTask($this->taskMock);
+        $this->user->assignTask($secondTaskMock);
 
-        $this->user->assignTask($this->task);
-        $this->user->assignTask($secondTask);
-
-        $this->user->unassignTask($thirdTask);
+        $this->user->unassignTask($thirdTaskMock);
 
         $expectedCount = 2;
         $actualCount = count($this->user->getAssignedTasks());
