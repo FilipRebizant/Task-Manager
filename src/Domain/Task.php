@@ -12,7 +12,7 @@ class Task
     /** @var User */
     private $user;
 
-     /** @var int */
+     /** @var Status */
     private $status;
 
     /** @var int */
@@ -71,11 +71,11 @@ class Task
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getStatus(): int
+    public function getStatus(): string
     {
-        return $this->status;
+        return $this->status->getStatus();
     }
 
     /**
@@ -118,30 +118,33 @@ class Task
 
     /**
      * @return Task
+     * @throws \Exception
      */
     public function setDone(): Task
     {
-        $this->status = Status::Done;
+        $this->status = new Status('Done');
 
         return $this;
     }
 
     /**
      * @return Task
+     * @throws \Exception
      */
     public function setPending(): Task
     {
-        $this->status = Status::Pending;
+        $this->status = new Status('Pending');
 
         return $this;
     }
 
     /**
      * @return Task
+     * @throws \Exception
      */
     public function setToDo(): Task
     {
-        $this->status = Status::Todo;
+        $this->status = new Status('Todo');
 
         return $this;
     }

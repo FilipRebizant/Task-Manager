@@ -33,7 +33,7 @@ class Status
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getStatus(): string
     {
         return $this->status;
     }
