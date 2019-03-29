@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Domain;
+namespace App\Tests\Domain\User;
 
-use App\Domain\Task;
+use App\Domain\Task\Task;
 
-use App\Domain\User;
+use App\Domain\User\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +23,7 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         $this->user = new User();
-        $this->taskMock = $this->getMockBuilder(Task::class)->getMock();
+        $this->taskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
     }
 
     public function testUserCanAssignTask()
@@ -36,7 +36,7 @@ class UserTest extends TestCase
 
     public function testUserCanGetAssignedTasks()
     {
-        $secondTaskMock = $this->getMockBuilder(Task::class)->getMock();
+        $secondTaskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
 
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);
@@ -49,7 +49,7 @@ class UserTest extends TestCase
 
     public function testUserCanUnassignTask()
     {
-        $secondTaskMock = $this->getMockBuilder(Task::class)->getMock();
+        $secondTaskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
 
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);
@@ -63,8 +63,8 @@ class UserTest extends TestCase
 
     public function testUserCanNotRemoveUnassignedTasks()
     {
-        $secondTaskMock = $this->getMockBuilder(Task::class)->getMock();
-        $thirdTaskMock = $this->getMockBuilder(Task::class)->getMock();
+        $secondTaskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
+        $thirdTaskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
 
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);

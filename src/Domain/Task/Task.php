@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Domain;
+namespace App\Domain\Task;
 
+use App\Domain\Priority;
+use App\Domain\Status;
+use App\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 
 class Task

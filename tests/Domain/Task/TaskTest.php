@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Tests\Domain;
+namespace App\Tests\Domain\Task;
 
-use App\Domain\Task;
-use App\Domain\User;
+use App\Domain\Priority;
+use App\Domain\Status;
+use App\Domain\Task\Task;
+use App\Domain\User\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class TaskTest extends TestCase
 {
@@ -21,7 +24,13 @@ class TaskTest extends TestCase
 
     public function setUp(): void
     {
-        $this->task = new Task();
+        $this->task = new Task(
+            $this->getMockBuilder(Uuid::class)->disableOriginalConstructor()->getMock(),
+            $this->getMockBuilder(Status::class)->disableOriginalConstructor()->getMock(),
+            $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock(),
+            $this->getMockBuilder(Priority::class)->disableOriginalConstructor()->getMock(),
+            'Description'
+        );
         $this->userMock = $this->getMockBuilder(User::class)->getMock();
     }
 
@@ -71,9 +80,9 @@ class TaskTest extends TestCase
 
     public function testTaskCanUnassignUser()
     {
-        $this->task->assignUser($this->userMock);
+//        $this->task->assignUser($this->userMock);
 
-        $this->task->unassignUser($this->userMock);
+        $this->task->unassignUser($this->task->getAssignedUser());
         $assignedUser = $this->task->getAssignedUser();
 
         $this->assertEquals(null, $assignedUser);
