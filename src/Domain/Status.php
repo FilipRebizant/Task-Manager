@@ -1,12 +1,40 @@
 <?php declare(strict_types=1);
 
-namespace Domain;
+namespace App\Domain;
 
-abstract class Status
+class Status
 {
-    const __default = self::Todo;
+    /**
+     * @var array
+     */
+    private $validStatuses = [
+        'Todo',
+        'Pending',
+        'Done'
+    ];
 
-    const Todo = 1;
-    const Pending = 2;
-    const Done = 3;
+    /** @var string */
+    private $status;
+
+    /**
+     * Status constructor.
+     * @param string $status
+     * @throws \Exception
+     */
+    public function __construct(string $status)
+    {
+        if (!in_array($status, $this->validStatuses)) {
+            throw new \Exception("This is not a valid status.");
+        }
+
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
 }
