@@ -1,12 +1,15 @@
 # Task-Manager
 
-## Installation commands
+## Installation commands:
 
-### To build application
+### To build application:
     docker-compose build
     
-### To run composer
+### To run composer:
     docker-compose run composer install
 
-### To run application
+### To run application:
     docker-compose up 
+
+### To run tests open php-fpm container and run:
+    ./vendor/bin/phpunit
