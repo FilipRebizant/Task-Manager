@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        backupStaticAttributes="false"
+        cacheTokens="false"
+        cacheResult="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        forceCoversAnnotation="false"
+        bootstrap="vendor/autoload.php"
+        processIsolation="false"
+        stopOnError="false"
+        stopOnFailure="true"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+        verbose="false"
+>
+
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+
+</phpunit>
