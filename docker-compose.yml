@@ -20,5 +20,5 @@ services:
   composer:
     image: composer:latest
     volumes:
-      - ../:/app
+      - ./:/app
     command: 'true'
