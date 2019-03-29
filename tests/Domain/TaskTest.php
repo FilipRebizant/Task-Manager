@@ -25,32 +25,32 @@ class TaskTest extends TestCase
         $this->userMock = $this->getMockBuilder(User::class)->getMock();
     }
 
-    public function testAssignTaskIsToDo()
-    {
-        $this->task->setToDo();
-        $status = $this->task->getStatus();
-        $expectedStatus = 1;
-
-        $this->assertEquals($expectedStatus, $status);
-    }
-
-    public function testAssignTaskIsPending()
-    {
-        $this->task->setPending();
-        $status = $this->task->getStatus();
-        $expectedStatus = 2;
-
-        $this->assertEquals($expectedStatus, $status);
-    }
-
-    public function testAssignTaskIsDone()
-    {
-        $this->task->setDone();
-        $status = $this->task->getStatus();
-        $expectedStatus = 3;
-        
-        $this->assertEquals($expectedStatus, $status);
-    }
+//    public function testAssignTaskIsToDo()
+//    {
+//        $this->task->setToDo();
+//        $status = $this->task->getStatus();
+//        $expectedStatus = 1;
+//
+//        $this->assertEquals($expectedStatus, $status);
+//    }
+//
+//    public function testAssignTaskIsPending()
+//    {
+//        $this->task->setPending();
+//        $status = $this->task->getStatus();
+//        $expectedStatus = 2;
+//
+//        $this->assertEquals($expectedStatus, $status);
+//    }
+//
+//    public function testAssignTaskIsDone()
+//    {
+//        $this->task->setDone();
+//        $status = $this->task->getStatus();
+//        $expectedStatus = 3;
+//
+//        $this->assertEquals($expectedStatus, $status);
+//    }
 
     public function testTaskCanGetAssignedUser()
     {

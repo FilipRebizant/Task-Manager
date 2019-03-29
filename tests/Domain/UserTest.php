@@ -24,7 +24,6 @@ class UserTest extends TestCase
     {
         $this->user = new User();
         $this->taskMock = $this->getMockBuilder(Task::class)->getMock();
-        var_dump(get_class($this->taskMock));
     }
 
     public function testUserCanAssignTask()
