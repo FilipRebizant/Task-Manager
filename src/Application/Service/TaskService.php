@@ -43,7 +43,7 @@ class TaskService
 
             return true;
 
-        } catch (\Doctrine\ORM\ORMException|\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
