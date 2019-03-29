@@ -15,7 +15,7 @@ class Task
      /** @var Status */
     private $status;
 
-    /** @var int */
+    /** @var Priority */
     private $priority;
 
     /** @var string */
@@ -27,6 +27,35 @@ class Task
     /** @var \DateTimeImmutable */
     private $updatedAt;
 
+    /**
+     * Task constructor.
+     * @param Uuid $id
+     * @param Status $status
+     * @param User $user
+     * @param Priority $priority
+     * @param string $description
+     * @param \DateTimeImmutable|null $createdAt
+     * @param \DateTimeImmutable|null $updatedAt
+     * @throws \Exception
+     */
+    public function __construct(
+        Uuid $id,
+        Status $status,
+        User $user,
+        Priority $priority,
+        string $description,
+        \DateTimeImmutable $createdAt = null,
+        \DateTimeImmutable $updatedAt = null
+    )
+    {
+        $this->id = $id;
+        $this->status = $status;
+        $this->user = $user;
+        $this->priority = $priority;
+        $this->description = $description;
+        $this->createdAt = new \DateTimeImmutable('now');
+        $this->updatedAt = is_null($updatedAt) ? new \DateTimeImmutable('now'): $updatedAt;
+    }
 
     /**
      * @return Uuid
@@ -83,16 +112,17 @@ class Task
      */
     public function getPriority(): int
     {
-        return $this->priority;
+        return $this->priority->getPriority();
     }
 
     /**
      * @param int $priority
      * @return Task
+     * @throws \Exception
      */
     public function setPriority(int $priority): Task
     {
-        $this->priority = $priority;
+        $this->priority = new Priority($priority);
 
         return $this;
     }
