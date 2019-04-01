@@ -2,9 +2,6 @@
 
 namespace App\Domain\Task;
 
-
-use App\Domain\Task\Task;
-
 Interface TaskRepository
 {
     /**
