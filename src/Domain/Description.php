@@ -22,4 +22,12 @@ final class Description
 
         $this->description = $description;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->description;
+    }
 }

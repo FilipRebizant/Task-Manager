@@ -2,6 +2,7 @@
 
 namespace App\Application\Command;
 
+use App\Domain\Description;
 use App\Domain\Priority;
 use App\Domain\Status;
 use App\Domain\Task\Task;
@@ -31,7 +32,7 @@ final class CreateNewTaskHandler
             new Status($command->status()),
             null,
             new Priority($command->priority()),
-            $command->description()
+            new Description($command->description())
         );
 
         $this->taskRepository->create($task);

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Task;
 
+use App\Domain\Description;
 use App\Domain\Priority;
 use App\Domain\Status;
 use App\Domain\User\User;
@@ -21,7 +22,7 @@ final class Task
     /** @var Priority */
     private $priority;
 
-    /** @var string */
+    /** @var Description */
     private $description;
 
     /** @var \DateTimeImmutable */
@@ -35,7 +36,7 @@ final class Task
      * @param Status $status
      * @param User|null $user
      * @param Priority $priority
-     * @param string $description
+     * @param Description $description
      * @param \DateTimeImmutable|null $createdAt
      * @param \DateTimeImmutable|null $updatedAt
      * @throws \Exception
@@ -44,7 +45,7 @@ final class Task
         Status $status,
         User $user,
         Priority $priority,
-        string $description,
+        Description $description,
         \DateTimeImmutable $createdAt = null,
         \DateTimeImmutable $updatedAt = null
     )
@@ -129,9 +130,9 @@ final class Task
     }
 
     /**
-     * @return string
+     * @return Description
      */
-    public function getDescription(): string
+    public function getDescription(): Description
     {
         return $this->description;
     }
@@ -142,7 +143,7 @@ final class Task
      */
     public function setDescription(string $description): Task
     {
-        $this->description = $description;
+        $this->description = new Description($description);
 
         return $this;
     }
