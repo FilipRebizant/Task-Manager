@@ -7,7 +7,7 @@ use App\Domain\Status;
 use App\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 
-class Task
+final class Task
 {
     /** @var Uuid */
     private $id;
@@ -32,9 +32,8 @@ class Task
 
     /**
      * Task constructor.
-     * @param Uuid $id
      * @param Status $status
-     * @param User $user
+     * @param User|null $user
      * @param Priority $priority
      * @param string $description
      * @param \DateTimeImmutable|null $createdAt
@@ -42,7 +41,6 @@ class Task
      * @throws \Exception
      */
     public function __construct(
-        Uuid $id,
         Status $status,
         User $user,
         Priority $priority,
@@ -51,7 +49,7 @@ class Task
         \DateTimeImmutable $updatedAt = null
     )
     {
-        $this->id = $id;
+        $this->id = Uuid::uuid4();
         $this->status = $status;
         $this->user = $user;
         $this->priority = $priority;
