@@ -3,18 +3,18 @@
 namespace App\Interfaces\Web\Controller;
 
 use App\Application\Command\CreateNewTaskCommand;
-use App\Application\Contract\CommandBus;
+use App\Application\Contract\CommandBusInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController
 {
-    /** @var CommandBus  */
+    /** @var CommandBusInterface  */
     private $commandBus;
 
     /**
      * TaskController constructor.
-     * @param CommandBus $commandBus
+     * @param CommandBusInterface $commandBus
      */
     public function __construct()
     {
