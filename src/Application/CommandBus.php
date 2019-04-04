@@ -2,9 +2,7 @@
 
 namespace App\Application;
 
-use App\Application\Contract\CommandBusInterface;
-
-class CommandBus implements CommandBusInterface
+final class CommandBus implements CommandBusInterface
 {
     private $handlers = [];
 

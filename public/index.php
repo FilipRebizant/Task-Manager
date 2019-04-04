@@ -9,18 +9,38 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Pimple\Container;
+use App\Application\CommandBus;
 
 require_once '../vendor/autoload.php';
 
-$fileLocator = new FileLocator(__DIR__ . '/../config/');
-$loader = new YamlFileLoader($fileLocator);
-$context = new RequestContext();
-$controllerResolver = new ControllerResolver();
-$argumentResolver = new ArgumentResolver();
-$request = Request::createFromGlobals();
+$container = new Container();
 
-$routes = $loader->load('routes.yaml');
+$container['TaskRepository'] = function ($c) {
+  return \App\Domain\Task\TaskRepository::class;
+};
+//var_dump($container['TaskRepository']);
+$container['CommandBus'] = function ($c) {
+    $commandBus =  new CommandBus();
+    $handler = new \App\Application\Command\CreateNewTaskHandler($c['TaskRepository']);
+    $commandBus->registerHandler('CreateNewTaskCommand', $handler);
+    return $commandBus;
+};
+
+//$container->factory()
+var_dump($container);
+//die();
+
 try {
+    $fileLocator = new FileLocator(__DIR__ . '/../config/');
+    $loader = new YamlFileLoader($fileLocator);
+    $context = new RequestContext();
+    $controllerResolver = new ControllerResolver();
+    $argumentResolver = new ArgumentResolver();
+    $request = Request::createFromGlobals();
+
+    $routes = $loader->load('routes.yaml');
+
     $context->fromRequest($request);
 
     $matcher = new UrlMatcher($routes, $context);

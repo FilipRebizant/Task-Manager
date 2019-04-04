@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Application\Command;
+namespace App\Application\Handler;
 
+use App\Application\Command\CreateNewTaskCommand;
 use App\Domain\Description;
 use App\Domain\Priority;
 use App\Domain\Status;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepository;
+
 
 final class CreateNewTaskHandler
 {
