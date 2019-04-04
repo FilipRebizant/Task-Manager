@@ -7,19 +7,18 @@ use App\Domain\Description;
 use App\Domain\Priority;
 use App\Domain\Status;
 use App\Domain\Task\Task;
-use App\Domain\Task\TaskRepository;
-
+use App\Domain\Task\TaskRepositoryInterface;
 
 final class CreateNewTaskHandler
 {
-    /** @var TaskRepository  */
+    /** @var TaskRepositoryInterface  */
     private $taskRepository;
 
     /**
      * CreateNewTaskHandler constructor.
-     * @param TaskRepository $taskRepository
+     * @param TaskRepositoryInterface $taskRepository
      */
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskRepositoryInterface $taskRepository)
     {
         $this->taskRepository = $taskRepository;
     }

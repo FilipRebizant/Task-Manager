@@ -16,19 +16,16 @@ require_once '../vendor/autoload.php';
 
 $container = new Container();
 
-$container['TaskRepository'] = function ($c) {
-  return \App\Domain\Task\TaskRepository::class;
+$container['TaskRepositoryInterface'] = function ($c) {
+  return \App\Domain\Task\TaskRepositoryInterface::class;
 };
-//var_dump($container['TaskRepository']);
-$container['CommandBus'] = function ($c) {
-    $commandBus =  new CommandBus();
-    $handler = new \App\Application\Command\CreateNewTaskHandler($c['TaskRepository']);
-    $commandBus->registerHandler('CreateNewTaskCommand', $handler);
-    return $commandBus;
+//var_dump($container['TaskRepositoryInterface']);
+$container['CommandBusInterface'] = function ($c) {
+    return \App\Application\CommandBusInterface::class;
 };
 
 //$container->factory()
-var_dump($container);
+//var_dump($container);
 //die();
 
 try {

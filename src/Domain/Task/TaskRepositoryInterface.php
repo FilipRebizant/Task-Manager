@@ -2,7 +2,7 @@
 
 namespace App\Domain\Task;
 
-Interface TaskRepository
+Interface TaskRepositoryInterface
 {
     /**
      * @param Task $task
