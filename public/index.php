@@ -28,33 +28,36 @@ $container['CommandBusInterface'] = function ($c) {
 //var_dump($container);
 //die();
 
-try {
-    $fileLocator = new FileLocator(__DIR__ . '/../config/');
-    $loader = new YamlFileLoader($fileLocator);
-    $context = new RequestContext();
-    $controllerResolver = new ControllerResolver();
-    $argumentResolver = new ArgumentResolver();
-    $request = Request::createFromGlobals();
+//phpinfo();
 
-    $routes = $loader->load('routes.yaml');
 
-    $context->fromRequest($request);
+$fileLocator = new FileLocator(__DIR__ . '/../config/');
+$loader = new YamlFileLoader($fileLocator);
+$context = new RequestContext();
+$controllerResolver = new ControllerResolver();
+$argumentResolver = new ArgumentResolver();
+$request = Request::createFromGlobals();
 
-    $matcher = new UrlMatcher($routes, $context);
+$routes = $loader->load('routes.yaml');
 
-    $parameters = $matcher->match($context->getPathInfo());
+$context->fromRequest($request);
 
-    $request->attributes->add($matcher->match($request->getPathInfo()));
+$matcher = new UrlMatcher($routes, $context);
 
-    $controller = $controllerResolver->getController($request);
-    $arguments = $argumentResolver->getArguments($request, $controller);
+$parameters = $matcher->match($context->getPathInfo());
 
-    $response = call_user_func_array($controller, $arguments);
+$request->attributes->add($matcher->match($request->getPathInfo()));
 
+$controller = $controllerResolver->getController($request);
+$arguments = $argumentResolver->getArguments($request, $controller);
+
+$response = call_user_func_array($controller, $arguments);
+
+try{
+    echo 1;
 } catch (ResourceNotFoundException $e) {
     $response = new Response('Not found', 404);
 } catch (\Exception $e) {
     $response = new Response('An error occurred', 500);
 }
-
 $response->send();

@@ -6,10 +6,13 @@ use App\Application\Command\CreateNewTaskCommand;
 use App\Application\CommandBus;
 use App\Application\CommandBusInterface;
 use App\Application\Handler\CreateNewTaskHandler;
+use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
+use App\Infrastructure\Persistance\PDO\TaskRepository;
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Polyfill\Ctype\Ctype;
 
 class TaskController
 {
@@ -24,9 +27,9 @@ class TaskController
 //    {
 //        $container = new Container();
 //        $container['TaskRepositoryInterface'] = TaskRepositoryInterface::class;
-//
-//
-////var_dump($container['TaskRepositoryInterface']);
+
+
+//var_dump($container['TaskRepositoryInterface']);
 //        $container['CommandBus'] = function ($c) {
 //            $commandBus =  new CommandBus();
 //            $handler = new CreateNewTaskHandler($c['TaskRepositoryInterface']);
@@ -36,9 +39,12 @@ class TaskController
 //        $this->commandBus = $container['CommandBus'];
 //    }
 
-    public function __construct(CommandBusInterface $commandBus)
+    public function __construct()
     {
-        $this->commandBus = $commandBus;
+//        $this->commandBus = $commandBus;
+
+            $this->commandBus = new CommandBus();
+//            $this->commandBus->registerHandler();
     }
 
     /**
@@ -52,7 +58,16 @@ class TaskController
             (string) $request->get("description")
         );
 
-        $this->commandBus->handle($command);
+//        $this->commandBus->registerHandler($command, CreateNewTaskHandler::class);
+//
+        $taskRepository = new TaskRepository();
+//        die();
+//        var_dump($taskRepository);
+        $taskRepository->create();
+//        $handler = new CreateNewTaskHandler($taskRepository);
+//        $this->commandBus->registerHandler($command, $handler);
+//
+//        $this->commandBus->handle($command);
 
         return new Response('ok');
     }
