@@ -4,29 +4,28 @@ namespace App\Infrastructure\Persistance\PDO;
 
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
-use PDO;
 
 class TaskRepository implements TaskRepositoryInterface
 {
-    /** @var PDO  */
+    /** @var PDOConnector  */
     private $pdo;
 
     /**
      * TaskRepository constructor.
+     * @param PDOConnector $pdo
      */
-    public function __construct()
+    public function __construct(PDOConnector $pdo)
     {
-        $this->pdo = new PDOConnector();
-        $this->pdo = $this->pdo->getConnection();
+        $this->pdo = $pdo->getConnection();
     }
 
     /**
      * @param Task $task
      */
-    public function create()
+    public function create(Task $task)
     {
         $data = [
-            "description" => "dasdas"
+            "description" => $task->getDescription()
         ];
 
         try {
@@ -36,13 +35,10 @@ class TaskRepository implements TaskRepositoryInterface
             $stmt->execute($data);
 
             $this->pdo->commit();
-            echo ' ok';
 
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-
-
     }
 
     /**

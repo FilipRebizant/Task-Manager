@@ -7,7 +7,7 @@ Interface TaskRepositoryInterface
     /**
      * @param Task $task
      */
-    public function create();
+    public function create(Task $task);
 
     /**
      * @param Task $task

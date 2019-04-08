@@ -4,7 +4,8 @@ namespace App\Application;
 
 final class CommandBus implements CommandBusInterface
 {
-    private $handlers = [];
+    /** @var array  */
+    public $handlers = [];
 
     /**
      * @param string $commandClass
