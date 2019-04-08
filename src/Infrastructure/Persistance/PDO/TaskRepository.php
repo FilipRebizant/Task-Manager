@@ -25,12 +25,14 @@ class TaskRepository implements TaskRepositoryInterface
     public function create(Task $task)
     {
         $data = [
-            "description" => $task->getDescription()
+            "description" => $task->getDescription(),
+            "status" => $task->getStatus(),
+            "priority" => $task->getPriority()
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `tasks` (`desc`) VALUES(:description)";
+            $sql = "INSERT INTO `tasks` (`description`, `status`, `priority`) VALUES(:description, :status, :priority)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 

@@ -1,9 +1,9 @@
 home:
   path:       /
-  controller: App\Interfaces\Web\Controller\TaskController::home
+  controller: App\Interfaces\Web\Controller\HomeController::home
   methods:    GET
 
 createTask:
   path:       /createTask
   controller: App\Interfaces\Web\Controller\TaskController::createTask
-  methods:    GET
+  methods:    POST

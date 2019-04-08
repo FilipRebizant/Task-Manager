@@ -4,12 +4,9 @@ namespace App\Interfaces\Web\Controller;
 
 use App\Application\Command\CreateNewTaskCommand;
 use App\Application\CommandBus;
-use App\Application\CommandBusInterface;
 use App\Application\Handler\CreateNewTaskHandler;
-use App\Domain\Task\Task;
-use App\Domain\Task\TaskRepositoryInterface;
 use App\Infrastructure\Persistance\PDO\TaskRepository;
-use Pimple\Container;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,35 +29,25 @@ class TaskController
 
     /**
      * @param Request $request
+     * @return Response
+     * @throws \Exception
      */
     public function createTask(Request $request)
     {
-//        $command = new CreateNewTaskCommand(
-//            (string) $request->get("status"),
-//            (int) $request->get("priority"),
-//            (string) $request->get("description")
-//        );
         $command = new CreateNewTaskCommand(
-            "Todo",
-            1,
-            "Description"
+            (string) $request->get("status"),
+            (int) $request->get("priority"),
+            (string) $request->get("description")
         );
 
-//        $taskRepository = new TaskRepository();
+        try {
+            $handler = new CreateNewTaskHandler($this->taskRepository);
+            $handler->handle($command);
 
-        $handler = new CreateNewTaskHandler($this->taskRepository);
-        $bus = new CommandBus();
-//        $bus->registerHandler('CreateNewTaskCommand', $handler);
+        } catch (InvalidArgumentException $exception) {
+            return new Response("Invalid argument passed", 400);
+        }
 
-//        var_dump($bus);
-//
-//        $this->commandBus->handle($command);
-        $handler->handle($command);
-        return new Response('ok');
-    }
-
-    public function home (Request $request)
-    {
-        return new Response('Home');
+        return new Response('Task has been added.', 201);
     }
 }
