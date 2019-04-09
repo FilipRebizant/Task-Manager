@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain;
+namespace App\Tests\Application;
 
 use App\Application\Command\CreateNewTaskCommand;
 use App\Application\Handler\CreateNewTaskHandler;
@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class NameInflectorTest extends TestCase
 {
+    /** @var NameInflector */
     private $inflector;
 
     public function setUp(): void

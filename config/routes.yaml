@@ -7,3 +7,8 @@ createTask:
   path:       /createTask
   controller: App\Interfaces\Web\Controller\TaskController::createTask
   methods:    POST
+
+deleteTask:
+  path:       /deleteTask
+  controller: App\Interfaces\Web\Controller\TaskController::deleteTask
+  methods:    POST

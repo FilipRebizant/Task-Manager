@@ -44,10 +44,14 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param Task $task
+     * @param int $taskId
      */
-    public function remove(Task $task)
+    public function delete(int $taskId)
     {
-        // TODO: Implement remove() method.
+        $this->pdo->beginTransaction();
+        $sql = "DELETE FROM `tasks` WHERE `tasks.id` = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $taskId]);
+        $this->pdo->commit();
     }
 }

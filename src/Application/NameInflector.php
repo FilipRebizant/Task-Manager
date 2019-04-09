@@ -1,7 +1,7 @@
 <?php
 namespace App\Application;
 
-final class NameInflector implements InflectorInterface
+class NameInflector implements InflectorInterface
 {
     /**
      * @param CommandInterface $command

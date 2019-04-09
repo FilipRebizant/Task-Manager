@@ -3,6 +3,7 @@
 namespace App\Interfaces\Web\Controller;
 
 use App\Application\Command\CreateNewTaskCommand;
+use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaskController
 {
-    /** @var CommandBus  */
+    /** @var CommandBus */
     private $commandBus;
 
     /**
@@ -30,9 +31,9 @@ class TaskController
     public function createTask(Request $request)
     {
         $command = new CreateNewTaskCommand(
-            (string) $request->get("status"),
-            (int) $request->get("priority"),
-            (string) $request->get("description")
+            (string)$request->get("status"),
+            (int)$request->get("priority"),
+            (string)$request->get("description")
         );
 
         try {
@@ -42,5 +43,17 @@ class TaskController
             return new Response("Invalid argument passed", 400);
         }
         return new Response('Task has been added.', 201);
+    }
+
+    public function deleteTask(Request $request)
+    {
+        $command = new DeleteTaskCommand($request->get("id"));
+        try {
+            $this->commandBus->handle($command);
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 400);
+        }
+
+        return new Response("Task has been removed", 202);
     }
 }

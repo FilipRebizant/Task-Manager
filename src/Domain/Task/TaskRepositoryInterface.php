@@ -10,7 +10,7 @@ Interface TaskRepositoryInterface
     public function create(Task $task);
 
     /**
-     * @param Task $task
+     * @param int $taskId
      */
-    public function remove(Task $task);
+    public function delete(int $taskId);
 }
