@@ -2,25 +2,48 @@
 
 namespace App\Application;
 
+use App\Infrastructure\Persistance\PDO\TaskRepository;
+
 final class CommandBus implements CommandBusInterface
 {
-    /** @var array  */
-    public $handlers = [];
+    /** @var NameInflector */
+    private $inflector;
 
-    /**
-     * @param string $commandClass
-     * @param $handler
-     */
-    public function registerHandler(string $commandClass, $handler): void
+    private $handlerName;
+
+    private $handler;
+
+    private $handlerFactory;
+
+    public function __construct(NameInflector $inflector, HandlerFactory $handlerFactory)
     {
-        $this->handlers[$commandClass] = $handler;
+        $this->inflector = $inflector;
+        $this->handlerFactory = $handlerFactory;
     }
 
     /**
-     * @param $command
+     * @param CommandInterface $command
      */
-    public function handle($command): void
+    public function handle(CommandInterface $command): void
     {
-        $this->handlers[get_class($command)]->handle($command);
+        $this->getHandlerName($command);
+        $this->buildHandler($this->handlerName);
+        $this->handler->handle($command);
+    }
+
+    /**
+     * @param CommandInterface $command
+     */
+    private function getHandlerName(CommandInterface $command)
+    {
+        $this->handlerName = $this->inflector->inflect($command);
+    }
+
+    /**
+     * @param string $handler
+     */
+    private function buildHandler(string $handler)
+    {
+        $this->handler = $this->handlerFactory->make($handler);
     }
 }

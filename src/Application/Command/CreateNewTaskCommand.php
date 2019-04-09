@@ -2,7 +2,9 @@
 
 namespace App\Application\Command;
 
-class CreateNewTaskCommand
+use App\Application\CommandInterface;
+
+class CreateNewTaskCommand implements CommandInterface
 {
     /** @var string  */
     private $status;
