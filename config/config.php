@@ -11,31 +11,29 @@ use App\Interfaces\Web\Controller\TaskController;
 use Psr\Container\ContainerInterface;
 
 return [
-    'PDOConnector' => create(PDOConnector::class),
+//    'PDOConnector' => create(PDOConnector::class),
 
-    'NameInflector' => create(NameInflector::class),
+//    'NameInflector' => create(NameInflector::class),
 
-    'HandlerFactory' => create(HandlerFactory::class),
+//    'HandlerFactory' => create(HandlerFactory::class),
 
-    'CommandBus' => function(ContainerInterface $c) {
-        return new CommandBus($c->get('InflectorInterface'));
-    },
+//    'CommandBus' => function(ContainerInterface $c) {
+//        return new CommandBus($c->get('InflectorInterface'));
+//    },
 
-    'TaskRepository' => function(ContainerInterface $c) {
-        return new TaskRepository($c->get('PDOConnector'));
-    },
-
-    'CreateNewTaskHandler' => function(ContainerInterface $c) {
-        return new CreateNewTaskHandler($c->get('TaskRepository'));
-    },
-
-    'TaskRepositoryInterface' => function(ContainerInterface $c) {
-        return new TaskRepository($c->get('PDOConnector'));
-    },
-
-    'TaskController' => function(ContainerInterface $c) {
-        return new TaskController($c->get('CommandBus'));
-    },
-
-
+//    'TaskRepository' => function(ContainerInterface $c) {
+//        return new TaskRepository($c->get('PDOConnector'));
+//    },
+//
+//    'CreateNewTaskHandler' => function(ContainerInterface $c) {
+//        return new CreateNewTaskHandler($c->get('TaskRepository'));
+//    },
+//
+//    'TaskRepositoryInterface' => function(ContainerInterface $c) {
+//        return new TaskRepository($c->get('PDOConnector'));
+//    },
+//
+//    'TaskController' => function(ContainerInterface $c) {
+//        return new TaskController($c->get('CommandBus'));
+//    },
 ];

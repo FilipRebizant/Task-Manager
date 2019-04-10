@@ -15,7 +15,7 @@ class TaskController
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var  */
+    /** @var */
     private $taskQuery;
 
     /**
@@ -48,7 +48,7 @@ class TaskController
 
         return new Response($task);
     }
-    
+
     /**
      * @param Request $request
      * @return Response
@@ -56,13 +56,12 @@ class TaskController
      */
     public function createTask(Request $request): Response
     {
-        $command = new CreateNewTaskCommand(
-            (string)$request->get("status"),
-            (int)$request->get("priority"),
-            (string)$request->get("description")
-        );
-
         try {
+            $command = new CreateNewTaskCommand(
+                (string)$request->get("status"),
+                (int)$request->get("priority"),
+                (string)$request->get("description")
+            );
             $this->commandBus->handle($command);
 
         } catch (InvalidArgumentException $exception) {
