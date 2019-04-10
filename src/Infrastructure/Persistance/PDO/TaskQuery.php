@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistance\PDO;
 
 use App\Application\Query\Task\TaskQueryInterface;
 use App\Application\Query\Task\TaskView;
+use App\Infrastructure\Exception\NotFoundException;
 
 class TaskQuery implements TaskQueryInterface
 {
@@ -22,6 +23,7 @@ class TaskQuery implements TaskQueryInterface
     /**
      * @param string $userId
      * @return TaskView
+     * @throws NotFoundException
      */
     public function getById(string $userId): TaskView
     {
@@ -36,11 +38,16 @@ class TaskQuery implements TaskQueryInterface
         $stmt->execute(['id' => $userId]);
         $result = $stmt->fetch();
 
+        if (!$result) {
+            throw new NotFoundException();
+        }
+
         return new TaskView($result['description'], $result['status'], $result['priority'], $result['username']);
     }
 
     /**
      * @return array
+     * @throws NotFoundException
      */
     public function getAll(): array
     {
@@ -51,6 +58,10 @@ class TaskQuery implements TaskQueryInterface
 
         $stmt = $this->pdo->query($sql);
         $result = $stmt->fetchAll();
+
+        if (!$result) {
+            throw new NotFoundException("No rows were found.");
+        }
 
         return array_map(function (array $result) {
             return new TaskView($result['description'], $result['status'], $result['priority'], $result['user_id']);

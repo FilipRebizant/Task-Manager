@@ -5,6 +5,7 @@ namespace App\Interfaces\Web\Controller;
 use App\Application\Command\CreateNewTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
+use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\TaskQuery;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,11 @@ class TaskController
      */
     public function getTasks(): Response
     {
-        $tasksList = $this->taskQuery->getAll();
+        try {
+            $tasksList = $this->taskQuery->getAll();
+        } catch (NotFoundException $e) {
+            return new Response($e->getMessage(), 400);
+        }
 
         return new Response("Tasks" . $tasksList[0], 200);
     }
@@ -44,8 +49,11 @@ class TaskController
      */
     public function getTask(Request $request): Response
     {
-        $task = $this->taskQuery->getById($request->get('id'));
-
+        try {
+            $task = $this->taskQuery->getById($request->get('id'));
+        } catch (NotFoundException $e) {
+            return new Response("Task wasn't found", 400);
+        }
         return new Response($task);
     }
 
