@@ -2,6 +2,8 @@
 
 namespace App\Domain;
 
+use InvalidArgumentException;
+
 class Status
 {
     /**
@@ -19,12 +21,12 @@ class Status
     /**
      * Status constructor.
      * @param string $status
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     public function __construct(string $status)
     {
         if (!in_array($status, $this->validStatuses)) {
-            throw new \Exception("This is not a valid status.");
+            throw new InvalidArgumentException("This is not a valid status.");
         }
 
         $this->status = $status;

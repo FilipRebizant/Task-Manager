@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Domain;
 
+use InvalidArgumentException;
 
 class Priority
 {
@@ -11,12 +12,12 @@ class Priority
     /**
      * Priority constructor.
      * @param int $priority
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     public function __construct(int $priority)
     {
         if ($priority < 0) {
-            throw new \Exception("Priority must be greater then 0");
+            throw new InvalidArgumentException("Priority must be greater then 0");
         }
 
         $this->priority = $priority;

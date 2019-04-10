@@ -5,34 +5,30 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 
 require_once '../vendor/autoload.php';
 
-$fileLocator = new FileLocator(__DIR__ . '/../config/');
-$loader = new YamlFileLoader($fileLocator);
-$context = new RequestContext();
-$controllerResolver = new ControllerResolver();
-$argumentResolver = new ArgumentResolver();
-$request = Request::createFromGlobals();
+try{
+    $container = require_once __DIR__ . '/../config/bootstrap.php';
 
-$routes = $loader->load('routes.yaml');
-try {
+    $fileLocator = new FileLocator(__DIR__ . '/../config/');
+    $loader = new YamlFileLoader($fileLocator);
+    $routes = $loader->load('routes.yaml');
+
+    $request = Request::createFromGlobals();
+    $context = new RequestContext();
+
     $context->fromRequest($request);
 
     $matcher = new UrlMatcher($routes, $context);
 
-    $parameters = $matcher->match($context->getPathInfo());
-
     $request->attributes->add($matcher->match($request->getPathInfo()));
 
-    $controller = $controllerResolver->getController($request);
-    $arguments = $argumentResolver->getArguments($request, $controller);
+    $method = $request->attributes->get(['_controller'][0]);
 
-    $response = call_user_func_array($controller, $arguments);
+    $response = $container->call($method, ['request' => $request]);
 
 } catch (ResourceNotFoundException $e) {
     $response = new Response('Not found', 404);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Domain;
 
@@ -23,9 +23,6 @@ final class Description
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->description;

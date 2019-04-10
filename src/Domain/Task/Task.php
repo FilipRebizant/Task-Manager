@@ -43,7 +43,7 @@ final class Task
      */
     public function __construct(
         Status $status,
-        User $user,
+        User $user = null,
         Priority $priority,
         Description $description,
         \DateTimeImmutable $createdAt = null,

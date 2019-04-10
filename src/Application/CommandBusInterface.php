@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Contract;
+namespace App\Application;
 
 interface CommandBusInterface
 {
-    public function handle($command): void;
+    public function handle(CommandInterface $command): void;
 }

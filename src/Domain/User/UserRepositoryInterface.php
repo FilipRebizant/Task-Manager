@@ -2,8 +2,7 @@
 
 namespace App\Domain\User;
 
-
-interface UserRepository
+interface UserRepositoryInterface
 {
     /**
      * @param User $user

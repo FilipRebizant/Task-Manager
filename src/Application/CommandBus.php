@@ -2,26 +2,55 @@
 
 namespace App\Application;
 
-use App\Application\Contract\CommandBusInterface;
-
-class CommandBus implements CommandBusInterface
+final class CommandBus implements CommandBusInterface
 {
-    private $handlers = [];
+    /** @var NameInflector */
+    private $inflector;
+
+    /** @var string */
+    private $handlerName;
+
+    /** @var HandlerInterface */
+    private $handler;
+
+    /** @var HandlerFactory  */
+    private $handlerFactory;
 
     /**
-     * @param string $commandClass
-     * @param $handler
+     * CommandBus constructor.
+     * @param NameInflector $inflector
+     * @param HandlerFactory $handlerFactory
      */
-    public function registerHandler(string $commandClass, $handler): void
+    public function __construct(NameInflector $inflector, HandlerFactory $handlerFactory)
     {
-        $this->handlers[$commandClass] = $handler;
+        $this->inflector = $inflector;
+        $this->handlerFactory = $handlerFactory;
     }
 
     /**
-     * @param $command
+     * @param CommandInterface $command
      */
-    public function handle($command): void
+    public function handle(CommandInterface $command): void
     {
-        $this->handlers[get_class($command)]->handle($command);
+        $this->setHandlerName($command);
+        $this->buildHandler($this->handlerName);
+
+        $this->handler->handle($command);
+    }
+
+    /**
+     * @param CommandInterface $command
+     */
+    private function setHandlerName(CommandInterface $command): void
+    {
+        $this->handlerName = $this->inflector->inflect($command);
+    }
+
+    /**
+     * @param string $handler
+     */
+    private function buildHandler(string $handler): void
+    {
+        $this->handler = $this->handlerFactory->make($handler);
     }
 }

@@ -1,9 +1,24 @@
 home:
   path:       /
-  controller: App\Interfaces\Web\Controller\TaskController::home
+  controller: App\Interfaces\Web\Controller\HomeController::home
+  methods:    GET
+
+getTasks:
+  path:       /tasks
+  controller: App\Interfaces\Web\Controller\TaskController::getTasks
+  methods:    GET
+
+getTask:
+  path:       /task/{id}
+  controller: App\Interfaces\Web\Controller\TaskController::getTask
   methods:    GET
 
 createTask:
   path:       /createTask
   controller: App\Interfaces\Web\Controller\TaskController::createTask
-  methods:    GET
+  methods:    POST
+
+deleteTask:
+  path:       /deleteTask
+  controller: App\Interfaces\Web\Controller\TaskController::deleteTask
+  methods:    POST
