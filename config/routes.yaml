@@ -18,6 +18,11 @@ createTask:
   controller: App\Interfaces\Web\Controller\TaskController::createTask
   methods:    POST
 
+assignUserToTask:
+  path:       /assignUserToTask
+  controller: App\Interfaces\Web\Controller\TaskController::assignUserToTask
+  methods:    POST
+
 deleteTask:
   path:       /deleteTask
   controller: App\Interfaces\Web\Controller\TaskController::deleteTask
