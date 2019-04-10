@@ -27,7 +27,7 @@ try{
     $request->attributes->add($matcher->match($request->getPathInfo()));
 
     $method = $request->attributes->get(['_controller'][0]);
-//    unset($GLOBALS['container']);
+
     $response = $container->call($method, ['request' => $request]);
 
 } catch (ResourceNotFoundException $e) {
