@@ -2,6 +2,7 @@
 
 namespace App\Interfaces\Web\Controller;
 
+use App\Application\Command\AssignUserToTaskCommand;
 use App\Application\Command\CreateNewTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
@@ -77,6 +78,19 @@ class TaskController
         }
 
         return new Response('Task has been added.', 201);
+    }
+
+    public function assignUserToTask(Request $request): Response
+    {
+
+        $command = new AssignUserToTaskCommand(
+            $request->get('task_id'),
+            $request->get('user_id')
+        );
+
+        $this->commandBus->handle($command);
+
+        return new Response("User has been assigned to task");
     }
 
     /**

@@ -11,7 +11,7 @@ class HomeController
      * @param Request $request
      * @return Response
      */
-    public function home ()
+    public function home (): Response
     {
         return new Response('Home', 200);
     }

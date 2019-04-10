@@ -7,7 +7,7 @@ use App\Domain\Task\TaskRepositoryInterface;
 
 class TaskRepository implements TaskRepositoryInterface
 {
-    /** @var PDOConnector  */
+    /** @var PDOConnector */
     private $pdo;
 
     /**
@@ -22,7 +22,7 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * @param Task $task
      */
-    public function create(Task $task)
+    public function create(Task $task): void
     {
         $data = [
             "description" => $task->getDescription(),
@@ -46,12 +46,31 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * @param int $taskId
      */
-    public function delete(int $taskId)
+    public function delete(int $taskId): void
     {
         $this->pdo->beginTransaction();
         $sql = "DELETE FROM `tasks` WHERE `id` = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $taskId]);
+        $this->pdo->commit();
+    }
+
+    /**
+     * @param int $taskId
+     * @param int $userId
+     */
+    public function assignUserToTask(int $taskId, int $userId): void
+    {
+        $sql = "UPDATE tasks
+                SET user_id = :user_id
+                WHERE id = :task_id
+        ";
+        $this->pdo->beginTransaction();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'task_id' => $taskId,
+            'user_id' => $userId
+        ]);
         $this->pdo->commit();
     }
 }
