@@ -42,13 +42,18 @@ class TaskController
         } catch (InvalidArgumentException $exception) {
             return new Response("Invalid argument passed", 400);
         }
+
         return new Response('Task has been added.', 201);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function deleteTask(Request $request)
     {
-        $command = new DeleteTaskCommand($request->get("id"));
         try {
+            $command = new DeleteTaskCommand($request->get("id"));
             $this->commandBus->handle($command);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 400);

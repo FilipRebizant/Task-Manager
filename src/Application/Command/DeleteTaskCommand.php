@@ -2,7 +2,9 @@
 
 namespace App\Application\Command;
 
-class DeleteTaskCommand
+use App\Application\CommandInterface;
+
+class DeleteTaskCommand implements CommandInterface
 {
     private $id;
 

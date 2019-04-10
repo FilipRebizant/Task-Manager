@@ -48,8 +48,9 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function delete(int $taskId)
     {
+//        var_dump($taskId);
         $this->pdo->beginTransaction();
-        $sql = "DELETE FROM `tasks` WHERE `tasks.id` = :id";
+        $sql = "DELETE FROM `tasks` WHERE `id` = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $taskId]);
         $this->pdo->commit();
