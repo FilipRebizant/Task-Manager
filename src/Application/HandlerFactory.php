@@ -30,7 +30,7 @@ class HandlerFactory
     /**
      * @param Container $container
      */
-    public function setDIContainer(Container $container)
+    public function setDIContainer(Container $container): void
     {
         $this->container = $container;
     }

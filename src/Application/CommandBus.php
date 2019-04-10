@@ -32,7 +32,7 @@ final class CommandBus implements CommandBusInterface
      */
     public function handle(CommandInterface $command): void
     {
-        $this->getHandlerName($command);
+        $this->setHandlerName($command);
         $this->buildHandler($this->handlerName);
 
         $this->handler->handle($command);
@@ -41,7 +41,7 @@ final class CommandBus implements CommandBusInterface
     /**
      * @param CommandInterface $command
      */
-    private function getHandlerName(CommandInterface $command)
+    private function setHandlerName(CommandInterface $command): void
     {
         $this->handlerName = $this->inflector->inflect($command);
     }
@@ -49,7 +49,7 @@ final class CommandBus implements CommandBusInterface
     /**
      * @param string $handler
      */
-    private function buildHandler(string $handler)
+    private function buildHandler(string $handler): void
     {
         $this->handler = $this->handlerFactory->make($handler);
     }
