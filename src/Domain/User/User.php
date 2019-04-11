@@ -25,7 +25,6 @@ class User
     /** @var array */
     private $tasks;
 
-
     /**
      * @return UUid
      */

@@ -68,6 +68,7 @@ class TaskController
     {
         try {
             $command = new CreateNewTaskCommand(
+                (string)$request->get("title"),
                 (string)$request->get("status"),
                 (int)$request->get("priority"),
                 (string)$request->get("description")

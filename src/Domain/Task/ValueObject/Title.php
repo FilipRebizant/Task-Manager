@@ -27,11 +27,6 @@ class Title
     /**
      * @return string
      */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
     public function __toString(): string
     {
         return $this->title;

@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistance\PDO;
 
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
+use App\Domain\Task\ValueObject\Status;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -25,14 +26,16 @@ class TaskRepository implements TaskRepositoryInterface
     public function create(Task $task): void
     {
         $data = [
-            "description" => $task->getDescription(),
+            "title" => $task->getTitle(),
             "status" => $task->getStatus(),
-            "priority" => $task->getPriority()
+            "priority" => (int)$task->getPriority(),
+            "description" => $task->getDescription(),
+            "createdAt" => $task->getCreatedAt()->format('Y-m-d H:i:s'),
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `tasks` (`description`, `status`, `priority`) VALUES(:description, :status, :priority)";
+            $sql = "INSERT INTO `tasks` (`title`, `status`, `priority`, `description`, `created_at`) VALUES(:title, :status, :priority, :description, :createdAt)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
@@ -69,8 +72,27 @@ class TaskRepository implements TaskRepositoryInterface
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'task_id' => $taskId,
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
         $this->pdo->commit();
+    }
+
+    /**
+     * @param int $taskId
+     * @param Status $status
+     */
+    public function changeStatus(int $taskId, Status $status): void
+    {
+        $sql = "UPDATE tasks
+                SET status = :status
+                WHERE id = :id
+        ";
+
+        $this->pdo->beginTransaction();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'status' => $status,
+            'id' => $taskId,
+        ]);
     }
 }

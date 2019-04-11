@@ -36,7 +36,7 @@ class Status
     /**
      * @return string
      */
-    public function getStatus(): string
+    public function __toString(): string
     {
         return $this->status;
     }

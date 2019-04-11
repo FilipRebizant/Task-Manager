@@ -38,23 +38,19 @@ class Task
 
     /**
      * Task constructor.
-     * @param Status $status
      * @param Title $title
+     * @param Status $status
      * @param User|null $user
      * @param Priority $priority
      * @param Description $description
-     * @param \DateTimeImmutable|null $createdAt
-     * @param \DateTimeImmutable|null $updatedAt
      * @throws \Exception
      */
     public function __construct(
-        Status $status,
         Title $title,
+        Status $status,
         User $user = null,
         Priority $priority,
-        Description $description,
-        \DateTimeImmutable $createdAt = null,
-        \DateTimeImmutable $updatedAt = null
+        Description $description
     )
     {
         $this->id = Uuid::uuid4();
@@ -64,7 +60,6 @@ class Task
         $this->priority = $priority;
         $this->description = $description;
         $this->createdAt = new \DateTimeImmutable('now');
-        $this->updatedAt = is_null($updatedAt) ? new \DateTimeImmutable('now') : $updatedAt;
     }
 
     /**
@@ -110,18 +105,18 @@ class Task
     }
 
     /**
-     * @return string
+     * @return Title
      */
-    public function getTitle(): string
+    public function getTitle(): Title
     {
-        return $this->title->getTitle();
+        return $this->title;
     }
 
     /**
      * @param Title $title
      * @return Task
      */
-    public function setNewTitle(Title $title): Task
+    public function updateTitle(Title $title): Task
     {
         $this->title = $title;
 
@@ -129,29 +124,28 @@ class Task
     }
 
     /**
-     * @return string
+     * @return Status
      */
-    public function getStatus(): string
+    public function getStatus(): Status
     {
-        return $this->status->getStatus();
+        return $this->status;
     }
 
     /**
-     * @return int
+     * @return Priority
      */
-    public function getPriority(): int
+    public function getPriority(): Priority
     {
-        return $this->priority->getPriority();
+        return $this->priority;
     }
 
     /**
-     * @param int $priority
+     * @param Priority $priority
      * @return Task
-     * @throws \Exception
      */
-    public function setPriority(int $priority): Task
+    public function updatePriority(Priority $priority): Task
     {
-        $this->priority = new Priority($priority);
+        $this->priority = $priority;
 
         return $this;
     }
@@ -165,45 +159,12 @@ class Task
     }
 
     /**
-     * @param string $description
+     * @param Description $description
      * @return Task
      */
-    public function setDescription(string $description): Task
+    public function updateDescription(Description $description): Task
     {
-        $this->description = new Description($description);
-
-        return $this;
-    }
-
-    /**
-     * @return Task
-     * @throws \Exception
-     */
-    public function setDone(): Task
-    {
-        $this->status = new Status('Done');
-
-        return $this;
-    }
-
-    /**
-     * @return Task
-     * @throws \Exception
-     */
-    public function setPending(): Task
-    {
-        $this->status = new Status('Pending');
-
-        return $this;
-    }
-
-    /**
-     * @return Task
-     * @throws \Exception
-     */
-    public function setToDo(): Task
-    {
-        $this->status = new Status('Todo');
+        $this->description = $description;
 
         return $this;
     }
@@ -214,17 +175,6 @@ class Task
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTimeImmutable $createdAt
-     * @return Task
-     */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Task
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**

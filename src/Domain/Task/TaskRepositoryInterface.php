@@ -2,6 +2,8 @@
 
 namespace App\Domain\Task;
 
+use App\Domain\Task\ValueObject\Status;
+
 Interface TaskRepositoryInterface
 {
     /**
@@ -19,4 +21,10 @@ Interface TaskRepositoryInterface
      * @param int $userId
      */
     public function assignUserToTask(int $taskId, int $userId): void;
+
+    /**
+     * @param int $taskId
+     * @param Status $status
+     */
+    public function changeStatus(int $taskId, Status $status): void;
 }
