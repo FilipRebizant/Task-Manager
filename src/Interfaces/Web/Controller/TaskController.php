@@ -55,6 +55,7 @@ class TaskController
         } catch (NotFoundException $e) {
             return new Response("Task wasn't found", 400);
         }
+
         return new Response($task);
     }
 
@@ -72,7 +73,6 @@ class TaskController
                 (string)$request->get("description")
             );
             $this->commandBus->handle($command);
-
         } catch (InvalidArgumentException $exception) {
             return new Response("Invalid argument passed", 400);
         }
@@ -80,15 +80,21 @@ class TaskController
         return new Response('Task has been added.', 201);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function assignUserToTask(Request $request): Response
     {
-
-        $command = new AssignUserToTaskCommand(
-            $request->get('task_id'),
-            $request->get('user_id')
-        );
-
-        $this->commandBus->handle($command);
+        try {
+            $command = new AssignUserToTaskCommand(
+                $request->get('task_id'),
+                $request->get('user_id')
+            );
+            $this->commandBus->handle($command);
+        } catch (NotFoundException $e) {
+            return new Response($e->getMessage(), 400);
+        }
 
         return new Response("User has been assigned to task");
     }
