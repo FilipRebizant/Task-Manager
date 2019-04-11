@@ -4,9 +4,9 @@ namespace App\Application\Handler;
 
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
-use App\Domain\Description;
-use App\Domain\Priority;
-use App\Domain\Status;
+use App\Domain\Task\ValueObject\Description;
+use App\Domain\Task\ValueObject\Priority;
+use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Infrastructure\Persistance\PDO\TaskRepository;

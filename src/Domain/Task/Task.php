@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace App\Domain\Task;
 
-use App\Domain\Description;
-use App\Domain\Priority;
-use App\Domain\Status;
+use App\Domain\Task\ValueObject\Title;
+use App\Domain\Task\ValueObject\Description;
+use App\Domain\Task\ValueObject\Priority;
+use App\Domain\Task\ValueObject\Status;
 use App\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 
-final class Task
+class Task
 {
     /** @var Uuid */
     private $id;
@@ -16,11 +18,14 @@ final class Task
     /** @var User */
     private $user;
 
-     /** @var Status */
+    /** @var Status */
     private $status;
 
     /** @var Priority */
     private $priority;
+
+    /** @var Title */
+    private $title;
 
     /** @var Description */
     private $description;
@@ -34,6 +39,7 @@ final class Task
     /**
      * Task constructor.
      * @param Status $status
+     * @param Title $title
      * @param User|null $user
      * @param Priority $priority
      * @param Description $description
@@ -43,6 +49,7 @@ final class Task
      */
     public function __construct(
         Status $status,
+        Title $title,
         User $user = null,
         Priority $priority,
         Description $description,
@@ -51,12 +58,13 @@ final class Task
     )
     {
         $this->id = Uuid::uuid4();
+        $this->title = $title;
         $this->status = $status;
         $this->user = $user;
         $this->priority = $priority;
         $this->description = $description;
         $this->createdAt = new \DateTimeImmutable('now');
-        $this->updatedAt = is_null($updatedAt) ? new \DateTimeImmutable('now'): $updatedAt;
+        $this->updatedAt = is_null($updatedAt) ? new \DateTimeImmutable('now') : $updatedAt;
     }
 
     /**
@@ -70,7 +78,7 @@ final class Task
     /**
      * @return null|User
      */
-    public function getAssignedUser(): ? User
+    public function getAssignedUser(): ?User
     {
         return $this->user;
     }
@@ -81,7 +89,7 @@ final class Task
      */
     public function assignUser(User $user): Task
     {
-        if (is_null($this->getAssignedUser())){
+        if (is_null($this->getAssignedUser())) {
             $this->user = $user;
         }
 
@@ -97,6 +105,25 @@ final class Task
         if ($this->user === $user) {
             $this->user = null;
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title->getTitle();
+    }
+
+    /**
+     * @param Title $title
+     * @return Task
+     */
+    public function setNewTitle(Title $title): Task
+    {
+        $this->title = $title;
 
         return $this;
     }
