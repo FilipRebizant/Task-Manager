@@ -2,10 +2,14 @@
 
 namespace App\Infrastructure\Persistance\PDO\Task;
 
+use App\Application\Query\Task\TaskView;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Status;
+use App\Domain\User\User;
+use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
+use PDO;
 use Ramsey\Uuid\Uuid;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -30,15 +34,6 @@ class TaskRepository implements TaskRepositoryInterface
         if ($task->getAssignedUser()) {
             $userId = $task->getAssignedUser()->getId();
         }
-
-//
-//        Ramsey\Uuid\Uuid::setFactory($factory);
-//        $uuidString1 = Ramsey\Uuid\Uuid::uuid4()->toString();
-//        $uuidString2 = Ramsey\Uuid\Uuid::uuid4()->toString();
-//
-//        print "Generated uuids: {$uuidString1} and {$uuidString2}" . PHP_EOL;
-
-
 
         $test = $task->getId();
         var_dump($test->getBytes());
@@ -81,21 +76,25 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param int $taskId
-     * @param int $userId
+     * @param string $taskId
+     * @param string $userId
      */
-    public function assignUserToTask(int $taskId, int $userId): void
+    public function assignUserToTask(string $taskId, string $username): void
     {
         $sql = "UPDATE tasks
-                SET user_id = :user_id
-                WHERE id = :task_id
+                SET user_id = (SELECT id FROM users WHERE username = :username)
+                WHERE id = :taskId
         ";
+
+        $taskId = Uuid::fromString($taskId)->getBytes();
+
         $this->pdo->beginTransaction();
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'task_id' => $taskId,
-            'user_id' => $userId,
+            'username' => $username,
+            'taskId' => $taskId,
         ]);
+
         $this->pdo->commit();
     }
 

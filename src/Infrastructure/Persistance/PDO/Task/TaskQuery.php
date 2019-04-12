@@ -23,11 +23,11 @@ class TaskQuery implements TaskQueryInterface
     }
 
     /**
-     * @param string $userId
+     * @param string $taskId
      * @return TaskView
      * @throws NotFoundException
      */
-    public function getById(string $userId): TaskView
+    public function getById(string $taskId): TaskView
     {
         $sql = "SELECT 
                 description, status, priority, username 
@@ -36,9 +36,11 @@ class TaskQuery implements TaskQueryInterface
                 ON tasks.id = users.id
                 WHERE tasks.id = :id";
 
+        $id = Uuid::fromString($taskId)->getBytes();
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'id' => Uuid::uuid4()->getBytes($userId)
+            'id' => $id
         ]);
         $result = $stmt->fetch();
 
@@ -55,25 +57,21 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getAll(): array
     {
-
-        $sql = "SELECT UUID_SHORT(), user_id, title, description, status, priority, created_at, updated_at
+        $sql = "SELECT *
                 FROM tasks
                 LEFT JOIN users
                 ON tasks.id = users.id";
 
         $stmt = $this->pdo->query($sql);
-
-//        $binary = $row['id'];
-//        $string = unpack("H*", $binary);
-
-//        $result = $stmt->fetchAll();
         $result = $stmt->fetchAll();
 
         if (!$result) {
             throw new NotFoundException("No rows were found.");
         }
-        var_dump($result);
+
         return array_map(function (array $result) {
+            $id = Uuid::fromBytes($result[0])->toString();
+            var_dump($id);
             return new TaskView($result['description'], $result['status'], $result['priority'], $result['user_id']);
         }, $result);
     }

@@ -7,26 +7,8 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
 
 require_once '../vendor/autoload.php';
-
-
-    $paths = array("/path/to/entity-files");
-    $isDevMode = false;
-
-
-    $dbParams = array(
-        'driver'   => 'pdo_mysql',
-        'user'     => 'root',
-        'password' => 'password',
-        'dbname'   => 'db',
-    );
-
-    $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-    $entityManager = EntityManager::create($dbParams, $config);
-
 
     $container = require_once __DIR__ . '/../config/dependency_injection.php';
 

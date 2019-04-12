@@ -17,10 +17,10 @@ Interface TaskRepositoryInterface
     public function delete(int $taskId): void;
 
     /**
-     * @param int $taskId
-     * @param int $userId
+     * @param string $taskId
+     * @param string $userId
      */
-    public function assignUserToTask(int $taskId, int $userId): void;
+    public function assignUserToTask(string $taskId, string $userId): void;
 
     /**
      * @param int $taskId

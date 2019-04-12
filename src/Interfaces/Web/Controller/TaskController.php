@@ -41,7 +41,7 @@ class TaskController
             return new Response($e->getMessage(), 400);
         }
 
-        return new Response(var_dump($tasksList[0]), 200);
+        return new Response(var_dump($tasksList), 200);
     }
 
     /**
@@ -88,10 +88,11 @@ class TaskController
      */
     public function assignUserToTask(Request $request): Response
     {
+//        var_dump('controler');
         try {
             $command = new AssignUserToTaskCommand(
                 $request->get('task_id'),
-                $request->get('user_id')
+                $request->get('username')
             );
             $this->commandBus->handle($command);
         } catch (NotFoundException $e) {
