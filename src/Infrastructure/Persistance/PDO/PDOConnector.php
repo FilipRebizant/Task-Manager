@@ -18,7 +18,8 @@ class PDOConnector
             $this->connection = new PDO(
                 'mysql:host=172.19.0.2;dbname=db',
                 'root',
-                'password'
+                'password',
+                [PDO::ATTR_DEFAULT_FETCH_MODE, 'FETCH_ASSOC']
             );
         } catch (\Exception $e){
             echo "Connection error: " . $e->getMessage();

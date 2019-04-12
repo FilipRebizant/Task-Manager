@@ -27,3 +27,12 @@ deleteTask:
   path:       /deleteTask
   controller: App\Interfaces\Web\Controller\TaskController::deleteTask
   methods:    POST
+
+
+
+
+
+createUser:
+  path:       /createUser
+  controller: App\Interfaces\Web\Controller\UserController::createUser
+  methods:    POST

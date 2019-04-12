@@ -7,7 +7,7 @@ use App\Application\Command\CreateNewTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Infrastructure\Persistance\PDO\TaskQuery;
+use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +41,7 @@ class TaskController
             return new Response($e->getMessage(), 400);
         }
 
-        return new Response("Tasks" . $tasksList[0], 200);
+        return new Response(var_dump($tasksList), 200);
     }
 
     /**
@@ -68,6 +68,8 @@ class TaskController
     {
         try {
             $command = new CreateNewTaskCommand(
+                (string)$request->get("title"),
+                (string)$request->get("username"),
                 (string)$request->get("status"),
                 (int)$request->get("priority"),
                 (string)$request->get("description")
@@ -89,7 +91,7 @@ class TaskController
         try {
             $command = new AssignUserToTaskCommand(
                 $request->get('task_id'),
-                $request->get('user_id')
+                $request->get('username')
             );
             $this->commandBus->handle($command);
         } catch (NotFoundException $e) {

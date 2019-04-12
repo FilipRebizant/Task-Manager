@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Persistance\PDO;
+namespace App\Infrastructure\Persistance\PDO\Task;
 
 use App\Application\Query\Task\TaskQueryInterface;
 use App\Application\Query\Task\TaskView;
 use App\Infrastructure\Exception\NotFoundException;
+use App\Infrastructure\Persistance\PDO\PDOConnector;
+use PDO;
+use Ramsey\Uuid\Uuid;
 
 class TaskQuery implements TaskQueryInterface
 {
@@ -21,11 +24,11 @@ class TaskQuery implements TaskQueryInterface
     }
 
     /**
-     * @param string $userId
+     * @param string $taskId
      * @return TaskView
      * @throws NotFoundException
      */
-    public function getById(string $userId): TaskView
+    public function getById(string $taskId): TaskView
     {
         $sql = "SELECT 
                 description, status, priority, username 
@@ -34,8 +37,12 @@ class TaskQuery implements TaskQueryInterface
                 ON tasks.id = users.id
                 WHERE tasks.id = :id";
 
+        $id = Uuid::fromString($taskId)->getBytes();
+
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id' => $userId]);
+        $stmt->execute([
+            'id' => $id
+        ]);
         $result = $stmt->fetch();
 
         if (!$result) {
@@ -51,20 +58,29 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getAll(): array
     {
-        $sql = "SELECT description, status, priority, username 
+        $sql = "SELECT title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
-                ON tasks.id = users.id";
+                ON tasks.user_id = users.id
+                ";
 
         $stmt = $this->pdo->query($sql);
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
             throw new NotFoundException("No rows were found.");
         }
 
         return array_map(function (array $result) {
-            return new TaskView($result['description'], $result['status'], $result['priority'], $result['user_id']);
+            return new TaskView(
+                $result['title'],
+                $result['status'],
+                $result['username'],
+                $result['priority'],
+                $result['description'],
+                $result['created_at'],
+                $result['updated_at']
+            );
         }, $result);
     }
 }

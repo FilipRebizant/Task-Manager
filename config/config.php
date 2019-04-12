@@ -1,13 +1,14 @@
 <?php
 
+use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use function DI\create;
 use App\Application\HandlerFactory;
-use App\Infrastructure\Persistance\PDO\TaskQuery;
+use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
+use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use App\Application\NameInflector;
 use App\Application\CommandBus;
 use App\Application\Handler\CreateNewTaskHandler;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
-use App\Infrastructure\Persistance\PDO\TaskRepository;
 use App\Interfaces\Web\Controller\TaskController;
 use Psr\Container\ContainerInterface;
 
@@ -28,6 +29,10 @@ return [
 
     'TaskRepository' => function(ContainerInterface $c) {
         return new TaskRepository($c->get('PDOConnector'));
+    },
+
+    'UserRepository' => function(ContainerInterface $c) {
+        return new UserRepository($c->get('PDOConnector'));
     },
 
     'CreateNewTaskHandler' => function(ContainerInterface $c) {

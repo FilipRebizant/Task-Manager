@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
-namespace App\Domain;
+namespace App\Domain\Task\ValueObject;
 
 use InvalidArgumentException;
 
-final class Description
+class Description
 {
     /** @var string */
     private $description;

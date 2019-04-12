@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace App\Domain\Task;
 
-use App\Domain\Description;
-use App\Domain\Priority;
-use App\Domain\Status;
+use App\Domain\Task\ValueObject\Title;
+use App\Domain\Task\ValueObject\Description;
+use App\Domain\Task\ValueObject\Priority;
+use App\Domain\Task\ValueObject\Status;
 use App\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 
-final class Task
+class Task
 {
     /** @var Uuid */
     private $id;
@@ -16,11 +18,14 @@ final class Task
     /** @var User */
     private $user;
 
-     /** @var Status */
+    /** @var Status */
     private $status;
 
     /** @var Priority */
     private $priority;
+
+    /** @var Title */
+    private $title;
 
     /** @var Description */
     private $description;
@@ -33,30 +38,28 @@ final class Task
 
     /**
      * Task constructor.
+     * @param Title $title
      * @param Status $status
      * @param User|null $user
      * @param Priority $priority
      * @param Description $description
-     * @param \DateTimeImmutable|null $createdAt
-     * @param \DateTimeImmutable|null $updatedAt
      * @throws \Exception
      */
     public function __construct(
+        Title $title,
         Status $status,
         User $user = null,
         Priority $priority,
-        Description $description,
-        \DateTimeImmutable $createdAt = null,
-        \DateTimeImmutable $updatedAt = null
+        Description $description
     )
     {
         $this->id = Uuid::uuid4();
+        $this->title = $title;
         $this->status = $status;
         $this->user = $user;
         $this->priority = $priority;
         $this->description = $description;
         $this->createdAt = new \DateTimeImmutable('now');
-        $this->updatedAt = is_null($updatedAt) ? new \DateTimeImmutable('now'): $updatedAt;
     }
 
     /**
@@ -70,7 +73,7 @@ final class Task
     /**
      * @return null|User
      */
-    public function getAssignedUser(): ? User
+    public function getAssignedUser(): ?User
     {
         return $this->user;
     }
@@ -81,7 +84,7 @@ final class Task
      */
     public function assignUser(User $user): Task
     {
-        if (is_null($this->getAssignedUser())){
+        if (is_null($this->getAssignedUser())) {
             $this->user = $user;
         }
 
@@ -102,29 +105,47 @@ final class Task
     }
 
     /**
-     * @return string
+     * @return Title
      */
-    public function getStatus(): string
+    public function getTitle(): Title
     {
-        return $this->status->getStatus();
+        return $this->title;
     }
 
     /**
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return $this->priority->getPriority();
-    }
-
-    /**
-     * @param int $priority
+     * @param Title $title
      * @return Task
-     * @throws \Exception
      */
-    public function setPriority(int $priority): Task
+    public function updateTitle(Title $title): Task
     {
-        $this->priority = new Priority($priority);
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Status
+     */
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
+
+    /**
+     * @return Priority
+     */
+    public function getPriority(): Priority
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param Priority $priority
+     * @return Task
+     */
+    public function updatePriority(Priority $priority): Task
+    {
+        $this->priority = $priority;
 
         return $this;
     }
@@ -138,45 +159,12 @@ final class Task
     }
 
     /**
-     * @param string $description
+     * @param Description $description
      * @return Task
      */
-    public function setDescription(string $description): Task
+    public function updateDescription(Description $description): Task
     {
-        $this->description = new Description($description);
-
-        return $this;
-    }
-
-    /**
-     * @return Task
-     * @throws \Exception
-     */
-    public function setDone(): Task
-    {
-        $this->status = new Status('Done');
-
-        return $this;
-    }
-
-    /**
-     * @return Task
-     * @throws \Exception
-     */
-    public function setPending(): Task
-    {
-        $this->status = new Status('Pending');
-
-        return $this;
-    }
-
-    /**
-     * @return Task
-     * @throws \Exception
-     */
-    public function setToDo(): Task
-    {
-        $this->status = new Status('Todo');
+        $this->description = $description;
 
         return $this;
     }
@@ -187,17 +175,6 @@ final class Task
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTimeImmutable $createdAt
-     * @return Task
-     */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Task
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**

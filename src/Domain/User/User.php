@@ -25,6 +25,13 @@ class User
     /** @var array */
     private $tasks;
 
+    public function __construct(Uuid $uuid, string $username, string $email)
+    {
+        $this->id = $uuid;
+        $this->email = $email;
+        $this->userName = $username;
+        $this->createdAt = new \DateTimeImmutable('now');
+    }
 
     /**
      * @return UUid
