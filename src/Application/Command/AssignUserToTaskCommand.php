@@ -34,9 +34,11 @@ class AssignUserToTaskCommand implements CommandInterface
         return $this->user;
     }
 
+    /**
+     * @return string
+     */
     public function task(): string
     {
         return $this->task;
     }
-
 }

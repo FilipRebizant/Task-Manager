@@ -6,6 +6,7 @@ use App\Application\Query\Task\TaskQueryInterface;
 use App\Application\Query\Task\TaskView;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
+use PDO;
 use Ramsey\Uuid\Uuid;
 
 class TaskQuery implements TaskQueryInterface
@@ -57,22 +58,29 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getAll(): array
     {
-        $sql = "SELECT *
+        $sql = "SELECT title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
-                ON tasks.id = users.id";
+                ON tasks.user_id = users.id
+                ";
 
         $stmt = $this->pdo->query($sql);
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
             throw new NotFoundException("No rows were found.");
         }
 
         return array_map(function (array $result) {
-            $id = Uuid::fromBytes($result[0])->toString();
-            var_dump($id);
-            return new TaskView($result['description'], $result['status'], $result['priority'], $result['user_id']);
+            return new TaskView(
+                $result['title'],
+                $result['status'],
+                $result['username'],
+                $result['priority'],
+                $result['description'],
+                $result['created_at'],
+                $result['updated_at']
+            );
         }, $result);
     }
 }

@@ -28,20 +28,9 @@ class AssignUserToTaskHandler implements HandlerInterface
      */
     public function handle(CommandInterface $command): void
     {
-//        try {
-//            $this->taskRepository->getById( '6ab11e5d-b98e-40a0-ac9b-ed2bc9c20d51');
-//
-//        } catch (\Exception $e) {
-//            echo $e->getMessage();
-//        }
-//        var_dump($command);
         $this->taskRepository->assignUserToTask(
             $command->task(),
             $command->user(),
         );
-//        $this->taskRepository->assignUserToTask(
-//            $command->task(),
-//            $command->user(),
-//        );
     }
 }

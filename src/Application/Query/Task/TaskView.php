@@ -16,19 +16,42 @@ class TaskView
     /** @var string */
     private $user;
 
+    /** @var string */
+    private $title;
+
+    /** @var string */
+    private $created_at;
+
+    /** @var string|null */
+    private $updated_at;
+
     /**
      * TaskView constructor.
-     * @param string $description
+     * @param string $title
      * @param string $status
-     * @param int $priority
      * @param string|null $user
+     * @param int $priority
+     * @param string $description
+     * @param string $created_at
+     * @param string|null $updated_at
      */
-    public function __construct(string $description, string $status, int $priority, string $user = null)
+    public function __construct(
+        string $title,
+        string $status,
+        string $user = null,
+        int $priority,
+        string $description,
+        string $created_at,
+        string $updated_at = null
+    )
     {
         $this->description = $description;
         $this->priority = $priority;
         $this->status = $status;
         $this->user = $user;
+        $this->title = $title;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
     }
 
     /**
@@ -65,6 +88,11 @@ class TaskView
         }
 
         return "No user assigned";
+    }
+
+    public function created_at(): string
+    {
+        return $this->created_at;
     }
 
     public function __toString()

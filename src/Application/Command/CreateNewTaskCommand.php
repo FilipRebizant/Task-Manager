@@ -18,20 +18,20 @@ class CreateNewTaskCommand implements CommandInterface
     /** @var string  */
     private $description;
 
-    /** @var int */
+    /** @var string */
     private $userId;
 
     /**
      * CreateNewTaskCommand constructor.
      * @param string $title
-     * @param int $user
+     * @param string $user
      * @param string $status
      * @param int $priority
      * @param string $description
      */
     public function __construct(
         string $title,
-        int $userId,
+        string $userId,
         string $status,
         int $priority,
         string $description
@@ -77,9 +77,9 @@ class CreateNewTaskCommand implements CommandInterface
     }
 
     /**
-     * @return null|int
+     * @return null|string
      */
-    public function userId(): ?int
+    public function userId(): ?string
     {
         return $this->userId;
     }
