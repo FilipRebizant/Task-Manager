@@ -4,13 +4,13 @@ namespace App\Application\Query\Task;
 
 class TaskView
 {
-    /** @var string  */
+    /** @var string */
     private $description;
 
-    /** @var string  */
+    /** @var string */
     private $status;
 
-    /** @var int  */
+    /** @var int */
     private $priority;
 
     /** @var string */
@@ -45,11 +45,11 @@ class TaskView
         string $updated_at = null
     )
     {
-        $this->description = $description;
-        $this->priority = $priority;
+        $this->title = $title;
         $this->status = $status;
         $this->user = $user;
-        $this->title = $title;
+        $this->priority = $priority;
+        $this->description = $description;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
     }
@@ -57,9 +57,9 @@ class TaskView
     /**
      * @return string
      */
-    public function description(): string
+    public function title(): string
     {
-        return $this->description;
+        return $this->title;
     }
 
     /**
@@ -83,16 +83,35 @@ class TaskView
      */
     public function user(): string
     {
-        if (!is_null($this->user)){
+        if (!is_null($this->user)) {
             return $this->user;
         }
 
         return "No user assigned";
     }
 
-    public function created_at(): string
+    /**
+     * @return string
+     */
+    public function description(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function createdAt(): string
     {
         return $this->created_at;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function updatedAt(): ?string
+    {
+        return $this->updated_at;
     }
 
     public function __toString()

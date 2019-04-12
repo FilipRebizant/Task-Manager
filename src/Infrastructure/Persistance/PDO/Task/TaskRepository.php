@@ -2,14 +2,10 @@
 
 namespace App\Infrastructure\Persistance\PDO\Task;
 
-use App\Application\Query\Task\TaskView;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Status;
-use App\Domain\User\User;
-use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
-use PDO;
 use Ramsey\Uuid\Uuid;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -32,22 +28,20 @@ class TaskRepository implements TaskRepositoryInterface
     public function create(Task $task): void
     {
         if ($task->getAssignedUser()) {
-            $userId = $task->getAssignedUser()->getId();
+            $user = $task->getAssignedUser()->getId();
         }
 
-        $test = $task->getId();
-        var_dump($test->getBytes());
-        var_dump($test->getBytes());
-        var_dump(($test->toString()));
+        $id = $task->getId()->getBytes();
+        $userId = $user->getBytes();
 
         $data = [
-            "id" => $test,
+            "id" => $id,
             "title" => $task->getTitle(),
             "status" => $task->getStatus(),
             "priority" => (int)$task->getPriority(),
             "description" => $task->getDescription(),
             "created_at" => $task->getCreatedAt()->format('Y-m-d H:i:s'),
-            "user_id" => null,
+            "user_id" => $userId,
         ];
 
         try {
@@ -64,12 +58,14 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param int $taskId
+     * @param string $taskId
      */
-    public function delete(int $taskId): void
+    public function delete(string $taskId): void
     {
-        $this->pdo->beginTransaction();
         $sql = "DELETE FROM `tasks` WHERE `id` = :id";
+        $taskId = Uuid::fromString($taskId)->getBytes();
+
+        $this->pdo->beginTransaction();
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $taskId]);
         $this->pdo->commit();
@@ -99,15 +95,16 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param int $taskId
+     * @param string $taskId
      * @param Status $status
      */
-    public function changeStatus(int $taskId, Status $status): void
+    public function changeStatus(string $taskId, Status $status): void
     {
         $sql = "UPDATE tasks
                 SET status = :status
                 WHERE id = :id
         ";
+        $taskId = Uuid::fromString($taskId)->getBytes();
 
         $this->pdo->beginTransaction();
         $stmt = $this->pdo->prepare($sql);

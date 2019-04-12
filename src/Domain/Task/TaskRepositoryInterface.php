@@ -12,9 +12,9 @@ Interface TaskRepositoryInterface
     public function create(Task $task): void;
 
     /**
-     * @param int $taskId
+     * @param string $taskId
      */
-    public function delete(int $taskId): void;
+    public function delete(string $taskId): void;
 
     /**
      * @param string $taskId
@@ -23,8 +23,8 @@ Interface TaskRepositoryInterface
     public function assignUserToTask(string $taskId, string $userId): void;
 
     /**
-     * @param int $taskId
+     * @param string $taskId
      * @param Status $status
      */
-    public function changeStatus(int $taskId, Status $status): void;
+    public function changeStatus(string $taskId, Status $status): void;
 }

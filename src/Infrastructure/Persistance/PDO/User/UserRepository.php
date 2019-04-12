@@ -4,8 +4,9 @@ namespace App\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
-use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
+use PDO;
+use Ramsey\Uuid\Uuid;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -24,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function create(User $user)
+    public function create(User $user): void
     {
         $data = [
             "id" => $user->getId()->getBytes(),
@@ -49,26 +50,26 @@ class UserRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function delete(User $user)
+    public function delete(User $user): void
     {
         // TODO: Implement delete() method.
     }
 
     /**
-     * @param int $id
-     * @return User
+     * @param string $id
+     * @return string
      */
-    public function getById(int $id): User
+    public function getUserByUsername(string $username): User
     {
-        $sql = "SELECT username, email FROM users WHERE id = :id";
+        $sql = "SELECT id, username, email FROM users WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        $result = $stmt->fetch();
+        $stmt->execute(['username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$result) {
-            throw new NotFoundException();
-        }
+        $id = Uuid::fromBytes($result['id']);
 
-        return new User($result['username'], $result['email']);
+        $user = new User($id, $result['username'], $result['email']);
+
+        return $user;
     }
 }

@@ -69,7 +69,7 @@ class TaskController
         try {
             $command = new CreateNewTaskCommand(
                 (string)$request->get("title"),
-                (int)$request->get("user_id"),
+                (string)$request->get("username"),
                 (string)$request->get("status"),
                 (int)$request->get("priority"),
                 (string)$request->get("description")
@@ -88,7 +88,6 @@ class TaskController
      */
     public function assignUserToTask(Request $request): Response
     {
-//        var_dump('controler');
         try {
             $command = new AssignUserToTaskCommand(
                 $request->get('task_id'),
