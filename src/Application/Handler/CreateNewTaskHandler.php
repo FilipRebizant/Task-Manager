@@ -11,20 +11,25 @@ use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Title;
-use App\Infrastructure\Persistance\PDO\TaskRepository;
+use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
+use App\Infrastructure\Persistance\PDO\User\UserRepository;
 
 class CreateNewTaskHandler implements HandlerInterface
 {
     /** @var TaskRepositoryInterface  */
     private $taskRepository;
 
+    /** @var UserRepository */
+    private $userRepository;
+
     /**
      * CreateNewTaskHandler constructor.
      * @param TaskRepository $taskRepository
      */
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskRepository $taskRepository, UserRepository $userRepository)
     {
         $this->taskRepository = $taskRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -33,14 +38,14 @@ class CreateNewTaskHandler implements HandlerInterface
      */
     public function handle(CommandInterface $command): void
     {
-        if (!is_null($command->user())) {
-            $user = $command->user();
-        }
-
+//        if (!is_null($command->userId())) {
+//            $user = $this->userRepository->getById($command->userId());
+//        }
+//        var_dump($user);
         $task = new Task(
             new Title($command->title()),
             new Status($command->status()),
-            $user,
+            null,
             new Priority($command->priority()),
             new Description($command->description())
         );

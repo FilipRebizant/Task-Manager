@@ -5,7 +5,7 @@ namespace App\Application\Handler;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\Task\TaskRepositoryInterface;
-use App\Infrastructure\Persistance\PDO\TaskRepository;
+use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 
 class AssignUserToTaskHandler implements HandlerInterface
 {

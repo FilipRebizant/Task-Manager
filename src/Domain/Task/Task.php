@@ -9,6 +9,7 @@ use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
 use App\Domain\User\User;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 
 class Task
 {

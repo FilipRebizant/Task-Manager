@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Infrastructure\Persistance\PDO;
+namespace App\Infrastructure\Persistance\PDO\Task;
 
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Status;
+use App\Infrastructure\Persistance\PDO\PDOConnector;
+use Ramsey\Uuid\Uuid;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -25,17 +27,37 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function create(Task $task): void
     {
+        if ($task->getAssignedUser()) {
+            $userId = $task->getAssignedUser()->getId();
+        }
+
+//
+//        Ramsey\Uuid\Uuid::setFactory($factory);
+//        $uuidString1 = Ramsey\Uuid\Uuid::uuid4()->toString();
+//        $uuidString2 = Ramsey\Uuid\Uuid::uuid4()->toString();
+//
+//        print "Generated uuids: {$uuidString1} and {$uuidString2}" . PHP_EOL;
+
+
+
+        $test = $task->getId();
+        var_dump($test->getBytes());
+        var_dump($test->getBytes());
+        var_dump(($test->toString()));
+
         $data = [
+            "id" => $test,
             "title" => $task->getTitle(),
             "status" => $task->getStatus(),
             "priority" => (int)$task->getPriority(),
             "description" => $task->getDescription(),
-            "createdAt" => $task->getCreatedAt()->format('Y-m-d H:i:s'),
+            "created_at" => $task->getCreatedAt()->format('Y-m-d H:i:s'),
+            "user_id" => null,
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `tasks` (`title`, `status`, `priority`, `description`, `created_at`) VALUES(:title, :status, :priority, :description, :createdAt)";
+            $sql = "INSERT INTO `tasks` (`id`, `title`, `status`, `user_id`,`priority`, `description`, `created_at`) VALUES(:id, :title, :status, :user_id, :priority, :description, :created_at)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 

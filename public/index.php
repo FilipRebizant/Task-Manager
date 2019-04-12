@@ -7,11 +7,28 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
 
 require_once '../vendor/autoload.php';
 
-try{
-    $container = require_once __DIR__ . '/../config/bootstrap.php';
+
+    $paths = array("/path/to/entity-files");
+    $isDevMode = false;
+
+
+    $dbParams = array(
+        'driver'   => 'pdo_mysql',
+        'user'     => 'root',
+        'password' => 'password',
+        'dbname'   => 'db',
+    );
+
+    $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+    $entityManager = EntityManager::create($dbParams, $config);
+
+
+    $container = require_once __DIR__ . '/../config/dependency_injection.php';
 
     $fileLocator = new FileLocator(__DIR__ . '/../config/');
     $loader = new YamlFileLoader($fileLocator);
@@ -29,7 +46,7 @@ try{
     $method = $request->attributes->get(['_controller'][0]);
 
     $response = $container->call($method, ['request' => $request]);
-
+try{
 } catch (ResourceNotFoundException $e) {
     $response = new Response('Not found', 404);
 } catch (\Exception $e) {

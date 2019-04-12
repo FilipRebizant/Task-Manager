@@ -11,7 +11,7 @@ class HandlerFactoryTest extends TestCase
     public function testShouldCreateInstanceFromContainer()
     {
         $handlerFactory = new HandlerFactory();
-        $container = require_once __DIR__ . '/../../config/bootstrap.php';
+        $container = require_once __DIR__ . '/../../config/dependency_injection.php';
 
         $handlerFactory->setDIContainer($container);
         $taskHandlerInstance = $handlerFactory->make(CreateNewTaskHandler::class);
