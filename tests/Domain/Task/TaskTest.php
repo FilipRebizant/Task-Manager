@@ -39,8 +39,9 @@ class TaskTest extends TestCase
     public function testAssignTaskIsToDo()
     {
         $this->task->updateStatus(new Status("Todo"));
-        $status = $this->task->getStatus();
+
         $expectedStatus = "Todo";
+        $status = $this->task->getStatus();
 
         $this->assertEquals($expectedStatus, $status);
     }
@@ -48,8 +49,9 @@ class TaskTest extends TestCase
     public function testAssignTaskIsPending()
     {
         $this->task->updateStatus(new Status('Pending'));
-        $status = $this->task->getStatus();
+
         $expectedStatus = "Pending";
+        $status = $this->task->getStatus();
 
         $this->assertEquals($expectedStatus, $status);
     }
@@ -57,8 +59,9 @@ class TaskTest extends TestCase
     public function testAssignTaskIsDone()
     {
         $this->task->updateStatus(new Status('Done'));
-        $status = $this->task->getStatus();
+
         $expectedStatus = "Done";
+        $status = $this->task->getStatus();
 
         $this->assertEquals($expectedStatus, $status);
     }
@@ -74,16 +77,15 @@ class TaskTest extends TestCase
 
     public function testTaskCanAssignUser()
     {
-        $this->task->assignUser($this->userMock);
         $user = $this->task->getAssignedUser();
+
+        $this->task->assignUser($this->userMock);
 
         $this->assertEquals($this->userMock, $user);
     }
 
     public function testTaskCanUnassignUser()
     {
-//        $this->task->assignUser($this->userMock);
-
         $this->task->unassignUser($this->task->getAssignedUser());
         $assignedUser = $this->task->getAssignedUser();
 
@@ -106,9 +108,7 @@ class TaskTest extends TestCase
         $wrongUserMock = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
 
         $this->task->assignUser($this->userMock);
-
         $this->task->assignUser($wrongUserMock);
-
         $assignedUser = $this->task->getAssignedUser();
 
         $this->assertEquals($this->userMock, $assignedUser);
