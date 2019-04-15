@@ -132,6 +132,16 @@ class Task
     }
 
     /**
+     * @param Status $status
+     * @return Task
+     */
+    public function updateStatus(Status $status): Task
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+    /**
      * @return Priority
      */
     public function getPriority(): Priority

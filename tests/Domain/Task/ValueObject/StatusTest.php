@@ -2,8 +2,8 @@
 
 namespace App\Tests\Domain;
 
-
-use App\Domain\Status;
+use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Task\ValueObject\Status;
 use PHPUnit\Framework\TestCase;
 
 class StatusTest extends TestCase
@@ -15,16 +15,15 @@ class StatusTest extends TestCase
     {
         $status = new Status('Todo');
 
-        $this->assertEquals('Todo', $status->getStatus());
+        $this->assertEquals('Todo', $status);
     }
 
     /**
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     public function testInvalidStatus()
     {
-
-        $this->expectException(\Exception::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new Status('Invalid Status');
     }

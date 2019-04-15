@@ -2,9 +2,11 @@
 
 namespace App\Tests\Domain\Task;
 
-use App\Domain\Priority;
-use App\Domain\Status;
+
 use App\Domain\Task\Task;
+
+use App\Domain\Task\ValueObject\Priority;
+use App\Domain\Task\ValueObject\Status;
 use App\Domain\User\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +38,7 @@ class TaskTest extends TestCase
 
     public function testAssignTaskIsToDo()
     {
-        $this->task->setToDo();
+        $this->task->updateStatus(new Status("Todo"));
         $status = $this->task->getStatus();
         $expectedStatus = "Todo";
 

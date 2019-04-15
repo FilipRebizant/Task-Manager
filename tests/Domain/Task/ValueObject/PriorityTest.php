@@ -2,14 +2,14 @@
 
 namespace App\Tests\Domain;
 
-
-use App\Domain\Priority;
+use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Task\ValueObject\Priority;
 use PHPUnit\Framework\TestCase;
 
 class PriorityTest extends TestCase
 {
     /**
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     public function testCanCreatePriority()
     {
@@ -21,11 +21,11 @@ class PriorityTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @throws \App\Domain\Exception\InvalidArgumentException
      */
     public function testWillThrowExceptionOnNegativeValue()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new Priority(-2);
     }
