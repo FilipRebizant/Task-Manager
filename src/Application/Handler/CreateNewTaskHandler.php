@@ -13,6 +13,7 @@ use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Title;
 use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
+use Ramsey\Uuid\Uuid;
 
 class CreateNewTaskHandler implements HandlerInterface
 {
@@ -43,6 +44,7 @@ class CreateNewTaskHandler implements HandlerInterface
         }
 
         $task = new Task(
+            Uuid::uuid4(),
             new Title($command->title()),
             new Status($command->status()),
             $user,

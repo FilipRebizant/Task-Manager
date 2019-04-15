@@ -3,14 +3,13 @@
 namespace App\Tests\Domain\User;
 
 use App\Domain\Task\Task;
-
 use App\Domain\User\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class UserTest extends TestCase
 {
-
     /** @var User */
     protected $user;
 
@@ -22,7 +21,7 @@ class UserTest extends TestCase
 
     public function setUp(): void
     {
-        $this->user = new User();
+        $this->user = new User(Uuid::uuid4(), 'username', 'email@gmail.com');
         $this->taskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
     }
 
@@ -40,7 +39,6 @@ class UserTest extends TestCase
 
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);
-
         $expectedCount = 2;
         $actualCount = count($this->user->getAssignedTasks());
 
@@ -53,9 +51,7 @@ class UserTest extends TestCase
 
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);
-
         $this->user->unassignTask($secondTaskMock);
-
         $actualCount = end($this->user->getAssignedTasks());
 
         $this->assertEquals($this->taskMock, $actualCount);
@@ -68,9 +64,7 @@ class UserTest extends TestCase
 
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);
-
         $this->user->unassignTask($thirdTaskMock);
-
         $expectedCount = 2;
         $actualCount = count($this->user->getAssignedTasks());
 

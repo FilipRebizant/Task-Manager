@@ -10,6 +10,7 @@ use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class TaskTest extends TestCase
 {
@@ -25,6 +26,7 @@ class TaskTest extends TestCase
     public function setUp(): void
     {
         $this->task = new Task(
+            $this->getMockBuilder(Uuid::class)->disableOriginalConstructor()->getMock(),
             $this->getMockBuilder(Title::class)->disableOriginalConstructor()->getMock(),
             $this->getMockBuilder(Status::class)->disableOriginalConstructor()->getMock(),
             $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock(),
