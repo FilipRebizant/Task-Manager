@@ -2,9 +2,13 @@
 
 namespace App\Interfaces\Web\Controller;
 
+use App\Application\Command\DeleteUserCommand;
+use App\Application\CommandBus;
+use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
 use App\Domain\User\User;
 use App\Infrastructure\Exception\NotFoundException;
+use App\Infrastructure\Persistance\PDO\PDOConnector;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use InvalidArgumentException;
@@ -17,16 +21,23 @@ class UserController
     /** @var UserQuery */
     private $userQuery;
 
-    private $userRepository;
+    /** @var CommandBus */
+    private $commandBus;
 
-    public function __construct(UserRepository $userRepository, UserQueryInterface $userQuery)
+    /**
+     * UserController constructor.
+     * @param CommandBusInterface $commandBus
+     * @param UserQueryInterface $userQuery
+     */
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
     {
-        $this->userRepository = $userRepository;
+        $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
     }
 
     public function createUser(Request $request): Response
     {
+        $userRepository = new UserRepository(new PDOConnector());
         try {
 //            $command = new CreateNewTaskCommand(
 //                (string)$request->get("title"),
@@ -40,7 +51,7 @@ class UserController
             $request->get('username'), $request->get('email')
         );
 
-        $this->userRepository->create($user);
+        $userRepository->create($user);
 
 
         } catch (InvalidArgumentException $exception) {
@@ -78,5 +89,21 @@ class UserController
         }
 
         return new Response(var_dump($users));
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteUser(Request $request): Response
+    {
+        try {
+            $command = new DeleteUserCommand($request->get('id'));
+            $this->commandBus->handle($command);
+        } catch (NotFoundException $e) {
+            return new Response("User was not found", 400);
+        }
+
+        return new Response("User has been deleted", 200);
     }
 }
