@@ -1,7 +1,9 @@
 <?php
 
+use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
 use App\Domain\Task\TaskRepositoryInterface;
+use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use function DI\create;
@@ -52,5 +54,14 @@ return [
 
     UserQueryInterface::class => function(ContainerInterface $c) {
         return new UserQuery($c->get('PDOConnector'));
+    },
+
+    UserRepositoryInterface::class => function(ContainerInterface $c) {
+        return new UserRepository($c->get('PDOConnector'));
+    },
+
+    CommandBusInterface::class => function(ContainerInterface $c) {
+        return new CommandBus($c->get('NameInflector'), $c->get('HandlerFactory'));
     }
+
 ];

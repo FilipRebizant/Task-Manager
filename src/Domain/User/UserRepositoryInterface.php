@@ -7,10 +7,10 @@ interface UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function create(User $user);
+    public function create(User $user): void;
 
     /**
-     * @param User $user
+     * @param string $user
      */
-    public function delete(User $user);
+    public function delete(string $user): void;
 }

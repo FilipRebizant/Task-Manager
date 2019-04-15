@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
+use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
 use Ramsey\Uuid\Uuid;
@@ -48,11 +49,19 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param User $user
+     * @param string $userId
+     * @throws NotFoundException
      */
-    public function delete(User $user): void
+    public function delete(string $userId): void
     {
-        // TODO: Implement delete() method.
+        $sql = "DELETE FROM users WHERE id = :id";
+        $id = Uuid::fromString($userId)->getBytes();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        if ($stmt->rowCount() == 0) {
+            throw new NotFoundException();
+        };
     }
 
     /**

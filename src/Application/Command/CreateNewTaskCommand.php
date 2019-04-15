@@ -24,14 +24,14 @@ class CreateNewTaskCommand implements CommandInterface
     /**
      * CreateNewTaskCommand constructor.
      * @param string $title
-     * @param string $user
+     * @param string|null $user
      * @param string $status
      * @param int $priority
      * @param string $description
      */
     public function __construct(
         string $title,
-        string $user,
+        string $user = null,
         string $status,
         int $priority,
         string $description
