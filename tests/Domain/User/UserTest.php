@@ -21,7 +21,7 @@ class UserTest extends TestCase
 
     public function setUp(): void
     {
-        $this->user = new User(Uuid::uuid4(), 'username', 'email@gmail.com');
+        $this->user = new User(Uuid::uuid4(), 'username', 'password', 'email@gmail.com', array());
         $this->taskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
     }
 

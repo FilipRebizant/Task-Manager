@@ -14,7 +14,7 @@ class AssignUserToTaskHandler implements HandlerInterface
     private $taskRepository;
 
     /**
-     * CreateNewTaskHandler constructor.
+     * CreateTaskHandler constructor.
      * @param TaskRepository $taskRepository
      */
     public function __construct(TaskRepository $taskRepository)

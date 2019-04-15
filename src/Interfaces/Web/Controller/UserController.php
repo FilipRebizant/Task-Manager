@@ -2,17 +2,14 @@
 
 namespace App\Interfaces\Web\Controller;
 
+use App\Application\Command\CreateUserCommand;
 use App\Application\Command\DeleteUserCommand;
 use App\Application\CommandBus;
 use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
-use App\Domain\User\User;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Infrastructure\Persistance\PDO\PDOConnector;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
-use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use InvalidArgumentException;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,25 +32,20 @@ class UserController
         $this->userQuery = $userQuery;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function createUser(Request $request): Response
     {
-        $userRepository = new UserRepository(new PDOConnector());
         try {
-//            $command = new CreateNewTaskCommand(
-//                (string)$request->get("title"),
-//                (int)$request->get("user_id"),
-//                (string)$request->get("status"),
-//                (int)$request->get("priority"),
-//                (string)$request->get("description")
-//            );
-        $user = new User(
-            Uuid::uuid4(),
-            $request->get('username'), $request->get('email')
-        );
+            $command = new CreateUserCommand(
+                (string)$request->get("username"),
+                (string)$request->get("password"),
+                (string)$request->get("email")
+            );
 
-        $userRepository->create($user);
-
-
+            $this->commandBus->handle($command);
         } catch (InvalidArgumentException $exception) {
             return new Response("Invalid argument passed", 400);
         }
