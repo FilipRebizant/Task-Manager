@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Domain\User;
 
@@ -25,12 +27,14 @@ class User
     /** @var array */
     private $tasks;
 
-    public function __construct(Uuid $uuid, string $username, string $email)
+    public function __construct(Uuid $uuid, string $username, string $password, string $email, array $tasks)
     {
         $this->id = $uuid;
-        $this->email = $email;
         $this->userName = $username;
+        $this->password = $password;
+        $this->email = $email;
         $this->createdAt = new \DateTimeImmutable('now');
+        $this->tasks = $tasks;
     }
 
     /**
