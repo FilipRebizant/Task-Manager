@@ -38,6 +38,7 @@ class Task
 
     /**
      * Task constructor.
+     * @param Uuid $uuid
      * @param Title $title
      * @param Status $status
      * @param User|null $user
@@ -46,6 +47,7 @@ class Task
      * @throws \Exception
      */
     public function __construct(
+        Uuid $uuid,
         Title $title,
         Status $status,
         User $user = null,
@@ -53,7 +55,7 @@ class Task
         Description $description
     )
     {
-        $this->id = Uuid::uuid4();
+        $this->id = $uuid;
         $this->title = $title;
         $this->status = $status;
         $this->user = $user;
@@ -131,6 +133,16 @@ class Task
         return $this->status;
     }
 
+    /**
+     * @param Status $status
+     * @return Task
+     */
+    public function updateStatus(Status $status): Task
+    {
+        $this->status = $status;
+
+        return $this;
+    }
     /**
      * @return Priority
      */
