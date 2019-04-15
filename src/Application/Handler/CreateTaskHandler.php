@@ -2,7 +2,7 @@
 
 namespace App\Application\Handler;
 
-use App\Application\Command\CreateNewTaskCommand;
+use App\Application\Command\CreateTaskCommand;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\Task\ValueObject\Description;
@@ -15,7 +15,7 @@ use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use Ramsey\Uuid\Uuid;
 
-class CreateNewTaskHandler implements HandlerInterface
+class CreateTaskHandler implements HandlerInterface
 {
     /** @var TaskRepositoryInterface  */
     private $taskRepository;
@@ -24,7 +24,7 @@ class CreateNewTaskHandler implements HandlerInterface
     private $userRepository;
 
     /**
-     * CreateNewTaskHandler constructor.
+     * CreateTaskHandler constructor.
      * @param TaskRepository $taskRepository
      */
     public function __construct(TaskRepository $taskRepository, UserRepository $userRepository)
@@ -34,7 +34,7 @@ class CreateNewTaskHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface|CreateNewTaskCommand $command
+     * @param CommandInterface|CreateTaskCommand $command
      * @throws \App\Domain\Exception\InvalidArgumentException
      */
     public function handle(CommandInterface $command): void

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Application;
 
-use App\Application\Handler\CreateNewTaskHandler;
+use App\Application\Handler\CreateTaskHandler;
 use App\Application\HandlerFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -14,8 +14,8 @@ class HandlerFactoryTest extends TestCase
         $container = require_once __DIR__ . '/../../config/dependency_injection.php';
 
         $handlerFactory->setDIContainer($container);
-        $taskHandlerInstance = $handlerFactory->make(CreateNewTaskHandler::class);
+        $taskHandlerInstance = $handlerFactory->make(CreateTaskHandler::class);
 
-        $this->assertInstanceOf(CreateNewTaskHandler::class, $taskHandlerInstance);
+        $this->assertInstanceOf(CreateTaskHandler::class, $taskHandlerInstance);
     }
 }

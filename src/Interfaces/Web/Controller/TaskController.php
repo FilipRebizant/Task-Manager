@@ -3,7 +3,7 @@
 namespace App\Interfaces\Web\Controller;
 
 use App\Application\Command\AssignUserToTaskCommand;
-use App\Application\Command\CreateNewTaskCommand;
+use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
 use App\Infrastructure\Exception\NotFoundException;
@@ -67,7 +67,7 @@ class TaskController
     public function createTask(Request $request): Response
     {
         try {
-            $command = new CreateNewTaskCommand(
+            $command = new CreateTaskCommand(
                 (string)$request->get("title"),
                 (string)$request->get("username"),
                 (string)$request->get("status"),

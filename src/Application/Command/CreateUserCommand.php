@@ -2,11 +2,10 @@
 
 namespace App\Application\Command;
 
-class CreateUserCommand
-{
-    /** @var string */
-    private $id;
+use App\Application\CommandInterface;
 
+class CreateUserCommand implements CommandInterface
+{
     /** @var string */
     private $username;
 
@@ -16,32 +15,17 @@ class CreateUserCommand
     /** @var string */
     private $password;
 
-    /** @var array */
-    private $tasks;
-
     /**
      * CreateUserCommand constructor.
-     * @param string $id
      * @param string $username
-     * @param string $email
      * @param string $password
-     * @param array $tasks
+     * @param string $email
      */
-    public function __construct(string $id, string $username, string $email, string $password, array $tasks)
+    public function __construct(string $username, string $password,string $email)
     {
-        $this->id = $id;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
-        $this->tasks = $tasks;
-    }
-
-    /**
-     * @return string
-     */
-    public function id(): string
-    {
-        return $this->id;
     }
 
     /**
@@ -66,13 +50,5 @@ class CreateUserCommand
     public function password(): string
     {
         return $this->password;
-    }
-
-    /**
-     * @return array
-     */
-    public function tasks(): array
-    {
-        return $this->tasks;
     }
 }

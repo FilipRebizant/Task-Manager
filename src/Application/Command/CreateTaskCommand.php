@@ -4,7 +4,7 @@ namespace App\Application\Command;
 
 use App\Application\CommandInterface;
 
-class CreateNewTaskCommand implements CommandInterface
+class CreateTaskCommand implements CommandInterface
 {
     /** @var string */
     private $title;
@@ -22,7 +22,7 @@ class CreateNewTaskCommand implements CommandInterface
     private $user;
 
     /**
-     * CreateNewTaskCommand constructor.
+     * CreateTaskCommand constructor.
      * @param string $title
      * @param string|null $user
      * @param string $status
