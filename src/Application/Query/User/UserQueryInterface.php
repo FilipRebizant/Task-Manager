@@ -10,7 +10,7 @@ interface UserQueryInterface
      * @param string $userId
      * @return User
      */
-    public function getById(string $userId): User;
+    public function getById(string $userId): UserView;
 
     /**
      * @return array

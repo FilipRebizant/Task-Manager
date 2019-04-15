@@ -1,5 +1,8 @@
 <?php
 
+use App\Application\Query\User\UserQueryInterface;
+use App\Domain\Task\TaskRepositoryInterface;
+use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use function DI\create;
 use App\Application\HandlerFactory;
@@ -39,11 +42,15 @@ return [
         return new CreateNewTaskHandler($c->get('TaskRepository'));
     },
 
-    'TaskRepositoryInterface' => function(ContainerInterface $c) {
+    TaskRepositoryInterface::class => function(ContainerInterface $c) {
         return new TaskRepository($c->get('PDOConnector'));
     },
 
     'TaskController' => function(ContainerInterface $c) {
         return new TaskController($c->get('CommandBus'), $c->get('TaskQuery'));
     },
+
+    UserQueryInterface::class => function(ContainerInterface $c) {
+        return new UserQuery($c->get('PDOConnector'));
+    }
 ];
