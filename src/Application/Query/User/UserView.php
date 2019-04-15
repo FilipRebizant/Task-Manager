@@ -1,25 +1,80 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Query\User;
 
-use App\Domain\User\User;
-
-class UserView implements UserQueryInterface
+class UserView
 {
+    /** @var string */
+    private $id;
+
+    /** @var string */
+    private $username;
+
+    /** @var string */
+    private $email;
+
+    /** @var string */
+    private $createdAt;
+
+    /** @var array */
+    private $tasks;
+
     /**
-     * @param string $userId
-     * @return User
+     * UserView constructor.
+     * @param string $id
+     * @param string $username
+     * @param string $email
+     * @param string $createdAt
+     * @param array $tasks
      */
-    public function getById(string $userId): User
+    public function __construct(string $id, string $username, string $email, string $createdAt, array $tasks)
     {
-        // TODO: Implement getById() method.
+        $this->id = $id;
+        $this->username = $username;
+        $this->email = $email;
+        $this->createdAt = $createdAt;
+        $this->tasks = $tasks;
+    }
+
+    /**
+     * @return string
+     */
+    public function id(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function username(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
     }
 
     /**
      * @return array
      */
-    public function getAll(): array
+    public function getTasks(): array
     {
-        // TODO: Implement getAll() method.
+        return $this->tasks;
     }
 }
