@@ -1,0 +1,53 @@
+home:
+  path:       /
+  controller: App\Interfaces\Web\Controller\HomeController::home
+  methods:    GET
+
+getTasks:
+  path:       /tasks
+  controller: App\Interfaces\Web\Controller\TaskController::getTasks
+  methods:    GET
+
+getTask:
+  path:       /task/{id}
+  controller: App\Interfaces\Web\Controller\TaskController::getTask
+  methods:    GET
+
+createTask:
+  path:       /createTask
+  controller: App\Interfaces\Web\Controller\TaskController::createTask
+  methods:    POST
+
+assignUserToTask:
+  path:       /assignUserToTask
+  controller: App\Interfaces\Web\Controller\TaskController::assignUserToTask
+  methods:    POST
+
+deleteTask:
+  path:       /deleteTask
+  controller: App\Interfaces\Web\Controller\TaskController::deleteTask
+  methods:    POST
+
+
+
+
+
+createUser:
+  path:       /createUser
+  controller: App\Interfaces\Web\Controller\UserController::createUser
+  methods:    POST
+
+getUser:
+  path:       /user/{id}
+  controller: App\Interfaces\Web\Controller\UserController::getUser
+  methods:    GET
+
+getUsers:
+  path:       /users
+  controller: App\Interfaces\Web\Controller\UserController::getUsers
+  methods:    GET
+
+deleteUser:
+  path:       /deleteUser
+  controller: App\Interfaces\Web\Controller\UserController::deleteUser
+  methods:    POST
