@@ -11,7 +11,7 @@ class HandlerFactory
 
     public function __construct()
     {
-        if (!is_null($GLOBALS['container'])) {
+        if ($GLOBALS['container']) {
             $this->setDIContainer($GLOBALS['container']);
         }
     }
