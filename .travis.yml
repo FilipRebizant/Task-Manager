@@ -6,7 +6,7 @@ php:
 before_script:
   - composer install
 
-script: phpunit -- configuration phpunit.xml
+script: phpunit
 
 branches:
   only:
