@@ -44,7 +44,9 @@ class UserController
                 (string)$request->get("password"),
                 (string)$request->get("email")
             );
-
+            /**
+             * TODO Rzucic wyjatek gdy nie stworzymy uzytkownika
+             */
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException $exception) {
             return new Response("Invalid argument passed", 400);
