@@ -11,7 +11,7 @@
         bootstrap="vendor/autoload.php"
         processIsolation="false"
         stopOnError="false"
-        stopOnFailure="true"
+        stopOnFailure="false"
         stopOnIncomplete="false"
         stopOnSkipped="false"
         verbose="false"
