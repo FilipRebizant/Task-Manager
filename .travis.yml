@@ -11,3 +11,4 @@ script: phpunit -- configuration phpunit.xml
 branches:
   only:
     - develop
+    - master
