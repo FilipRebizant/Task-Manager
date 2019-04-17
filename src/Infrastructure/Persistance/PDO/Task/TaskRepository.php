@@ -29,10 +29,10 @@ class TaskRepository implements TaskRepositoryInterface
     {
         if ($task->getAssignedUser()) {
             $user = $task->getAssignedUser()->getId();
+            $userId = $user->getBytes();
         }
 
         $id = $task->getId()->getBytes();
-        $userId = $user->getBytes();
 
         $data = [
             "id" => $id,

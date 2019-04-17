@@ -6,9 +6,9 @@ use App\Application\Command\AssignUserToTaskCommand;
 use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,7 +62,6 @@ class TaskController
     /**
      * @param Request $request
      * @return Response
-     * @throws \Exception
      */
     public function createTask(Request $request): Response
     {
@@ -77,6 +76,8 @@ class TaskController
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException $exception) {
             return new Response("Invalid argument passed", 400);
+        } catch (NotFoundException $exception) {
+            return new Response("User was not found", 400);
         }
 
         return new Response('Task has been added.', 201);

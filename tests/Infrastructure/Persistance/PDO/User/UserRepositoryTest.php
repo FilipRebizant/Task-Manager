@@ -37,13 +37,26 @@ class UserRepositoryTest extends TestCase
         $this->userRepository->delete(Uuid::uuid4()->toString());
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function testCanSaveAndRetrieveUser() {
         $randomNumber = rand(0, 9999);
-        $user = new User(Uuid::uuid4(), 'username_for_testing'. $randomNumber, 'password', 'email_for_testing' . $randomNumber, array());
+        $user = new User(
+            Uuid::uuid4(),
+            'username_for_testing'. $randomNumber,
+            'password',
+            'email_for_testing' . $randomNumber, array()
+        );
 
         $this->userRepository->create($user);
         $foundUser = $this->userQuery->getById($user->getId()->toString());
 
         $this->assertEquals($user->getId()->toString(), $foundUser->id());
     }
+
+//    public function testWillThrowNotFoundException()
+//    {
+//
+//    }
 }
