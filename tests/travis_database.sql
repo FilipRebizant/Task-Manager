@@ -1,8 +1,8 @@
 CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'dev'@'localhost';
 
-CREATE DATABASE IF NOT EXISTS `db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `db`;
+CREATE DATABASE IF NOT EXISTS `task-manager` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `task-manager`;
 
 CREATE TABLE `users` (
    `id` binary(16) NOT NULL,

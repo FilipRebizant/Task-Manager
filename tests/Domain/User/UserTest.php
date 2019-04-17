@@ -28,7 +28,8 @@ class UserTest extends TestCase
     public function testUserCanAssignTask()
     {
         $this->user->assignTask($this->taskMock);
-        $assignedTask = end($this->user->getAssignedTasks());
+        $tasks = $this->user->getAssignedTasks();
+        $assignedTask = end($tasks);
 
         $this->assertEquals($this->taskMock, $assignedTask);
     }
@@ -52,7 +53,8 @@ class UserTest extends TestCase
         $this->user->assignTask($this->taskMock);
         $this->user->assignTask($secondTaskMock);
         $this->user->unassignTask($secondTaskMock);
-        $actualCount = end($this->user->getAssignedTasks());
+        $tasks = $this->user->getAssignedTasks();
+        $actualCount = end($tasks);
 
         $this->assertEquals($this->taskMock, $actualCount);
     }
