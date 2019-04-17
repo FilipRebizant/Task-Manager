@@ -21,7 +21,7 @@ class CreateUserCommand implements CommandInterface
      * @param string $password
      * @param string $email
      */
-    public function __construct(string $username, string $password,string $email)
+    public function __construct(string $username, string $password, string $email)
     {
         $this->username = $username;
         $this->email = $email;

@@ -54,8 +54,7 @@ class Task
         User $user = null,
         Priority $priority,
         Description $description
-    )
-    {
+    ) {
         $this->id = $uuid;
         $this->title = $title;
         $this->status = $status;

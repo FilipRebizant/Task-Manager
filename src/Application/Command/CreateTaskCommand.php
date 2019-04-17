@@ -35,8 +35,7 @@ class CreateTaskCommand implements CommandInterface
         string $status,
         int $priority,
         string $description
-    )
-    {
+    ) {
         $this->title = $title;
         $this->user = $user;
         $this->status = $status;
