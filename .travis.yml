@@ -1,9 +1,23 @@
 language: php
+
 php:
-  - '7.0'
+  - '7.1'
   - '7.3'
 
 before_script:
   - composer install
 
 script: phpunit
+
+services:
+  - mysql
+
+sudo: required
+
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      - mysql-client
