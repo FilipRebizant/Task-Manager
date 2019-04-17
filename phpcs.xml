@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset  name="Custom ruleset">
+    <description>Custom rules for code sniffer</description>
+    <file>src/</file>
+
+    <rule ref="PSR2" />
+
+</ruleset>

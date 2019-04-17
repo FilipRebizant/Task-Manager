@@ -1,14 +1,30 @@
 language: php
+
 php:
-  - '7.0'
+  - '7.2'
   - '7.3'
 
 before_script:
   - composer install
 
-script: phpunit
+script:
+  - phpunit --configuration ./phpunit.xml
 
-branches:
-  only:
-    - develop
-    - master
+sudo: required
+
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      - mysql-client
+
+before_install:
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -pnew_password
+  - sudo service mysql restart
+  - mysql -u root --password="new_password" < tests/travis_database.sql
+
+notifications:
+  email: false
