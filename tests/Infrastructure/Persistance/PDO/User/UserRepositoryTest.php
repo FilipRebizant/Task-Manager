@@ -55,8 +55,11 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($user->getId()->toString(), $foundUser->id());
     }
 
-//    public function testWillThrowNotFoundException()
-//    {
-//
-//    }
+
+    public function testWillThrowNotFoundException()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->userRepository->getUserByUsername("UnExisting user");
+    }
 }
