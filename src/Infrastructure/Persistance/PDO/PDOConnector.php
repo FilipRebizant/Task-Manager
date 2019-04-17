@@ -16,7 +16,7 @@ class PDOConnector
     {
         try {
             $this->connection = new PDO(
-                'mysql:host=localhost;dbname=task-manager',
+                'mysql:host=172.20.0.5;dbname=task-manager',
                 'root',
                 'password',
                 [PDO::ATTR_DEFAULT_FETCH_MODE, 'FETCH_ASSOC']
