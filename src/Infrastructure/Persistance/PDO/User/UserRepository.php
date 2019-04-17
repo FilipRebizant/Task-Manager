@@ -37,12 +37,12 @@ class UserRepository implements UserRepositoryInterface
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`) VALUES(:id, :username, :email, :created_at)";
+            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`) 
+                    VALUES(:id, :username, :email, :created_at)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
             $this->pdo->commit();
-
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

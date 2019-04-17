@@ -4,7 +4,7 @@ namespace App\Domain\Task;
 
 use App\Domain\Task\ValueObject\Status;
 
-Interface TaskRepositoryInterface
+interface TaskRepositoryInterface
 {
     /**
      * @param Task $task

@@ -46,12 +46,12 @@ class TaskRepository implements TaskRepositoryInterface
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `tasks` (`id`, `title`, `status`, `user_id`,`priority`, `description`, `created_at`) VALUES(:id, :title, :status, :user_id, :priority, :description, :created_at)";
+            $sql = "INSERT INTO `tasks` (`id`, `title`, `status`, `user_id`,`priority`, `description`, `created_at`) 
+                    VALUES(:id, :title, :status, :user_id, :priority, :description, :created_at)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
             $this->pdo->commit();
-
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

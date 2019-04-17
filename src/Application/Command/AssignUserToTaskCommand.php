@@ -20,8 +20,7 @@ class AssignUserToTaskCommand implements CommandInterface
     public function __construct(
         string $task,
         string $user
-    )
-    {
+    ) {
         $this->user = $user;
         $this->task = $task;
     }
