@@ -1,14 +1,25 @@
 version: '3.7'
 
-services:
+networks:
+  frontend:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
 
+services:
   php-fpm:
     build:
       context: ./docker/php-fpm
     volumes:
       - .:/var/www/html
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.3
 
   nginx:
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.4
     image: nginx:stable
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -26,13 +37,17 @@ services:
       - ./:/app
     command: 'true'
 
+
   db:
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.5
     image: mysql:5.7
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'new_password'
+      MYSQL_ROOT_PASSWORD: 'password'
     ports:
       - '3306:3306'
