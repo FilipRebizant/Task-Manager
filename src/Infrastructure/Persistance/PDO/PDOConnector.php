@@ -14,7 +14,7 @@ class PDOConnector
      */
     public function __construct()
     {
-        if (getenv('IS_TRAVIS')) {
+        if (getenv('CI')) {
             try {
                 $this->connection = new PDO(
                     'mysql:host=localhost;dbname=task-manager',

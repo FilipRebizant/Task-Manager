@@ -12,7 +12,6 @@ class HandlerFactoryTest extends TestCase
     {
         $handlerFactory = new HandlerFactory();
         $container = require_once __DIR__ . '/../../config/dependency_injection.php';
-        echo __DIR__;
 
         $handlerFactory->setDIContainer($container);
         $taskHandlerInstance = $handlerFactory->make(CreateTaskHandler::class);

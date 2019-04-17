@@ -11,7 +11,7 @@ class HandlerFactory
 
     public function __construct()
     {
-        if ($GLOBALS['container']) {
+        if (array_key_exists('container', $GLOBALS)) {
             $this->setDIContainer($GLOBALS['container']);
         }
     }
