@@ -1,13 +1,14 @@
 language: php
 
 php:
-  - '7.1'
+  - '7.2'
   - '7.3'
 
 before_script:
   - composer install
 
-script: phpunit
+script:
+  - phpunit --configuration ./phpunit.xml
 
 sudo: required
 
@@ -24,3 +25,6 @@ before_install:
   - sudo mysql_upgrade -u root -pnew_password
   - sudo service mysql restart
   - mysql -u root --password="new_password" < tests/travis_database.sql
+
+notifications:
+  email: false
