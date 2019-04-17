@@ -11,6 +11,9 @@ script: phpunit --configuration phpunit.xml
 
 sudo: required
 
+env:
+  global:
+    - IS_TRAVIS=true
 addons:
   apt:
     sources:
