@@ -13,3 +13,6 @@
 
 ### To run tests open php-fpm container and run:
     ./vendor/bin/phpunit
+    
+### To run code sniffer open php-fpm conntainer and run:
+    ./vendor/bin/phpcs
