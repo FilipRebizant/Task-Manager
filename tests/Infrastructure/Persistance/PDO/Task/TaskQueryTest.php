@@ -35,6 +35,18 @@ class TaskQueryTest extends TestCase
 
     public function testCanRetrieveTasks()
     {
+        $uuid = Uuid::uuid4();
+        $task = new Task(
+            $uuid,
+            new Title('Title to test UserQuery without user'),
+            new Status('Todo'),
+            null,
+            new Priority(1),
+            new Description("Description")
+        );
+
+        $this->taskRepository->create($task);
+
         $tasks = $this->taskQuery->getAll();
 
         foreach ($tasks as $task) {
