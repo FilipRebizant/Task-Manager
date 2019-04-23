@@ -27,9 +27,12 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function create(Task $task): void
     {
+//        var_dump($task);
         if ($task->getAssignedUser()) {
-            $user = $task->getAssignedUser()->getId();
-            $userId = $user->getBytes();
+            var_dump('user');
+            $userId = $task->getAssignedUser()->getId();
+            $userIdBytes = $userId->getBytes();
+            var_dump($userId->toString());
         }
 
         $id = $task->getId()->getBytes();
@@ -41,7 +44,7 @@ class TaskRepository implements TaskRepositoryInterface
             "priority" => (int)$task->getPriority(),
             "description" => $task->getDescription(),
             "created_at" => $task->getCreatedAt()->format('Y-m-d H:i:s'),
-            "user_id" => $userId,
+            "user_id" => $userIdBytes,
         ];
 
         try {
