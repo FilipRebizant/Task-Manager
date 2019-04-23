@@ -30,10 +30,12 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getById(string $taskId): TaskView
     {
-        $sql = "SELECT 
-                id, title, description, status, priority, user_id, created_at, updated_at
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
-                WHERE tasks.id = :id";
+                LEFT JOIN users
+                ON tasks.user_id = users.id
+                WHERE tasks.id = :id
+                ";
 
         $idString = Uuid::fromString($taskId);
         $idBytes = $idString->getBytes();
@@ -68,7 +70,7 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getAll(): array
     {
-        $sql = "SELECT title, status, priority, description, tasks.created_at, updated_at, username
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
                 ON tasks.user_id = users.id
@@ -83,6 +85,7 @@ class TaskQuery implements TaskQueryInterface
 
         return array_map(function (array $result) {
             return new TaskView(
+                Uuid::fromBytes($result['id'])->toString(),
                 $result['title'],
                 $result['status'],
                 $result['username'],

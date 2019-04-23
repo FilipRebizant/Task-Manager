@@ -17,7 +17,7 @@ use Ramsey\Uuid\Uuid;
 
 class CreateTaskHandler implements HandlerInterface
 {
-    /** @var TaskRepositoryInterface  */
+    /** @var TaskRepositoryInterface */
     private $taskRepository;
 
     /** @var UserRepository */

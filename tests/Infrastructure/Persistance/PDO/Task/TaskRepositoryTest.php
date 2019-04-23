@@ -26,15 +26,11 @@ class TaskRepositoryTest extends TestCase
     /** @var PDOConnector */
     private $pdo;
 
-    /** @var Uuid */
-    private $uuid;
-
     protected function setUp(): void
     {
         $this->pdo = new PDOConnector();
         $this->taskRepository = new TaskRepository($this->pdo);
         $this->taskQuery = new TaskQuery($this->pdo);
-        $this->uuid = Uuid::uuid4();
     }
 
     /**
@@ -43,17 +39,18 @@ class TaskRepositoryTest extends TestCase
      */
     public function testCanCreateNewTaskWithoutUser()
     {
+        $uuid = Uuid::uuid4();
         $task = new Task(
-            $this->uuid,
-            new Title("Title of the task"),
+            $uuid,
+            new Title("Task without user"),
             new Status("Todo"),
             null,
             new Priority(1),
-            new Description("Short description")
+            new Description("Task without user")
         );
 
         $this->taskRepository->create($task);
-        $taskView = $this->taskQuery->getById($this->uuid->toString());
+        $taskView = $this->taskQuery->getById($uuid->toString());
 
         $this->assertEquals($taskView->id(), $task->getId()->toString());
     }
@@ -65,19 +62,50 @@ class TaskRepositoryTest extends TestCase
      */
     public function testCanCreateNewTaskWithUser()
     {
+        $uuid = Uuid::uuid4();
         $userMock = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
         $task = new Task(
-            $this->uuid,
-            new Title("Task with user assigned"),
-            new Status("Todo"),
+            $uuid,
+            new Title("Task with user "),
+            new Status("Done"),
             $userMock,
             new Priority(1),
-            new Description("Task with user assigned")
+            new Description("Task with user")
         );
 
         $this->taskRepository->create($task);
-        $taskView = $this->taskQuery->getById($this->uuid->toString());
+        $taskView = $this->taskQuery->getById($uuid->toString());
 
         $this->assertEquals($taskView->id(), $task->getId()->toString());
+    }
+
+    public function testCanAssignUserToTask()
+    {
+        $uuid = Uuid::uuid4();
+        $randomNumber = rand(0, 9999);
+        $task = new Task(
+            $uuid,
+            new Title("Task to assign user"),
+            new Status("Todo"),
+            null,
+            new Priority(1),
+            new Description("Task to assign user")
+        );
+        $user = new User(
+            Uuid::uuid4(),
+            'username_to_assign_task_test' . $randomNumber,
+            'password',
+            'assign_task_test' . $randomNumber . '@gmail.com',
+            array()
+        );
+        $userRepository = new UserRepository($this->pdo);
+
+        $this->taskRepository->create($task);
+        $userRepository->create($user);
+        $taskId = $task->getId()->toString();
+        $this->taskRepository->assignUserToTask($taskId, $user->getUserName());
+        $actuallyAssignedUser = $this->taskQuery->getById($taskId)->user();
+
+        $this->assertEquals($user->getUserName(), $actuallyAssignedUser);
     }
 }
