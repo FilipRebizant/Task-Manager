@@ -69,14 +69,14 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param Username $username
+     * @param string $username
      * @return User
      * @throws NotFoundException
      * @throws \App\Domain\User\Exception\InvalidEmailException
      * @throws \App\Domain\User\Exception\InvalidPasswordException
      * @throws \App\Domain\User\Exception\InvalidUsernameException
      */
-    public function getUserByUsername(Username $username): User
+    public function getUserByUsername(string $username): User
     {
         $sql = "SELECT id, username, email, password FROM users WHERE username LIKE :username";
         $stmt = $this->pdo->prepare($sql);
@@ -101,14 +101,14 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param Email $email
+     * @param string $email
      * @return User
      * @throws NotFoundException
      * @throws \App\Domain\User\Exception\InvalidEmailException
      * @throws \App\Domain\User\Exception\InvalidPasswordException
      * @throws \App\Domain\User\Exception\InvalidUsernameException
      */
-    public function getUserByEmail(Email $email): User
+    public function getUserByEmail(string $email): User
     {
         $sql = "SELECT id, username, email, password FROM users WHERE email LIKE :email";
         $stmt = $this->pdo->prepare($sql);

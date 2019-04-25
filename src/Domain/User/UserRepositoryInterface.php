@@ -2,9 +2,6 @@
 
 namespace App\Domain\User;
 
-use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Username;
-
 interface UserRepositoryInterface
 {
     /**
@@ -18,14 +15,14 @@ interface UserRepositoryInterface
     public function delete(string $user): void;
 
     /**
-     * @param Username $username
+     * @param string $username
      * @return User
      */
-    public function getUserByUsername(Username $username): User;
+    public function getUserByUsername(string $username): User;
 
     /**
-     * @param Email $email
+     * @param string $email
      * @return User
      */
-    public function getUserByEmail(Email $email): User;
+    public function getUserByEmail(string $email): User;
 }

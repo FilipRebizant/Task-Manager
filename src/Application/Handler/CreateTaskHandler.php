@@ -2,7 +2,6 @@
 
 namespace App\Application\Handler;
 
-use App\Application\Command\CreateTaskCommand;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\Task\ValueObject\Description;
