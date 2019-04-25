@@ -8,6 +8,9 @@ use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
@@ -93,9 +96,9 @@ class TaskRepositoryTest extends TestCase
         );
         $user = new User(
             Uuid::uuid4(),
-            'username_to_assign_task_test' . $randomNumber,
-            'password',
-            'assign_task_test' . $randomNumber . '@gmail.com',
+            new Username('username_to_assign_task_test' . $randomNumber),
+            new Password('password'),
+            new Email('assign_task_test' . $randomNumber . '@gmail.com'),
             array()
         );
         $userRepository = new UserRepository($this->pdo);

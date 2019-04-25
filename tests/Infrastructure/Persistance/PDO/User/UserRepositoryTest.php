@@ -3,6 +3,9 @@
 namespace App\Tests\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
@@ -39,14 +42,18 @@ class UserRepositoryTest extends TestCase
 
     /**
      * @throws NotFoundException
+     * @throws \App\Domain\User\Exception\InvalidEmailException
+     * @throws \App\Domain\User\Exception\InvalidPasswordException
+     * @throws \App\Domain\User\Exception\InvalidUsernameException
      */
     public function testCanSaveAndRetrieveUser() {
         $randomNumber = rand(0, 9999);
         $user = new User(
             Uuid::uuid4(),
-            'username_for_testing'. $randomNumber,
-            'password',
-            'email_for_testing' . $randomNumber, array()
+            new Username('username_for_testing'. $randomNumber),
+            new Password('password'),
+            new Email('email_for_testing' . $randomNumber . '@gmail.com'),
+            array()
         );
 
         $this->userRepository->create($user);

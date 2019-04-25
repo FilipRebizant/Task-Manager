@@ -4,6 +4,9 @@ namespace App\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -69,6 +72,9 @@ class UserRepository implements UserRepositoryInterface
      * @param string $username
      * @return User
      * @throws NotFoundException
+     * @throws \App\Domain\User\Exception\InvalidEmailException
+     * @throws \App\Domain\User\Exception\InvalidPasswordException
+     * @throws \App\Domain\User\Exception\InvalidUsernameException
      */
     public function getUserByUsername(string $username): User
     {
@@ -83,7 +89,13 @@ class UserRepository implements UserRepositoryInterface
 
         $id = Uuid::fromBytes($result['id']);
 
-        $user = new User($id, $result['username'], $result['password'], $result['email'], array());
+        $user = new User(
+            $id,
+            new Username($result['username']),
+            new Password($result['password']),
+            new Email($result['email']),
+            array()
+        );
 
         return $user;
     }

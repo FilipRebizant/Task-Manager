@@ -7,6 +7,9 @@ use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use Ramsey\Uuid\Uuid;
 
 class CreateUserHandler implements HandlerInterface
@@ -24,16 +27,18 @@ class CreateUserHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface|CreateUserCommand $command
-     * @return void
+     * @param CommandInterface $command
+     * @throws \App\Domain\User\Exception\InvalidEmailException
+     * @throws \App\Domain\User\Exception\InvalidPasswordException
+     * @throws \App\Domain\User\Exception\InvalidUsernameException
      */
     public function handle(CommandInterface $command): void
     {
         $user = new User(
             Uuid::uuid4(),
-            $command->username(),
-            $command->password(),
-            $command->email(),
+            new Username($command->username()),
+            new Password($command->password()),
+            new Email($command->email()),
             array()
         );
 

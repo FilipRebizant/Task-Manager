@@ -15,6 +15,13 @@ class EmailTest extends TestCase
         $this->assertEquals('validemail_2000@gmail.com', $email);
     }
 
+    public function testCanCreateEmailAddressWhenHaveDot()
+    {
+        $email = new Email('valid.email_2000@gmail.com');
+
+        $this->assertEquals('valid.email_2000@gmail.com', $email);
+    }
+
     public function testCanCreateValidEmailAddressWithTwoPartDomain()
     {
         $email = new Email('validEmail@gmail.co.uk');
