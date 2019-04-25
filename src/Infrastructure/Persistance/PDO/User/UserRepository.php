@@ -69,18 +69,50 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param string $username
+     * @param Username $username
      * @return User
      * @throws NotFoundException
      * @throws \App\Domain\User\Exception\InvalidEmailException
      * @throws \App\Domain\User\Exception\InvalidPasswordException
      * @throws \App\Domain\User\Exception\InvalidUsernameException
      */
-    public function getUserByUsername(string $username): User
+    public function getUserByUsername(Username $username): User
     {
         $sql = "SELECT id, username, email, password FROM users WHERE username LIKE :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException();
+        }
+
+        $id = Uuid::fromBytes($result['id']);
+
+        $user = new User(
+            $id,
+            new Username($result['username']),
+            new Password($result['password']),
+            new Email($result['email']),
+            array()
+        );
+
+        return $user;
+    }
+
+    /**
+     * @param Email $email
+     * @return User
+     * @throws NotFoundException
+     * @throws \App\Domain\User\Exception\InvalidEmailException
+     * @throws \App\Domain\User\Exception\InvalidPasswordException
+     * @throws \App\Domain\User\Exception\InvalidUsernameException
+     */
+    public function getUserByEmail(Email $email): User
+    {
+        $sql = "SELECT id, username, email, password FROM users WHERE email LIKE :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
