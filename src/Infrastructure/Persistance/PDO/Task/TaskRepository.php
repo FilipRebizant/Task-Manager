@@ -27,6 +27,7 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function create(Task $task): void
     {
+        $userIdBytes = null;
         if (!is_null($task->getAssignedUser())) {
             $userId = $task->getAssignedUser()->getId();
             $userIdBytes = $userId->getBytes();
