@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Task;
 
+use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\Task;
 use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
@@ -27,28 +28,26 @@ class TaskTest extends TestCase
     {
         $this->task = new Task(
             $this->getMockBuilder(Uuid::class)->disableOriginalConstructor()->getMock(),
-            $this->getMockBuilder(Title::class)->disableOriginalConstructor()->getMock(),
-            $this->getMockBuilder(Status::class)->disableOriginalConstructor()->getMock(),
+            new Title("Title of the task"),
+            new Status("Todo"),
             $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock(),
-            $this->getMockBuilder(Priority::class)->disableOriginalConstructor()->getMock(),
-            $this->getMockBuilder(Description::class)->disableOriginalConstructor()->getMock()
+            new Priority(1),
+            new Description("Description")
         );
         $this->userMock = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function testAssignTaskIsToDo()
+    public function testAssignedTaskIsToDo()
     {
-        $this->task->updateStatus(new Status("Todo"));
-
         $expectedStatus = "Todo";
         $status = $this->task->getStatus();
 
         $this->assertEquals($expectedStatus, $status);
     }
 
-    public function testAssignTaskIsPending()
+    public function testAssignedTaskIsPending()
     {
-        $this->task->updateStatus(new Status('Pending'));
+        $this->task->changeStatus(new Status('Pending'));
 
         $expectedStatus = "Pending";
         $status = $this->task->getStatus();
@@ -56,11 +55,12 @@ class TaskTest extends TestCase
         $this->assertEquals($expectedStatus, $status);
     }
 
-    public function testAssignTaskIsDone()
+    public function testAssignedTaskIsDone()
     {
-        $this->task->updateStatus(new Status('Done'));
-
         $expectedStatus = "Done";
+
+        $this->task->changeStatus(new Status("Pending"));
+        $this->task->changeStatus(new Status("Done"));
         $status = $this->task->getStatus();
 
         $this->assertEquals($expectedStatus, $status);
@@ -112,5 +112,37 @@ class TaskTest extends TestCase
         $assignedUser = $this->task->getAssignedUser();
 
         $this->assertEquals($this->userMock, $assignedUser);
+    }
+
+    public function testCanChangeStatusFromDoneToTodo()
+    {
+        $toDoStatus = new Status("Todo");
+        $pendingStatus = new Status("Pending");
+        $doneStatus = new Status("Done");
+
+        $this->task->changeStatus($pendingStatus);
+        $this->task->changeStatus($doneStatus);
+        $this->task->changeStatus($toDoStatus);
+        $actualStatus = $this->task->getStatus();
+
+        $this->assertEquals("Todo", $actualStatus);
+    }
+
+    public function testExpectsInvalidOrderExceptionWhenChangingFromToDoToDone()
+    {
+        $doneStatus = new Status("Done");
+
+        $this->expectException(InvalidStatusOrderException::class);
+
+        $this->task->changeStatus($doneStatus);
+    }
+
+    public function testExpectsInvalidOrderExceptionWhenChangingFromPendingToToDo()
+    {
+        $toDoStatus = new Status("Todo");
+
+        $this->expectException(InvalidStatusOrderException::class);
+
+        $this->task->changeStatus($toDoStatus);
     }
 }

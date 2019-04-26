@@ -4,8 +4,13 @@ namespace App\Infrastructure\Persistance\PDO\Task;
 
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
+use App\Domain\Task\ValueObject\Description;
+use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
+use App\Domain\Task\ValueObject\Title;
+use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
+use PDO;
 use Ramsey\Uuid\Uuid;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -105,12 +110,44 @@ class TaskRepository implements TaskRepositoryInterface
                 WHERE id = :id
         ";
         $taskId = Uuid::fromString($taskId)->getBytes();
-
         $this->pdo->beginTransaction();
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'status' => $status,
             'id' => $taskId,
         ]);
+        $this->pdo->commit();
+    }
+
+    /**
+     * @param string $taskId
+     * @return Task
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
+    public function getTaskByTaskId(string $taskId): Task
+    {
+        $taskIdBytes = Uuid::fromString($taskId)->getBytes();
+        $sql = "SELECT * FROM tasks WHERE id LIKE :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $taskIdBytes]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException();
+        }
+
+        $id = Uuid::fromBytes($result['id']);
+
+        $task = new Task(
+            $id,
+            new Title($result['title']),
+            new Status($result['status']),
+            null,
+            new Priority($result['priority']),
+            new Description($result['description']),
+            $result['created_at']
+        );
+
+        return $task;
     }
 }

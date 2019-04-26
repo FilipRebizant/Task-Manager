@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Task;
 
+use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\ValueObject\Title;
 use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
@@ -137,12 +139,31 @@ class Task
      * @param Status $status
      * @return Task
      */
-    public function updateStatus(Status $status): Task
-    {
-        $this->status = $status;
 
-        return $this;
+    /**
+     * @param Status $status
+     * @return Task
+     * @throws InvalidStatusOrderException
+     */
+    public function changeStatus(Status $status): Task
+    {
+        if ($this->getStatus() == "Todo" && $status == "Pending") {
+            $this->status = $status;
+
+            return $this;
+        } elseif ($this->status == "Pending" && $status == "Done") {
+            $this->status = $status;
+
+            return $this;
+        } elseif ($this->status == "Done" && $status == "Todo") {
+            $this->status = $status;
+
+            return $this;
+        } else {
+            throw new InvalidStatusOrderException();
+        }
     }
+
     /**
      * @return Priority
      */
