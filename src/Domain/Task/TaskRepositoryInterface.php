@@ -27,4 +27,10 @@ interface TaskRepositoryInterface
      * @param Status $status
      */
     public function changeStatus(string $taskId, Status $status): void;
+
+    /**
+     * @param string $taskId
+     * @return Task
+     */
+    public function getTaskByTaskId(string $taskId): Task;
 }

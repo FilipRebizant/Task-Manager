@@ -28,6 +28,10 @@ deleteTask:
   controller: App\Interfaces\Web\Controller\TaskController::deleteTask
   methods:    POST
 
+changeStatus:
+  path:       /changeStatus
+  controller: App\Interfaces\Web\Controller\TaskController::changeStatus
+  methods:    POST
 
 
 

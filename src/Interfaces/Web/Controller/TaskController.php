@@ -3,10 +3,12 @@
 namespace App\Interfaces\Web\Controller;
 
 use App\Application\Command\AssignUserToTaskCommand;
+use App\Application\Command\ChangeTaskStatusCommand;
 use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
 use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +24,7 @@ class TaskController
 
     /**
      * TaskController constructor.
+     *
      * @param CommandBus $commandBus
      */
     public function __construct(CommandBus $commandBus, TaskQuery $taskQuery)
@@ -116,5 +119,27 @@ class TaskController
         }
 
         return new Response("Task has been removed", 202);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function changeStatus(Request $request): Response
+    {
+        try {
+            $command = new ChangeTaskStatusCommand($request->get('taskId'), $request->get('status'));
+            $this->commandBus->handle($command);
+        } catch (InvalidStatusOrderException $exception) {
+            return new Response("Invalid status order", 400);
+        } catch (InvalidArgumentException $exception) {
+            return new Response("Invalid status", 400);
+        } catch (NotFoundException $exception) {
+            return new Response("Task wasn't found", 400);
+        }catch (\Exception $exception) {
+            return new Response($exception);
+        }
+
+        return new Response("Status has been changed", 200);
     }
 }
