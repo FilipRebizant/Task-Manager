@@ -31,7 +31,7 @@ class UserQuery implements UserQueryInterface
     public function getById(string $userId): UserView
     {
         $sql = "
-            SELECT users.id, username, email, users.created_at
+            SELECT id, username, email, created_at
             FROM users
             WHERE users.id = :id
         ";

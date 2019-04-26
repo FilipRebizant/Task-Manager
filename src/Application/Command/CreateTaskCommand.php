@@ -31,7 +31,7 @@ class CreateTaskCommand implements CommandInterface
      */
     public function __construct(
         string $title,
-        string $user = null,
+        ?string $user,
         string $status,
         int $priority,
         string $description

@@ -7,6 +7,8 @@ use App\Application\Command\DeleteUserCommand;
 use App\Application\CommandBus;
 use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
+use App\Domain\User\Exception\EmailAlreadyExistsException;
+use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use InvalidArgumentException;
@@ -23,6 +25,7 @@ class UserController
 
     /**
      * UserController constructor.
+     *
      * @param CommandBusInterface $commandBus
      * @param UserQueryInterface $userQuery
      */
@@ -44,15 +47,18 @@ class UserController
                 (string)$request->get("password"),
                 (string)$request->get("email")
             );
-            /**
-             * TODO Rzucic wyjatek gdy nie stworzymy uzytkownika
-             */
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException $exception) {
             return new Response("Invalid argument passed", 400);
+        } catch (UserAlreadyExistsException $exception) {
+            return new Response("User already exists", 400);
+        } catch (EmailAlreadyExistsException $exception) {
+            return new Response("Email address is already taken", 400);
+        } catch (\Exception $exception) {
+            return new Response("An error occured", 500);
         }
 
-        return new Response('User has been added.', 201);
+        return new Response('User has been added', 201);
     }
 
     /**

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use App\Domain\Task\Task;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use Ramsey\Uuid\Uuid;
 
 class User
@@ -12,13 +15,13 @@ class User
     /** @var Uuid */
     private $id;
 
-    /** @var string */
+    /** @var Username */
     private $userName;
 
-    /** @var string */
+    /** @var Email */
     private $email;
 
-    /** @var string */
+    /** @var Password */
     private $password;
 
     /** @var \DateTimeImmutable */
@@ -27,7 +30,17 @@ class User
     /** @var array */
     private $tasks;
 
-    public function __construct(Uuid $uuid, string $username, string $password, string $email, array $tasks)
+    /**
+     * User constructor.
+     *
+     * @param Uuid $uuid
+     * @param Username $username
+     * @param Password $password
+     * @param Email $email
+     * @param array $tasks
+     * @throws \Exception
+     */
+    public function __construct(Uuid $uuid, Username $username, Password $password, Email $email, array $tasks)
     {
         $this->id = $uuid;
         $this->userName = $username;
@@ -46,18 +59,18 @@ class User
     }
 
     /**
-     * @return string
+     * @return Username
      */
-    public function getUserName(): string
+    public function getUserName(): Username
     {
         return $this->userName;
     }
 
     /**
-     * @param string $userName
+     * @param Username $userName
      * @return User
      */
-    public function setUserName(string $userName): User
+    public function setUserName(Username $userName): User
     {
         $this->userName = $userName;
 
@@ -65,18 +78,18 @@ class User
     }
 
     /**
-     * @return string
+     * @return Email
      */
-    public function getEmail(): string
+    public function getEmail(): Email
     {
         return $this->email;
     }
 
     /**
-     * @param string $email
+     * @param Email $email
      * @return User
      */
-    public function setEmail(string $email): User
+    public function setEmail(Email $email): User
     {
         $this->email = $email;
 
@@ -84,18 +97,18 @@ class User
     }
 
     /**
-     * @return string
+     * @return Password
      */
-    public function getPassword(): string
+    public function getPassword(): Password
     {
         return $this->password;
     }
 
     /**
-     * @param string $password
+     * @param Password $password
      * @return User
      */
-    public function setPassword(string $password): User
+    public function setPassword(Password $password): User
     {
         $this->password = $password;
 

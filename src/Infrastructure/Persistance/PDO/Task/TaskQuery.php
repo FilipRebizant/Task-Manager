@@ -30,18 +30,19 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getById(string $taskId): TaskView
     {
-        $sql = "SELECT 
-                description, status, priority, username 
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
-                ON tasks.id = users.id
-                WHERE tasks.id = :id";
+                ON tasks.user_id = users.id
+                WHERE tasks.id = :id
+                ";
 
-        $id = Uuid::fromString($taskId)->getBytes();
+        $idString = Uuid::fromString($taskId);
+        $idBytes = $idString->getBytes();
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'id' => $id
+            'id' => $idBytes
         ]);
         $result = $stmt->fetch();
 
@@ -49,7 +50,18 @@ class TaskQuery implements TaskQueryInterface
             throw new NotFoundException();
         }
 
-        return new TaskView($result['description'], $result['status'], $result['priority'], $result['username']);
+        $updatedAt = is_null($result['updated_at']) ? '': $result['updated_at'];
+
+        return new TaskView(
+            $idString,
+            $result['title'],
+            $result['status'],
+            $result['username'],
+            $result['priority'],
+            $result['description'],
+            $result['created_at'],
+            $updatedAt
+        );
     }
 
     /**
@@ -58,7 +70,7 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getAll(): array
     {
-        $sql = "SELECT title, status, priority, description, tasks.created_at, updated_at, username
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
                 ON tasks.user_id = users.id
@@ -73,6 +85,7 @@ class TaskQuery implements TaskQueryInterface
 
         return array_map(function (array $result) {
             return new TaskView(
+                Uuid::fromBytes($result['id'])->toString(),
                 $result['title'],
                 $result['status'],
                 $result['username'],

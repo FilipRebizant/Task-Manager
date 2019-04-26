@@ -51,7 +51,7 @@ class Task
         Uuid $uuid,
         Title $title,
         Status $status,
-        User $user = null,
+        ?User $user,
         Priority $priority,
         Description $description
     ) {
