@@ -13,6 +13,7 @@
 
 ### To run tests open php-fpm container and run:
     ./vendor/bin/phpunit
+    vendor/bin/phpunit tests --coverage-html ./ --whitelist=tests
     
 ### To run code sniffer open php-fpm conntainer and run:
     ./vendor/bin/phpcs
