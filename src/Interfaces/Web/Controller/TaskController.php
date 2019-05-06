@@ -2,7 +2,6 @@
 
 namespace App\Interfaces\Web\Controller;
 
-use App\Application\AbstractService;
 use App\Application\Command\AssignUserToTaskCommand;
 use App\Application\Command\ChangeTaskStatusCommand;
 use App\Application\Command\CreateTaskCommand;
@@ -13,8 +12,6 @@ use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
-use ReflectionClass;
-use Symfony\Component\HttpFoundation\JsonJsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -39,16 +36,27 @@ class TaskController
 
     /**
      * @return JsonResponse
+     * @throws \ReflectionException
      */
     public function getTasks(): JsonResponse
     {
         try {
             $tasksList = $this->taskQuery->getAll();
+            $jsonTasksList = [];
+            $taskService = new TaskService();
+
+            foreach ($tasksList as $task) {
+                array_push($jsonTasksList, $taskService->dismount($task));
+            }
         } catch (NotFoundException $e) {
-            return new JsonResponse(['error' => $e->getMessage()], 400);
+            return new JsonResponse([
+                "error" => [
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
         }
 
-        return new JsonResponse(var_dump($tasksList), 200);
+        return new JsonResponse(["tasks" => $jsonTasksList], 200);
     }
 
     /**
@@ -60,12 +68,15 @@ class TaskController
     {
         try {
             $task = $this->taskQuery->getById($request->get('id'));
+            $taskService = new TaskService();
+            $jsonTask = $taskService->dismount($task);
         } catch (NotFoundException $e) {
-            return new JsonResponse(["error" => "Task wasn't found"], 400);
+            return new JsonResponse([
+                "error" => [
+                    "message" => "Task wasn't found.",
+                ],
+            ], 404);
         }
-
-        $taskService = new TaskService();
-        $jsonTask = $taskService->dismount($task);
 
         return new JsonResponse($jsonTask, 200);
     }
@@ -86,12 +97,12 @@ class TaskController
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException $exception) {
-            return new JsonResponse("Invalid argument passed", 400);
+            return new JsonResponse(["error" => "Invalid argument passed"], 400);
         } catch (NotFoundException $exception) {
-            return new JsonResponse("User was not found", 400);
+            return new JsonResponse(["error" => "User was not found"], 404);
         }
 
-        return new JsonResponse('Task has been added.', 201);
+        return new JsonResponse('Task has been created.', 201);
     }
 
     /**
@@ -143,7 +154,7 @@ class TaskController
         } catch (InvalidArgumentException $exception) {
             return new JsonResponse("Invalid status", 400);
         } catch (NotFoundException $exception) {
-            return new JsonResponse("Task wasn't found", 400);
+            return new JsonResponse("Task wasn't found", 404);
         } catch (\Exception $exception) {
             return new JsonResponse($exception);
         }
