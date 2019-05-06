@@ -2,17 +2,15 @@
 
 namespace App\Interfaces\Web\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HomeController
 {
     /**
-     * @param Request $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function home(): Response
+    public function home(): JsonResponse
     {
-        return new Response('Home', 200);
+        return new JsonResponse('Home', 200);
     }
 }
