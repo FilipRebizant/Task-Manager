@@ -5,7 +5,6 @@ namespace App\Application\Handler;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\Task\TaskRepositoryInterface;
-use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 
 class DeleteTaskHandler implements HandlerInterface
 {
@@ -13,10 +12,11 @@ class DeleteTaskHandler implements HandlerInterface
     private $taskRepository;
 
     /**
-     * CreateTaskHandler constructor.
-     * @param TaskRepository $taskRepository
+     * DeleteTaskHandler constructor.
+     *
+     * @param TaskRepositoryInterface $taskRepository
      */
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskRepositoryInterface $taskRepository)
     {
         $this->taskRepository = $taskRepository;
     }

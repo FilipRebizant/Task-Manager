@@ -51,9 +51,17 @@ class TaskController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
+                    "status" => 404,
                     "message" => $e->getMessage(),
                 ],
             ], 404);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 500,
+                    "message" => "An error occurred.",
+                ],
+            ], 500);
         }
 
         return new JsonResponse(["tasks" => $jsonTasksList], 200);
@@ -73,7 +81,8 @@ class TaskController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "message" => "Task wasn't found.",
+                    "status" => 404,
+                    "message" => $e->getMessage(),
                 ],
             ], 404);
         }
@@ -96,10 +105,26 @@ class TaskController
                 (string)$request->get("description")
             );
             $this->commandBus->handle($command);
-        } catch (InvalidArgumentException $exception) {
-            return new JsonResponse(["error" => "Invalid argument passed"], 400);
-        } catch (NotFoundException $exception) {
-            return new JsonResponse(["error" => "User was not found"], 404);
+        } catch (InvalidArgumentException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 400,
+                    "message" => $e->getMessage(),
+                ],
+            ], 400);
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 404,
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                "error" => [
+                    "message" => "An error occurred.",
+                ],
+            ], 500);
         }
 
         return new JsonResponse('Task has been created.', 201);
@@ -118,10 +143,16 @@ class TaskController
             );
             $this->commandBus->handle($command);
         } catch (NotFoundException $e) {
-            return new JsonResponse($e->getMessage(), 400);
+            return new JsonResponse([
+                "error" => [
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
+        } catch (\Exception $e) {
+            return new JsonResponse(var_dump($e));
         }
 
-        return new JsonResponse("User has been assigned to task");
+        return new JsonResponse(null, 200);
     }
 
     /**
@@ -133,11 +164,21 @@ class TaskController
         try {
             $command = new DeleteTaskCommand($request->get("id"));
             $this->commandBus->handle($command);
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "message" => "Task was not found.",
+                ],
+            ], 404);
         } catch (\Exception $e) {
-            return new JsonResponse($e->getMessage(), 400);
+            return new JsonResponse([
+                "error" => [
+                    "message" => "An error occurred.",
+                ],
+            ]);
         }
 
-        return new JsonResponse("Task has been removed", 202);
+        return new JsonResponse(null, 204);
     }
 
     /**
@@ -149,16 +190,32 @@ class TaskController
         try {
             $command = new ChangeTaskStatusCommand($request->get('taskId'), $request->get('status'));
             $this->commandBus->handle($command);
-        } catch (InvalidStatusOrderException $exception) {
-            return new JsonResponse("Invalid status order", 400);
-        } catch (InvalidArgumentException $exception) {
-            return new JsonResponse("Invalid status", 400);
-        } catch (NotFoundException $exception) {
-            return new JsonResponse("Task wasn't found", 404);
-        } catch (\Exception $exception) {
-            return new JsonResponse($exception);
+        } catch (InvalidStatusOrderException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "message" => "Invalid status order.",
+                ],
+            ], 400);
+        } catch (InvalidArgumentException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "message" => "Invalid status",
+                ],
+            ], 400);
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "message" => "Task wasn't found",
+                ],
+            ], 404);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                "error" => [
+                    "message" => "An error occurred.",
+                ],
+            ], 500);
         }
 
-        return new JsonResponse("Status has been changed", 200);
+        return new JsonResponse(null, 200);
     }
 }
