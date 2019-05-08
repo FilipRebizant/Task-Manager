@@ -2,6 +2,8 @@
 
 namespace App\Domain\User\Exception;
 
-class InvalidPasswordException extends \Exception
+use App\Domain\Exception\InvalidArgumentException;
+
+class InvalidPasswordException extends InvalidArgumentException
 {
 }

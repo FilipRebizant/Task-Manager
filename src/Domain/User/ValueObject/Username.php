@@ -19,7 +19,7 @@ class Username
     public function __construct(string $username)
     {
         if (!$this->isValid($username)) {
-            throw new InvalidUsernameException();
+            throw new InvalidUsernameException("Provided username is invalid.");
         }
 
         $this->username = $username;

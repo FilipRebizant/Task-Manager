@@ -64,7 +64,7 @@ class UserRepository implements UserRepositoryInterface
         $stmt->execute(['id' => $id]);
 
         if ($stmt->rowCount() == 0) {
-            throw new NotFoundException();
+            throw new NotFoundException("User was not found.", 404);
         };
     }
 
@@ -116,7 +116,7 @@ class UserRepository implements UserRepositoryInterface
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException();
+            throw new NotFoundException("User was not found.", 404);
         }
 
         $id = Uuid::fromBytes($result['id']);

@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Persistance\PDO\User;
 
+use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
+use App\Domain\Task\Task;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -53,7 +55,7 @@ class UserQuery implements UserQueryInterface
         $tasksResult = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException();
+            throw new NotFoundException("User was not found.", 404);
         }
 
         $id = Uuid::fromBytes($result['id']);
@@ -94,7 +96,7 @@ class UserQuery implements UserQueryInterface
         $tasksResults = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$results) {
-            throw new NotFoundException();
+            throw new NotFoundException("Users were not found.", 404);
         }
 
         /**
@@ -105,7 +107,19 @@ class UserQuery implements UserQueryInterface
             $userTasks = [];
             foreach ($tasksResults as $tasksResult) {
                 if ($tasksResult['user_id'] == $result['id']) {
-                    array_push($userTasks, $tasksResult);
+                    $id = Uuid::fromBytes($tasksResult['id']);
+                    $userId = Uuid::fromBytes($tasksResult['user_id']);
+                    $task = new TaskView(
+                        $id,
+                        $tasksResult['title'],
+                        $tasksResult['status'],
+                        $userId,
+                        $tasksResult['priority'],
+                        $tasksResult['description'],
+                        $tasksResult['created_at'],
+                        $tasksResult['updated_at']
+                    );
+                    array_push($userTasks, $task);
                 }
             }
 

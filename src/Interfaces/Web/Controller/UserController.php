@@ -9,11 +9,12 @@ use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
+use App\Domain\User\UserService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController
 {
@@ -23,23 +24,27 @@ class UserController
     /** @var CommandBus */
     private $commandBus;
 
+    private $userService;
+
     /**
      * UserController constructor.
      *
      * @param CommandBusInterface $commandBus
      * @param UserQueryInterface $userQuery
+     * @param UserService $userService
      */
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, UserService $usrService)
     {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
+        $this->userService = $usrService;
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @return JsonResponse()
      */
-    public function createUser(Request $request): Response
+    public function createUser(Request $request): JsonResponse
     {
         try {
             $command = new CreateUserCommand(
@@ -48,62 +53,82 @@ class UserController
                 (string)$request->get("email")
             );
             $this->commandBus->handle($command);
-        } catch (InvalidArgumentException $exception) {
-            return new Response("Invalid argument passed", 400);
-        } catch (UserAlreadyExistsException $exception) {
-            return new Response("User already exists", 400);
-        } catch (EmailAlreadyExistsException $exception) {
-            return new Response("Email address is already taken", 400);
-        } catch (\Exception $exception) {
-            return new Response("An error occured", 500);
+        } catch (InvalidArgumentException|UserAlreadyExistsException|EmailAlreadyExistsException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => $e->getCode(),
+                    "message" => $e->getMessage(),
+                ]
+            ], $e->getCode());
         }
 
-        return new Response('User has been added', 201);
+        return new JsonResponse(["result" => "User has been added"], 201);
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @return JsonResponse()
      * @throws \App\Infrastructure\Exception\NotFoundException
      */
-    public function getUser(Request $request): Response
+    public function getUser(Request $request): JsonResponse
     {
         try {
             $user = $this->userQuery->getById($request->get('id'));
         } catch (NotFoundException $e) {
-            return new Response("User was not found", 400);
+            return new JsonResponse([
+                "error" => [
+                    "status" => $e->getCode(),
+                    "message" => $e->getMessage(),
+                ]
+            ], $e->getCode());
         }
 
-        return new Response(var_dump($user));
+        return new JsonResponse(var_dump($user));
     }
 
     /**
-     * @return Response
+     * @return JsonResponse
+     * @throws \ReflectionException
      */
-    public function getUsers(): Response
+    public function getUsers(): JsonResponse
     {
         try {
             $users = $this->userQuery->getAll();
+            $jsonUsersList = [];
+
+            foreach ($users as $user) {
+                array_push($jsonUsersList, $this->userService->dismount($user));
+            }
         } catch (NotFoundException $e) {
-            return new Response("Users were not found", 400);
+            return new JsonResponse([
+                "error" => [
+                    "status" => $e->getCode(),
+                    "message" => $e->getMessage(),
+                ]
+            ], $e->getCode());
         }
 
-        return new Response(var_dump($users));
+        return new JsonResponse(["users" => $jsonUsersList], 200);
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @return JsonResponse()
      */
-    public function deleteUser(Request $request): Response
+    public function deleteUser(Request $request): JsonResponse
     {
         try {
             $command = new DeleteUserCommand($request->get('id'));
             $this->commandBus->handle($command);
         } catch (NotFoundException $e) {
-            return new Response("User was not found", 400);
+            return new JsonResponse([
+                "error" => [
+                    "status" => $e->getCode(),
+                    "message" => $e->getMessage(),
+                ]
+            ], $e->getCode());
         }
 
-        return new Response("User has been deleted", 200);
+        return new JsonResponse(["result" => "User has been deleted"], 200);
     }
 }

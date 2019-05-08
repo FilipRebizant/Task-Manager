@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 
+use App\Application\AbstractService;
 use App\Application\CommandInterface;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
@@ -11,7 +12,7 @@ use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use Ramsey\Uuid\Uuid;
 
-class UserService
+class UserService extends AbstractService
 {
     /** @var UserRepositoryInterface */
     private $userRepository;

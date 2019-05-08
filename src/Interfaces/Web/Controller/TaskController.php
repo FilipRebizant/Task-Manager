@@ -9,7 +9,7 @@ use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
-use App\Domain\TaskService;
+use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +55,6 @@ class TaskController
                     "message" => $e->getMessage(),
                 ],
             ], 404);
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                "error" => [
-                    "status" => 500,
-                    "message" => "An error occurred.",
-                ],
-            ], 500);
         }
 
         return new JsonResponse(["tasks" => $jsonTasksList], 200);
@@ -105,29 +98,16 @@ class TaskController
                 (string)$request->get("description")
             );
             $this->commandBus->handle($command);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException|NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => 400,
+                    "status" => $e->getCode(),
                     "message" => $e->getMessage(),
                 ],
-            ], 400);
-        } catch (NotFoundException $e) {
-            return new JsonResponse([
-                "error" => [
-                    "status" => 404,
-                    "message" => $e->getMessage(),
-                ],
-            ], 404);
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                "error" => [
-                    "message" => "An error occurred.",
-                ],
-            ], 500);
+            ], $e->getCode());
         }
 
-        return new JsonResponse('Task has been created.', 201);
+        return new JsonResponse(['result' => 'Task has been created.'], 201);
     }
 
     /**
@@ -136,7 +116,6 @@ class TaskController
      */
     public function assignTaskToUser(Request $request): JsonResponse
     {
-        var_dump($request);
         try {
             $command = new AssignUserToTaskCommand(
                 $request->get('id'),
@@ -146,14 +125,13 @@ class TaskController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
+                    "status" => $e->getCode(),
                     "message" => $e->getMessage(),
                 ],
             ], 404);
-        } catch (\Exception $e) {
-            return new JsonResponse(var_dump($e));
         }
 
-        return new JsonResponse(null, 200);
+        return new JsonResponse(["result" => "User has been assigned"], 200);
     }
 
     /**
@@ -168,18 +146,13 @@ class TaskController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "message" => "Task was not found.",
+                    "status" => $e->getCode(),
+                    "message" => $e->getMessage(),
                 ],
-            ], 404);
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                "error" => [
-                    "message" => "An error occurred.",
-                ],
-            ]);
+            ], $e->getCode());
         }
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(["response" => "Task has been deleted."], 200);
     }
 
     /**
@@ -191,30 +164,13 @@ class TaskController
         try {
             $command = new ChangeTaskStatusCommand($request->get('taskId'), $request->get('status'));
             $this->commandBus->handle($command);
-        } catch (InvalidStatusOrderException $e) {
+        } catch (InvalidStatusOrderException|InvalidArgumentException|NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "message" => "Invalid status order.",
+                    "status" => $e->getCode(),
+                    "message" => $e->getMessage(),
                 ],
-            ], 400);
-        } catch (InvalidArgumentException $e) {
-            return new JsonResponse([
-                "error" => [
-                    "message" => "Invalid status",
-                ],
-            ], 400);
-        } catch (NotFoundException $e) {
-            return new JsonResponse([
-                "error" => [
-                    "message" => "Task wasn't found",
-                ],
-            ], 404);
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                "error" => [
-                    "message" => "An error occurred.",
-                ],
-            ], 500);
+            ], $e->getCode());
         }
 
         return new JsonResponse(null, 200);
