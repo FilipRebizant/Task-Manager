@@ -1,0 +1,19 @@
+createUser:
+  path:       /createUser
+  controller: App\Interfaces\Web\Controller\UserController::createUser
+  methods:    POST
+
+getUser:
+  path:       /user/{id}
+  controller: App\Interfaces\Web\Controller\UserController::getUser
+  methods:    GET
+
+getUsers:
+  path:       /users
+  controller: App\Interfaces\Web\Controller\UserController::getUsers
+  methods:    GET
+
+deleteUser:
+  path:       /deleteUser
+  controller: App\Interfaces\Web\Controller\UserController::deleteUser
+  methods:    POST
