@@ -5,7 +5,6 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
-use App\Domain\Task\Task;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -60,17 +59,35 @@ class UserQuery implements UserQueryInterface
 
         $id = Uuid::fromBytes($result['id']);
 
+        $userTasks = [];
+        foreach ($tasksResult as $taskResult) {
+                $id = Uuid::fromBytes($taskResult['id']);
+                $usrId = Uuid::fromBytes($taskResult['user_id']);
+                $task = new TaskView(
+                    $id,
+                    $taskResult['title'],
+                    $taskResult['status'],
+                    $usrId,
+                    $taskResult['priority'],
+                    $taskResult['description'],
+                    $taskResult['created_at'],
+                    $taskResult['updated_at']
+                );
+                array_push($userTasks, $task);
+        }
+
         return new UserView(
             $id,
             $result['username'],
             $result['email'],
             $result['created_at'],
-            $tasksResult
+            $userTasks
         );
     }
 
     /**
      * @return array
+     * @throws NotFoundException
      */
     public function getAll(): array
     {

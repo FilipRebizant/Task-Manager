@@ -67,13 +67,14 @@ class UserController
 
     /**
      * @param Request $request
-     * @return JsonResponse()
-     * @throws \App\Infrastructure\Exception\NotFoundException
+     * @return JsonResponse
+     * @throws \ReflectionException
      */
     public function getUser(Request $request): JsonResponse
     {
         try {
             $user = $this->userQuery->getById($request->get('id'));
+            $jsonUser = $this->userService->dismount($user);
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
@@ -83,7 +84,7 @@ class UserController
             ], $e->getCode());
         }
 
-        return new JsonResponse(var_dump($user));
+        return new JsonResponse($jsonUser, 200);
     }
 
     /**
