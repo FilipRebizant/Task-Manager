@@ -134,11 +134,12 @@ class TaskController
      * @param Request $request
      * @return JsonResponse
      */
-    public function assignUserToTask(Request $request): JsonResponse
+    public function assignTaskToUser(Request $request): JsonResponse
     {
+        var_dump($request);
         try {
             $command = new AssignUserToTaskCommand(
-                $request->get('task_id'),
+                $request->get('id'),
                 $request->get('username')
             );
             $this->commandBus->handle($command);

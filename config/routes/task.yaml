@@ -3,22 +3,22 @@ getTasks:
   controller: App\Interfaces\Web\Controller\TaskController::getTasks
   methods:    GET
 
-getTask:
-  path:       /task/{id}
-  controller: App\Interfaces\Web\Controller\TaskController::getTask
-  methods:    GET
-
 createTask:
-  path:       /createTask
+  path:       /tasks
   controller: App\Interfaces\Web\Controller\TaskController::createTask
   methods:    POST
 
-assignUserToTask:
-  path:       /assignUserToTask
-  controller: App\Interfaces\Web\Controller\TaskController::assignUserToTask
-  methods:    POST
+getTask:
+  path:       /tasks/{id}
+  controller: App\Interfaces\Web\Controller\TaskController::getTask
+  methods:    GET
+
+assignTaskToUser:
+  path:       /tasks/{id}/users/{username}
+  controller: App\Interfaces\Web\Controller\TaskController::assignTaskToUser
+  methods:    PUT
 
 deleteTask:
-  path:       /deleteTask
+  path:       /tasks/{id}
   controller: App\Interfaces\Web\Controller\TaskController::deleteTask
-  methods:    POST
+  methods:    DELETE

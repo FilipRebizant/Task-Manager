@@ -3,6 +3,8 @@ home:
 
 users:
   resource: 'routes/user.yaml'
+  prefix: api/
 
 tasks:
   resource: 'routes/task.yaml'
+  prefix: api/
