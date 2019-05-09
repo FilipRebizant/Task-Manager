@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interfaces\Web\Controller;
+namespace App\Interfaces\Web\Controller\Api;
 
 use App\Application\Command\CreateUserCommand;
 use App\Application\Command\DeleteUserCommand;
@@ -24,6 +24,7 @@ class UserController
     /** @var CommandBus */
     private $commandBus;
 
+    /** @var UserService  */
     private $userService;
 
     /**

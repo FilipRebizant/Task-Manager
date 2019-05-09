@@ -1,19 +1,19 @@
 getUsers:
   path:       /users
-  controller: App\Interfaces\Web\Controller\UserController::getUsers
+  controller: App\Interfaces\Web\Controller\Api\UserController::getUsers
   methods:    GET
 
 createUser:
   path:       /users
-  controller: App\Interfaces\Web\Controller\UserController::createUser
+  controller: App\Interfaces\Web\Controller\Api\UserController::createUser
   methods:    POST
 
 getUser:
   path:       /users/{id}
-  controller: App\Interfaces\Web\Controller\UserController::getUser
+  controller: App\Interfaces\Web\Controller\Api\UserController::getUser
   methods:    GET
 
 deleteUser:
-  path:       /users{id}
-  controller: App\Interfaces\Web\Controller\UserController::deleteUser
+  path:       /users/{id}
+  controller: App\Interfaces\Web\Controller\Api\UserController::deleteUser
   methods:    DELETE
