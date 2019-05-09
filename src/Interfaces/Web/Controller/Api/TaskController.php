@@ -173,6 +173,6 @@ class TaskController
             ], $e->getCode());
         }
 
-        return new JsonResponse(null, 200);
+        return new JsonResponse(["response" => "Status has been changed."], 200);
     }
 }

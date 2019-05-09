@@ -11,7 +11,7 @@ abstract class AbstractService
      * @return array
      * @throws \ReflectionException
      */
-    function dismount($object)
+    public function dismount($object)
     {
         $reflectionClass = new ReflectionClass(get_class($object));
         $array = array();
