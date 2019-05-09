@@ -64,6 +64,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     /**
      * @param string $taskId
+     * @throws NotFoundException
      */
     public function delete(string $taskId): void
     {
@@ -73,6 +74,11 @@ class TaskRepository implements TaskRepositoryInterface
         $this->pdo->beginTransaction();
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $taskId]);
+        $result = $stmt->rowCount();
+        if (!$result) {
+            throw new NotFoundException("Task was not found.", 404);
+        }
+
         $this->pdo->commit();
     }
 
@@ -96,6 +102,11 @@ class TaskRepository implements TaskRepositoryInterface
             'taskId' => $taskId,
         ]);
 
+        $result = $stmt->rowCount();
+        if (!$result) {
+            throw new NotFoundException("Task was not found.", 404);
+        }
+
         $this->pdo->commit();
     }
 
@@ -116,6 +127,11 @@ class TaskRepository implements TaskRepositoryInterface
             'status' => $status,
             'id' => $taskId,
         ]);
+        $result = $stmt->rowCount();
+        if (!$result) {
+            throw new NotFoundException("Task was not found.", 404);
+        }
+
         $this->pdo->commit();
     }
 
@@ -133,7 +149,7 @@ class TaskRepository implements TaskRepositoryInterface
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException();
+            throw new NotFoundException("Task was not found.", 404);
         }
 
         $id = Uuid::fromBytes($result['id']);

@@ -22,7 +22,7 @@ class Password
     public function __construct(string $password)
     {
         if (!$this->isValid($password)) {
-            throw new InvalidPasswordException();
+            throw new InvalidPasswordException("Provided password is invalid.");
         }
 
         $this->password = $password;

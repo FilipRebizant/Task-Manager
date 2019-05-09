@@ -6,22 +6,22 @@ use App\Application\CommandInterface;
 
 class DeleteTaskCommand implements CommandInterface
 {
-    /** @var int  */
+    /** @var string  */
     private $id;
 
     /**
      * DeleteTaskCommand constructor.
-     * @param int $id
+     * @param string $id
      */
-    public function __construct(int $id)
+    public function __construct(string $id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function id(): int
+    public function id(): string
     {
         return $this->id;
     }

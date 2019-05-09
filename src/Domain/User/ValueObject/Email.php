@@ -20,7 +20,7 @@ class Email
     public function __construct(string $email)
     {
         if (!$this->isValid($email)) {
-            throw new InvalidEmailException();
+            throw new InvalidEmailException("Provided email address is invalid.");
         }
 
         $this->email = $email;

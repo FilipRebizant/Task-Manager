@@ -2,6 +2,6 @@
 
 namespace App\Domain\User\Exception;
 
-class InvalidEmailException extends \Exception
+class InvalidEmailException extends \InvalidArgumentException
 {
 }

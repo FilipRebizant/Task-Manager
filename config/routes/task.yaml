@@ -1,0 +1,29 @@
+getTasks:
+  path:       /tasks
+  controller: App\Interfaces\Web\Controller\Api\TaskController::getTasks
+  methods:    GET
+
+createTask:
+  path:       /tasks
+  controller: App\Interfaces\Web\Controller\Api\TaskController::createTask
+  methods:    POST
+
+getTask:
+  path:       /tasks/{id}
+  controller: App\Interfaces\Web\Controller\Api\TaskController::getTask
+  methods:    GET
+
+assignTaskToUser:
+  path:       /tasks/{id}/users/{username}
+  controller: App\Interfaces\Web\Controller\Api\TaskController::assignTaskToUser
+  methods:    PUT
+
+changeTaskStatus:
+  path:       /tasks/{id}
+  controller: App\Interfaces\Web\Controller\Api\TaskController::changeStatus
+  methods:    PUT
+
+deleteTask:
+  path:       /tasks/{id}
+  controller: App\Interfaces\Web\Controller\Api\TaskController::deleteTask
+  methods:    DELETE

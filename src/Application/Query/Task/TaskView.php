@@ -43,11 +43,11 @@ class TaskView
         string $id,
         string $title,
         string $status,
-        string $user = null,
+        ?string $user,
         int $priority,
         string $description,
         string $created_at,
-        string $updated_at = null
+        ?string $updated_at
     ) {
         $this->id = $id;
         $this->title = $title;
