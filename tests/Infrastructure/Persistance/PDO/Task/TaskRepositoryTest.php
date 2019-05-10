@@ -106,7 +106,7 @@ class TaskRepositoryTest extends TestCase
         $this->taskRepository->create($task);
         $userRepository->create($user);
         $taskId = $task->getId()->toString();
-        $this->taskRepository->assignUserToTask($taskId, $user->getUserName());
+        $this->taskRepository->assignTaskToUser($taskId, $user->getUserName());
         $actuallyAssignedUser = $this->taskQuery->getById($taskId)->user();
 
         $this->assertEquals($user->getUserName(), $actuallyAssignedUser);

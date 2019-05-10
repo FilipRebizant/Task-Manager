@@ -2,6 +2,8 @@
 
 namespace App\Domain\User;
 
+use App\Infrastructure\Exception\NotFoundException;
+
 interface UserRepositoryInterface
 {
     /**
@@ -17,12 +19,21 @@ interface UserRepositoryInterface
     /**
      * @param string $username
      * @return User
+     * @throws NotFoundException
      */
     public function getUserByUsername(string $username): User;
 
     /**
-     * @param string $email
-     * @return User
+     * @param string $username
+     * @return bool
+     * @throws NotFoundException
      */
-    public function getUserByEmail(string $email): User;
+    public function checkIfUsernameExists(string $username): bool;
+
+    /**
+     * @param string $username
+     * @return bool
+     * @throws NotFoundException
+     */
+    public function checkIfEmailExists(string $username): bool;
 }
