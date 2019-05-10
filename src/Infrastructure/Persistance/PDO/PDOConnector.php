@@ -36,7 +36,7 @@ class PDOConnector
         } else {
             try {
                 $this->connection = new PDO(
-                    'mysql:host=172.20.0.5;dbname=task-manager',
+                    'mysql:host=db;dbname=task-manager',
                     'root',
                     'password',
                     $this->settings
