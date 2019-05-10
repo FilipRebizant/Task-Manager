@@ -98,13 +98,20 @@ class TaskController
                 (string)$request->get("description")
             );
             $this->commandBus->handle($command);
-        } catch (InvalidArgumentException|NotFoundException $e) {
+        } catch (InvalidArgumentException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 400,
                     "message" => $e->getMessage(),
                 ],
-            ], $e->getCode());
+            ], 400);
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 404,
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
         }
 
         return new JsonResponse(['result' => 'Task has been created.'], 201);
@@ -125,7 +132,7 @@ class TaskController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 404,
                     "message" => $e->getMessage(),
                 ],
             ], 404);
@@ -146,10 +153,10 @@ class TaskController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 404,
                     "message" => $e->getMessage(),
                 ],
-            ], $e->getCode());
+            ], 404);
         }
 
         return new JsonResponse(["response" => "Task has been deleted."], 200);
@@ -164,13 +171,20 @@ class TaskController
         try {
             $command = new ChangeTaskStatusCommand($request->get('taskId'), $request->get('status'));
             $this->commandBus->handle($command);
-        } catch (InvalidStatusOrderException|InvalidArgumentException|NotFoundException $e) {
+        } catch (InvalidStatusOrderException|InvalidArgumentException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 400,
                     "message" => $e->getMessage(),
                 ],
-            ], $e->getCode());
+            ], 400);
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 404,
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
         }
 
         return new JsonResponse(["response" => "Status has been changed."], 200);

@@ -57,10 +57,10 @@ class UserController
         } catch (InvalidArgumentException|UserAlreadyExistsException|EmailAlreadyExistsException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 400,
                     "message" => $e->getMessage(),
                 ]
-            ], $e->getCode());
+            ], 400);
         }
 
         return new JsonResponse(["result" => "User has been added"], 201);
@@ -79,10 +79,10 @@ class UserController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 404,
                     "message" => $e->getMessage(),
                 ]
-            ], $e->getCode());
+            ], 404);
         }
 
         return new JsonResponse($jsonUser, 200);
@@ -104,10 +104,10 @@ class UserController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 404,
                     "message" => $e->getMessage(),
                 ]
-            ], $e->getCode());
+            ], 404);
         }
 
         return new JsonResponse(["users" => $jsonUsersList], 200);
@@ -125,10 +125,10 @@ class UserController
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
-                    "status" => $e->getCode(),
+                    "status" => 404,
                     "message" => $e->getMessage(),
                 ]
-            ], $e->getCode());
+            ], 404);
         }
 
         return new JsonResponse(["result" => "User has been deleted"], 200);
