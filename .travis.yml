@@ -1,7 +1,7 @@
 language: php
 
 env:
-  - DB=localhost
+  - DB_HOST=localhost
 
 php:
   - '7.2'

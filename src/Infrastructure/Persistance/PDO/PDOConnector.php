@@ -24,9 +24,9 @@ class PDOConnector
 
         try {
             $this->connection = new PDO(
-                'mysql:host=' . getenv('DB') . ';dbname=task-manager',
-                'root',
-                'password',
+                'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
+                getenv('DB_USER'),
+                getenv('DB_PASS'),
                 $this->settings
             );
         } catch (\Exception $e) {
