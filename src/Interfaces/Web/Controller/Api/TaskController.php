@@ -139,8 +139,7 @@ class TaskController
                     "message" => $e->getMessage(),
                 ],
             ], 400);
-        }
-        catch (NotFoundException $e) {
+        } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
                     "status" => 404,
