@@ -2,6 +2,9 @@ language: php
 
 env:
   - DB_HOST=localhost
+  - DB_NAME=task-manager
+  - DB_USER=root
+  - DB_PASS=new_password
 
 php:
   - '7.2'
