@@ -3,6 +3,7 @@
 namespace App\Domain\Task;
 
 use App\Domain\Task\ValueObject\Status;
+use App\Infrastructure\Exception\NotFoundException;
 
 interface TaskRepositoryInterface
 {
@@ -19,18 +20,29 @@ interface TaskRepositoryInterface
     /**
      * @param string $taskId
      * @param string $userId
+     * @throws NotFoundException
      */
-    public function assignUserToTask(string $taskId, string $userId): void;
+    public function assignTaskToUser(string $taskId, string $userId): void;
 
     /**
      * @param string $taskId
      * @param Status $status
+     * @throws NotFoundException
      */
     public function changeStatus(string $taskId, Status $status): void;
 
     /**
      * @param string $taskId
      * @return Task
+     * @throws NotFoundException
      */
-    public function getTaskByTaskId(string $taskId): Task;
+    public function getTaskById(string $taskId): Task;
+
+    /**
+     * @param string $taskId
+     * @param string $userId
+     * @return bool
+     * @throws NotFoundException
+     */
+    public function taskAlreadyAssignedToUser(string $taskId, string $userId): bool;
 }

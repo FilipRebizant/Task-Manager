@@ -14,7 +14,7 @@ use App\Application\NameInflector;
 use App\Application\CommandBus;
 use App\Application\Handler\CreateTaskHandler;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
-use App\Interfaces\Web\Controller\TaskController;
+use App\Interfaces\Web\Controller\Api\TaskController;
 use Psr\Container\ContainerInterface;
 
 return [

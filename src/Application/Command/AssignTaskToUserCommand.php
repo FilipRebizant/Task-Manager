@@ -4,7 +4,7 @@ namespace App\Application\Command;
 
 use App\Application\CommandInterface;
 
-class AssignUserToTaskCommand implements CommandInterface
+class AssignTaskToUserCommand implements CommandInterface
 {
     /** @var string */
     private $task;

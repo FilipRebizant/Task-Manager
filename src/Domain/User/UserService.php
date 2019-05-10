@@ -38,11 +38,11 @@ class UserService extends AbstractService
     public function createUser(CommandInterface $command): void
     {
         if ($this->userAlreadyExists(new Username($command->username()))) {
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException("Username already exists.");
         }
 
         if ($this->emailAlreadyExists(new Email($command->email()))) {
-            throw new EmailAlreadyExistsException();
+            throw new EmailAlreadyExistsException("Email address already exists.");
         }
 
         $user = new User(
@@ -63,7 +63,7 @@ class UserService extends AbstractService
     private function userAlreadyExists(Username $username): bool
     {
         try {
-            if ($this->userRepository->getUserByUsername($username)) {
+            if ($this->userRepository->checkIfUsernameExists($username)) {
                 return true;
             }
         } catch (NotFoundException $e) {
@@ -80,7 +80,7 @@ class UserService extends AbstractService
     private function emailAlreadyExists(Email $email): bool
     {
         try {
-            if ($this->userRepository->getUserByEmail($email)) {
+            if ($this->userRepository->checkIfEmailExists($email)) {
                 return true;
             }
         } catch (NotFoundException $e) {

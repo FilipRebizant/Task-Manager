@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistance\PDO\Task;
 
+use App\Domain\Task\Exception\UserAlreadyAssignedException;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Description;
@@ -20,6 +21,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     /**
      * TaskRepository constructor.
+     *
      * @param PDOConnector $pdo
      */
     public function __construct(PDOConnector $pdo)
@@ -84,9 +86,10 @@ class TaskRepository implements TaskRepositoryInterface
 
     /**
      * @param string $taskId
-     * @param string $userId
+     * @param string $username
+     * @throws NotFoundException
      */
-    public function assignUserToTask(string $taskId, string $username): void
+    public function assignTaskToUser(string $taskId, string $username): void
     {
         $sql = "UPDATE tasks
                 SET user_id = (SELECT id FROM users WHERE username = :username)
@@ -94,7 +97,6 @@ class TaskRepository implements TaskRepositoryInterface
         ";
 
         $taskId = Uuid::fromString($taskId)->getBytes();
-
         $this->pdo->beginTransaction();
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
@@ -103,6 +105,7 @@ class TaskRepository implements TaskRepositoryInterface
         ]);
 
         $result = $stmt->rowCount();
+
         if (!$result) {
             throw new NotFoundException("Task was not found.");
         }
@@ -113,6 +116,7 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * @param string $taskId
      * @param Status $status
+     * @throws NotFoundException
      */
     public function changeStatus(string $taskId, Status $status): void
     {
@@ -138,12 +142,13 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * @param string $taskId
      * @return Task
+     * @throws NotFoundException
      * @throws \App\Domain\Exception\InvalidArgumentException
      */
-    public function getTaskByTaskId(string $taskId): Task
+    public function getTaskById(string $taskId): Task
     {
         $taskIdBytes = Uuid::fromString($taskId)->getBytes();
-        $sql = "SELECT * FROM tasks WHERE id LIKE :id";
+        $sql = "SELECT * FROM tasks WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $taskIdBytes]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -165,5 +170,33 @@ class TaskRepository implements TaskRepositoryInterface
         );
 
         return $task;
+    }
+
+    /**
+     * @param string $taskId
+     * @param string $username
+     * @return bool
+     * @throws UserAlreadyAssignedException
+     */
+    public function taskAlreadyAssignedToUser(string $taskId, string $username): bool
+    {
+        $sql = "SELECT count('user_id') 
+                FROM tasks
+                LEFT JOIN users ON tasks.user_id = users.id 
+                WHERE tasks.id = :id AND users.username = :username
+                ";
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'id' => Uuid::fromString($taskId)->getBytes(),
+            'username' => $username,
+        ]);
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        if ($result) {
+            throw new UserAlreadyAssignedException("User is already assigned to task");
+        }
+
+        return true;
     }
 }

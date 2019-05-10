@@ -160,7 +160,7 @@ class Task
 
             return $this;
         } else {
-            throw new InvalidStatusOrderException();
+            throw new InvalidStatusOrderException("Invalid status order.");
         }
     }
 

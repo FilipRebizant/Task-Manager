@@ -25,11 +25,12 @@ class ChangeTaskStatusHandler implements HandlerInterface
     /**
      * @param CommandInterface $command
      * @throws \App\Domain\Exception\InvalidArgumentException
+     * @throws \App\Domain\Task\Exception\InvalidStatusOrderException
      */
     public function handle(CommandInterface $command): void
     {
         $status = new Status($command->status());
-        $task = $this->taskRepository->getTaskByTaskId($command->taskId());
+        $task = $this->taskRepository->getTaskById($command->taskId());
         $task->changeStatus($status);
 
         $this->taskRepository->changeStatus($command->taskId(), $status);

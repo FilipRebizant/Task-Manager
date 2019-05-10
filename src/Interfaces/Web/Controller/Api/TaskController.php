@@ -2,16 +2,18 @@
 
 namespace App\Interfaces\Web\Controller\Api;
 
-use App\Application\Command\AssignUserToTaskCommand;
+use App\Application\Command\AssignTaskToUserCommand;
 use App\Application\Command\ChangeTaskStatusCommand;
 use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBus;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
+use App\Domain\Task\Exception\UserAlreadyAssignedException;
 use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
+use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -20,18 +22,21 @@ class TaskController
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var */
+    /** @var TaskQuery*/
     private $taskQuery;
 
+    /** @var TaskService  */
+    private $taskService;
     /**
      * TaskController constructor.
      *
      * @param CommandBus $commandBus
      */
-    public function __construct(CommandBus $commandBus, TaskQuery $taskQuery)
+    public function __construct(CommandBus $commandBus, TaskQuery $taskQuery, TaskService $taskService)
     {
         $this->commandBus = $commandBus;
         $this->taskQuery = $taskQuery;
+        $this->taskService = $taskService;
     }
 
     /**
@@ -43,10 +48,9 @@ class TaskController
         try {
             $tasksList = $this->taskQuery->getAll();
             $jsonTasksList = [];
-            $taskService = new TaskService();
 
             foreach ($tasksList as $task) {
-                array_push($jsonTasksList, $taskService->dismount($task));
+                array_push($jsonTasksList, $this->taskService->dismount($task));
             }
         } catch (NotFoundException $e) {
             return new JsonResponse([
@@ -69,8 +73,7 @@ class TaskController
     {
         try {
             $task = $this->taskQuery->getById($request->get('id'));
-            $taskService = new TaskService();
-            $jsonTask = $taskService->dismount($task);
+            $jsonTask = $this->taskService->dismount($task);
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
@@ -114,7 +117,7 @@ class TaskController
             ], 404);
         }
 
-        return new JsonResponse(['result' => 'Task has been created.'], 201);
+        return new JsonResponse(['result' => 'Task has been created'], 201);
     }
 
     /**
@@ -124,12 +127,20 @@ class TaskController
     public function assignTaskToUser(Request $request): JsonResponse
     {
         try {
-            $command = new AssignUserToTaskCommand(
+            $command = new AssignTaskToUserCommand(
                 $request->get('id'),
                 $request->get('username')
             );
             $this->commandBus->handle($command);
-        } catch (NotFoundException $e) {
+        } catch (UserAlreadyAssignedException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 400,
+                    "message" => $e->getMessage(),
+                ],
+            ], 400);
+        }
+        catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
                     "status" => 404,
@@ -159,7 +170,7 @@ class TaskController
             ], 404);
         }
 
-        return new JsonResponse(["response" => "Task has been deleted."], 200);
+        return new JsonResponse(["response" => "Task has been deleted"], 200);
     }
 
     /**
@@ -169,7 +180,7 @@ class TaskController
     public function changeStatus(Request $request): JsonResponse
     {
         try {
-            $command = new ChangeTaskStatusCommand($request->get('taskId'), $request->get('status'));
+            $command = new ChangeTaskStatusCommand($request->get('id'), $request->get('status'));
             $this->commandBus->handle($command);
         } catch (InvalidStatusOrderException|InvalidArgumentException $e) {
             return new JsonResponse([
@@ -187,6 +198,6 @@ class TaskController
             ], 404);
         }
 
-        return new JsonResponse(["response" => "Status has been changed."], 200);
+        return new JsonResponse(["response" => "Status has been changed"], 200);
     }
 }
