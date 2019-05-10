@@ -19,7 +19,6 @@ class PDOConnector
     {
         $this->settings = [
             PDO::ATTR_DEFAULT_FETCH_MODE, 'FETCH_ASSOC',
-            PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION,
         ];
 
         try {
