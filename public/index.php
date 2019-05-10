@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -11,7 +12,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 
 require_once '../vendor/autoload.php';
+require_once '../config/bootstrap.php';
 $container = require_once __DIR__ . '/../config/dependency_injection.php';
+
 $fileLocator = new FileLocator(__DIR__ . '/../config');
 $loader = new YamlFileLoader($fileLocator);
 $routes = $loader->load('routes.yaml');

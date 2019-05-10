@@ -6,7 +6,7 @@ use PDO;
 
 class PDOConnector
 {
-    /** @var PDO  */
+    /** @var PDO */
     private $connection;
 
     /** @var array */
@@ -22,28 +22,15 @@ class PDOConnector
             PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION,
         ];
 
-        if (getenv('CI')) {
-            try {
-                $this->connection = new PDO(
-                    'mysql:host=localhost;dbname=task-manager',
-                    'root',
-                    'new_password',
-                    $this->settings
-                );
-            } catch (\Exception $e) {
-                echo "Connection error: " . $e->getMessage();
-            }
-        } else {
-            try {
-                $this->connection = new PDO(
-                    'mysql:host=db;dbname=task-manager',
-                    'root',
-                    'password',
-                    $this->settings
-                );
-            } catch (\Exception $e) {
-                echo "Connection error: " . $e->getMessage();
-            }
+        try {
+            $this->connection = new PDO(
+                'mysql:host=' . getenv('DB') . ';dbname=task-manager',
+                'root',
+                'password',
+                $this->settings
+            );
+        } catch (\Exception $e) {
+            echo "Connection error: " . $e->getMessage();
         }
     }
 
