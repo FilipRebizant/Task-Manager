@@ -54,7 +54,7 @@ class UserQuery implements UserQueryInterface
         $tasksResult = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("User was not found.", 404);
+            throw new NotFoundException("User was not found.");
         }
 
         $id = Uuid::fromBytes($result['id']);
@@ -113,7 +113,7 @@ class UserQuery implements UserQueryInterface
         $tasksResults = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$results) {
-            throw new NotFoundException("Users were not found.", 404);
+            throw new NotFoundException("Users were not found.");
         }
 
         /**

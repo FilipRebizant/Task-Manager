@@ -76,7 +76,7 @@ class TaskRepository implements TaskRepositoryInterface
         $stmt->execute(['id' => $taskId]);
         $result = $stmt->rowCount();
         if (!$result) {
-            throw new NotFoundException("Task was not found.", 404);
+            throw new NotFoundException("Task was not found.");
         }
 
         $this->pdo->commit();
@@ -104,7 +104,7 @@ class TaskRepository implements TaskRepositoryInterface
 
         $result = $stmt->rowCount();
         if (!$result) {
-            throw new NotFoundException("Task was not found.", 404);
+            throw new NotFoundException("Task was not found.");
         }
 
         $this->pdo->commit();
@@ -129,7 +129,7 @@ class TaskRepository implements TaskRepositoryInterface
         ]);
         $result = $stmt->rowCount();
         if (!$result) {
-            throw new NotFoundException("Task was not found.", 404);
+            throw new NotFoundException("Task was not found.");
         }
 
         $this->pdo->commit();
@@ -149,7 +149,7 @@ class TaskRepository implements TaskRepositoryInterface
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("Task was not found.", 404);
+            throw new NotFoundException("Task was not found.");
         }
 
         $id = Uuid::fromBytes($result['id']);
