@@ -2,79 +2,53 @@
 
 namespace App\Tests\Domain\User\ValueObject;
 
-use App\Domain\User\Exception\InvalidEmailException;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase
 {
-    public function testCanCreateValidEmailAddress()
-    {
-        $email = new Email('validemail_2000@gmail.com');
-
-        $this->assertEquals('validemail_2000@gmail.com', $email);
+    public function wrongEmailsProvider() {
+        return [
+            'providing empty string' => [''],
+            'invalid email address' => ['invalid_email_address'],
+            'providing space at the begin' => [' wrong@gmail.com'],
+            'providing number at the begin' => ['9wrong@gmail.com'],
+            'providing space after after domain' => ['wrong@gmail .com'],
+            'providing numbers at the end' => ['wrongemail@gmail.com3323'],
+            'providing numbers at the end of two part domain' => ['wrongemail@gmail.co.uk2323'],
+            'providing special characters before domain' => ['wrong$%^@gmail.com'],
+            'providing special characters after domain' => ['wrong@$%^gmail.com'],
+            'providing special characters at the end' => ['wrong@gmail.com$%^'],
+        ];
     }
 
-    public function testCanCreateEmailAddressWhenHaveDot()
-    {
-        $email = new Email('valid.email_2000@gmail.com');
-
-        $this->assertEquals('valid.email_2000@gmail.com', $email);
+    public function validEmailsProvider() {
+        return [
+            'email with numbers' => ['validemail_2000@gmail.com'],
+            'with dot' => ['valid.email_2000@gmail.com'],
+            'two part domain' => ['validEmail@gmail.co.uk'],
+        ];
     }
 
-    public function testCanCreateValidEmailAddressWithTwoPartDomain()
+    /**
+     * @oaram string $email
+     * @dataProvider wrongEmailsProvider
+     * @throws InvalidArgumentException
+     */
+    public function testEmailExceptions($email)
     {
-        $email = new Email('validEmail@gmail.co.uk');
+        $this->expectException(InvalidArgumentException::class);
 
-        $this->assertEquals('validEmail@gmail.co.uk', $email);
+        new Email($email);
     }
 
-    public function testWillThrowExceptionWhenProvidingEmptyString()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email('');
-    }
-
-    public function testWillThrowExceptionWhenProvidingWrongEmail()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email('invalid_email_address');
-    }
-
-    public function testWillThrowExceptionWhenProvidingSpaceAtTheBegin()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email(' wrong@gmail.com');
-    }
-
-    public function testWillThrowExceptionWhenProvidingNumberAtTheBegin()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email('9wrong@gmail.com');
-    }
-
-    public function testWillThrowExceptionWhenProvidingSpaceAfterDomain()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email('wrong@gmail .com');
-    }
-
-    public function testWillThrowExceptionWhenProvidingNumbersAtTheEnd()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email('wrongemail@gmail.com3323');
-    }
-
-    public function testWillThrowExceptionWhenProvidingNumbersAtTheEndOfTwoPartDomain()
-    {
-        $this->expectException(InvalidEmailException::class);
-
-        new Email('wrongemail@gmail.co.uk2323');
+    /**
+     * @param string $email
+     * @dataProvider validEmailsProvider
+     * @throws InvalidArgumentException
+     */
+    public function testValidEmails($email) {
+        $this->assertEquals($email, new Email($email));
     }
 }
