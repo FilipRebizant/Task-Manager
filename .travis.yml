@@ -29,14 +29,10 @@ addons:
       - mysql-client
 
 before_install:
-  - echo \${DB_USER}
-  - echo '$DB_USER'
-  - echo \{DB_USER}
-  - echo \DB_USER
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD(${DB_PASS}) where User=${DB_USER}; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
   - sudo mysql_upgrade -u root -pnew_password
   - sudo service mysql restart
-  - mysql -u root --password="new_password" < tests/travis_database.sql
+  - mysql -u root --password=${DB_PASS} < tests/travis_database.sql
 
 notifications:
   email: false
