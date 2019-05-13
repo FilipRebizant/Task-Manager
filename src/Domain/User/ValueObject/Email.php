@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User\ValueObject;
 
-use App\Domain\User\Exception\InvalidEmailException;
+use App\Domain\Exception\InvalidArgumentException;
 
 class Email
 {
@@ -12,15 +12,15 @@ class Email
     private $email;
 
     /**
-     * Username constructor.
+     * Email constructor.
      *
      * @param string $email
-     * @throws InvalidEmailException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $email)
     {
         if (!$this->isValid($email)) {
-            throw new InvalidEmailException("Provided email address is invalid.");
+            throw new InvalidArgumentException("Provided email address is invalid");
         }
 
         $this->email = $email;

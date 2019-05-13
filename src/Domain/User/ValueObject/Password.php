@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User\ValueObject;
 
-use App\Domain\User\Exception\InvalidPasswordException;
+use App\Domain\Exception\InvalidArgumentException;
 
 class Password
 {
@@ -16,13 +16,14 @@ class Password
 
     /**
      * Password constructor.
+     *
      * @param string $password
-     * @throws InvalidPasswordException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $password)
     {
         if (!$this->isValid($password)) {
-            throw new InvalidPasswordException("Provided password is invalid.");
+            throw new InvalidArgumentException("Provided password is invalid");
         }
 
         $this->password = $password;
