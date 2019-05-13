@@ -13,7 +13,6 @@ use App\Domain\Task\Exception\UserAlreadyAssignedException;
 use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
-use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

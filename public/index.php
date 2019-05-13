@@ -1,43 +1,27 @@
 <?php
 
-use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Kernel;
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Routing\Loader\YamlFileLoader;
 
-require_once __DIR__ . '../config/bootstrap.php';
-$container = require_once __DIR__ . '/../config/dependency_injection.php';
+require dirname(__DIR__).'/config/bootstrap.php';
 
-$fileLocator = new FileLocator(__DIR__ . '/../config');
-$loader = new YamlFileLoader($fileLocator);
-$routes = $loader->load('routes.yaml');
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 
-$request = Request::createFromGlobals();
-$context = new RequestContext();
-
-$context->fromRequest($request);
-
-$matcher = new UrlMatcher($routes, $context);
-
-$request->attributes->add($matcher->match($request->getPathInfo()));
-
-$method = $request->attributes->get(['_controller'][0]);
-
-$response = $container->call($method, ['request' => $request]);
-try{
-
-} catch (ResourceNotFoundException $e) {
-    $response = new Response('Page not found.', 404);
-} catch (MethodNotAllowedException $e) {
-    $response = new JsonResponse(['error' => 'Http method not supported.'], 405);
-} catch (\Exception $e) {
-    $response = new Response('An error occurred.', 500);
+    Debug::enable();
 }
 
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+}
+
+if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
+    Request::setTrustedHosts([$trustedHosts]);
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
 $response->send();
+$kernel->terminate($request, $response);
