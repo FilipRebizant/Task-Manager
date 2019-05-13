@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Persistance\PDO;
 
-use function DI\get;
 use PDO;
 
 class PDOConnector
@@ -23,7 +22,7 @@ class PDOConnector
         ];
 
         try {
-            var_dump(getenv("DB_HOST"), getenv('DB_NAME'), getenv('DB_USER'), get('DB_PASS'));
+            var_dump(getenv("DB_HOST"), getenv('DB_NAME'), getenv('DB_USER'), getenv('DB_PASS'));
             $this->connection = new PDO(
                 'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
                 getenv('DB_USER'),
