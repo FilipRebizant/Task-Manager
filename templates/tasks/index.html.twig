@@ -2,4 +2,24 @@
 
 {% block body %}
     <h1>Tasks</h1>
+
+    <div id="tasksContainer"></div>
+    <script type="application/javascript">
+
+        fetch('/api/tasks')
+            .then(function (response) {
+                return response.json();
+            }).then(function (response) {
+                console.log(response);
+                const markup = `
+                    <ul class="tasks">
+                        ${response.tasks.map(
+                            task => `<li class="task">${task.title} status: ${task.status} Assigned User: ${task.user}</li>`
+                        ).join(' ')}
+                    </ul>
+                `;
+
+                document.getElementById('tasksContainer').innerHTML = markup;
+            });
+    </script>
 {% endblock %}
