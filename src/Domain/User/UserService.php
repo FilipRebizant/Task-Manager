@@ -30,10 +30,8 @@ class UserService extends AbstractService
     /**
      * @param CommandInterface $command
      * @throws EmailAlreadyExistsException
-     * @throws Exception\InvalidEmailException
-     * @throws Exception\InvalidPasswordException
-     * @throws Exception\InvalidUsernameException
      * @throws UserAlreadyExistsException
+     * @throws \App\Domain\Exception\InvalidArgumentException
      */
     public function createUser(CommandInterface $command): void
     {

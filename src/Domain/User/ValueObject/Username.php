@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User\ValueObject;
 
-use App\Domain\User\Exception\InvalidUsernameException;
+use App\Domain\Exception\InvalidArgumentException;
 
 class Username
 {
@@ -13,13 +13,14 @@ class Username
 
     /**
      * Username constructor.
+     *
      * @param string $username
-     * @throws InvalidUsernameException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $username)
     {
         if (!$this->isValid($username)) {
-            throw new InvalidUsernameException("Provided username is invalid.");
+            throw new InvalidArgumentException("Provided username is invalid");
         }
 
         $this->username = $username;

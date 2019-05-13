@@ -2,7 +2,7 @@
 
 namespace App\Tests\Domain\User\ValueObject;
 
-use App\Domain\User\Exception\InvalidPasswordException;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\ValueObject\Password;
 use PHPUnit\Framework\TestCase;
 
@@ -16,11 +16,11 @@ class PasswordTest extends TestCase
     }
 
     /**
-     * @throws InvalidPasswordException
+     * @throws InvalidArgumentException
      */
     public function testExpectThrowInvalidPasswordExceptionWhenProvidingTooShortPassword()
     {
-        $this->expectException(InvalidPasswordException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new Password("short");
     }
