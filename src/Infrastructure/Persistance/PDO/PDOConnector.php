@@ -22,7 +22,6 @@ class PDOConnector
         ];
 
         try {
-            var_dump(getenv("DB_HOST"), getenv('DB_NAME'), getenv('DB_USER'), getenv('DB_PASS'));
             $this->connection = new PDO(
                 'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
                 getenv('DB_USER'),
