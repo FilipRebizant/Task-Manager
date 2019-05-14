@@ -6,32 +6,36 @@ use App\Application\Command\AssignTaskToUserCommand;
 use App\Application\Command\ChangeTaskStatusCommand;
 use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
-use App\Application\CommandBus;
+use App\Application\CommandBusInterface;
+use App\Application\Query\Task\TaskQueryInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\Exception\UserAlreadyAssignedException;
 use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TaskController
 {
-    /** @var CommandBus */
+    /** @var CommandBusInterface */
     private $commandBus;
 
-    /** @var TaskQuery*/
+    /** @var TaskQueryInterface*/
     private $taskQuery;
 
     /** @var TaskService  */
     private $taskService;
+
     /**
      * TaskController constructor.
      *
-     * @param CommandBus $commandBus
+     * @param CommandBusInterface $commandBus
+     * @param TaskQueryInterface $taskQuery
+     * @param TaskService $taskService
+     *
      */
-    public function __construct(CommandBus $commandBus, TaskQuery $taskQuery, TaskService $taskService)
+    public function __construct(CommandBusInterface $commandBus, TaskQueryInterface $taskQuery, TaskService $taskService)
     {
         $this->commandBus = $commandBus;
         $this->taskQuery = $taskQuery;

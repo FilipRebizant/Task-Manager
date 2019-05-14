@@ -1,0 +1,10 @@
+.tasks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.tasks .card {
+    width:18rem;
+    margin-bottom: 1rem;
+}

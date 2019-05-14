@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Users</h1>
+    <h1 class="text-center">Users</h1>
 
-    <div id="usersContainer"></div>
+    <div id="usersContainer">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <script type="application/javascript">
 
         fetch('/api/users')

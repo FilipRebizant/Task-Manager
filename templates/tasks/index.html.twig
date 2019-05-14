@@ -1,25 +1,98 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style>
+        .tasks {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .tasks .card {
+            width:18rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>Tasks</h1>
+    <h2 class="text-center mt-5">Add task</h2>
 
-    <div id="tasksContainer"></div>
+        <form action="{{ path('createTask') }}" method="post" id="createTaskForm">
+            <div class="form-group">
+                <label for="taskTitle">Title</label>
+                <input type="text" class="form-control" id="taskTitle">
+            </div>
+            <div class="form-group">
+                <label for="taskPriority">Task priority</label>
+                <input class="form-control" type="number" id="taskPriority">
+            </div>
+
+            <div class="form-group">
+                <label for="taskPriority">Assign user</label>
+                <select class="form-control" id="taskPriority">
+                    <option>1</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Add task</button>
+            </div>
+        </form>
+
+
+    <h2 class="text-center">Tasks</h2>
+    <div id="tasksContainer">
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+
     <script type="application/javascript">
+        let createTaskForm = document.getElementById('createTaskForm');
+        createTaskForm.addEventListener('submit', addTask);
 
-        fetch('/api/tasks')
+        function addTask () {
+            event.preventDefault();
+            console.log('Add task');
+            fetch('/api/tasks', {
+                method: 'POST'
+            })
             .then(function (response) {
                 return response.json();
             }).then(function (response) {
                 console.log(response);
+                loadTasks();
+            }).catch(error => console.error("Error", error)).then(response => console.log(response));
+
+        }
+
+        function loadTasks() {
+            fetch('/api/tasks')
+                .then(function (response) {
+                    return response.json();
+                }).then(function (response) {
+                console.log(response);
                 const markup = `
-                    <ul class="tasks">
+                    <ul class="tasks col-sm">
                         ${response.tasks.map(
-                            task => `<li class="task">${task.title} status: ${task.status} Assigned User: ${task.user}</li>`
-                        ).join(' ')}
+                    task => `
+                        <li class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">${task.title}</h5>
+                            <p class="card-text">Assigned User: ${task.user}</p>
+                            <p class="card-text">Priority: ${task.priority}</p>
+                            <p class="card-text">Status: <span class="font-weight-bold">${task.status}</span></p>
+                            <a href="{ path('home') }" class="btn btn-primary">Go somewhere</a>
+                          </div>
+                        </li>
+                    `).join(' ')}
                     </ul>
                 `;
-
                 document.getElementById('tasksContainer').innerHTML = markup;
             });
+        }
     </script>
 {% endblock %}

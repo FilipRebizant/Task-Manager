@@ -2,36 +2,29 @@
 
 namespace App\Application;
 
-use DI\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class HandlerFactory
 {
-    /** @var Container */
+    /** @var ContainerInterface */
     private $container;
 
-    public function __construct()
+    /**
+     * HandlerFactory constructor.
+     *
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
-        if (array_key_exists('container', $GLOBALS)) {
-            $this->setDIContainer($GLOBALS['container']);
-        }
+        $this->container = $container;
     }
 
     /**
      * @param string $handler
      * @return HandlerInterface
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      */
     public function make(string $handler): HandlerInterface
     {
-        return $this->container->make($handler);
-    }
-
-    /**
-     * @param Container $container
-     */
-    public function setDIContainer(Container $container): void
-    {
-        $this->container = $container;
+        return $this->container->get($handler);
     }
 }
