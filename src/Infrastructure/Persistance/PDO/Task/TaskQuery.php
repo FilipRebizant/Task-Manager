@@ -74,6 +74,7 @@ class TaskQuery implements TaskQueryInterface
                 FROM tasks
                 LEFT JOIN users
                 ON tasks.user_id = users.id
+                ORDER BY created_at DESC
                 ";
 
         $stmt = $this->pdo->query($sql);

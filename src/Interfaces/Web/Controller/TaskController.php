@@ -19,8 +19,6 @@ class TaskController extends AbstractController
     {
         $users = $this->userQuery->getAll();
 
-        var_dump($users);
-
         return $this->render('tasks/index.html.twig', ['users' => $users]);
     }
 }

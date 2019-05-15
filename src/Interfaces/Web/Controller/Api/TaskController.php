@@ -96,12 +96,16 @@ class TaskController
     public function createTask(Request $request): JsonResponse
     {
         try {
+//            $request->json
+            $data = json_decode($request->getContent());
+//            var_dump($data->title);
+//            $data
+//            return new JsonResponse($data, 200);
             $command = new CreateTaskCommand(
-                (string)$request->get("title"),
-                (string)$request->get("username"),
-                (string)$request->get("status"),
-                (int)$request->get("priority"),
-                (string)$request->get("description")
+                (string)$data->title,
+                (string)$data->username,
+                (int)$data->priority,
+                (string)$data->description
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException $e) {

@@ -37,21 +37,20 @@ class CreateTaskHandler implements HandlerInterface
     /**
      * @param CommandInterface $command
      * @throws \App\Domain\Exception\InvalidArgumentException
-     * @throws \App\Domain\User\Exception\InvalidEmailException
-     * @throws \App\Domain\User\Exception\InvalidPasswordException
-     * @throws \App\Domain\User\Exception\InvalidUsernameException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */
     public function handle(CommandInterface $command): void
     {
         if (!empty($command->user())) {
             $user = $this->userRepository->getUserByUsername(new Username($command->user()));
+        } else {
+            $user = null;
         }
 
         $task = new Task(
             Uuid::uuid4(),
             new Title($command->title()),
-            new Status($command->status()),
+            new Status("Todo"),
             $user,
             new Priority($command->priority()),
             new Description($command->description())
