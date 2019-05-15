@@ -37,7 +37,8 @@
 
 
     <h2 class="text-center">Tasks</h2>
-    <div id="changeStatusErrorContainer" class="text-center alert alert-danger mb-3 hide"></div>
+    <div id="changeStatusErrorContainer" class="justify-content-center alert alert-danger mb-3 d-none"></div>
+    <div id="changeStatusSuccessContainer" class="justify-content-center alert alert-success mb-3 d-none"></div>
     <div id="tasksContainer">
         <div class="row">
             <div id="todo" class="col-sm-4">
@@ -123,18 +124,19 @@
                         ${response.tasks.map(
                     task => `
                         <div class="col-sm-12 mb-3">
-                        <div class="card text-center">
-                            <div class="card-header d-flex justify-content-between">
-                                <p class="card-text">${task.user == null && task.status == 'Todo' ? "<a href=\"{ path('home') }\" class=\"card-link\">Assign to me</a>" : task.user}</p>
-                                <p class="card-text">Priority: ${task.priority}</p>
+                            <div class="card text-center">
+                                <div class="card-header d-flex justify-content-between">
+                                    <a href="" class="deleteTaskButton" data-task-status="${task.status}" data-task-id="${task.id}">Delete</a>
+                                    <p class="card-text">${task.user == null && task.status === 'Todo' ? "<a href=\"{ path('home') }\" class=\"card-link\">Assign to me</a>" : task.user}</p>
+                                    <p class="card-text">Priority: ${task.priority}</p>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">${task.title}</h5>
+                                    <p class="card-text">Status: <span class="font-weight-bold">${task.status}</span></p>
+                                    <p class="card-text">${task.description}</p>
+                                    <button data-task-status="${task.status}" data-task-id="${task.id}" class="btn btn-primary changeStatusButton">${task.status === "Todo" ? "Move to Pending" : task.status === "Pending" ? "Move to Done" : "Need work"}</button>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${task.title}</h5>
-                                <p class="card-text">Status: <span class="font-weight-bold">${task.status}</span></p>
-                                <p class="card-text">${task.description}</p>
-                                <a href="" data-task-status="${task.status}" data-task-id="${task.id}"  class="btn btn-primary changeStatusButton">${task.status === "Todo" ? "Move to Pending" : task.status === "Pending" ? "Move to Done" : "Need work"}</a>
-                            </div>
-                        </div>
                         </div>
                     `).join(' ')}
 
@@ -150,12 +152,43 @@
             changeStatus(event);
         }, false);
 
-        function changeStatus(e) {
+        document.addEventListener('click', function (event) {
+            if (!event.target.matches('.deleteTaskButton')) return;
+            event.preventDefault();
+            deleteTask(event);
+        }, false);
 
+        function deleteTask(e) {
+            let id = e.target.getAttribute('data-task-id');
+            let status = e.target.getAttribute('data-task-status');
+
+            fetch(`/api/tasks/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (response) {
+                if (response.error) {
+                    errorContainer.classList.add('d-flex');
+                    errorContainer.innerText = response.error.message;
+                } else {
+                    loadTasks(status.toLowerCase());
+                }
+            });
+        }
+
+        loadTasks("todo");
+        loadTasks("pending");
+        loadTasks("done");
+
+        function changeStatus(e) {
             let id = e.target.getAttribute('data-task-id');
             let status = e.target.getAttribute('data-task-status');
             let errorContainer = document.getElementById('changeStatusErrorContainer');
             let toLoad = "todo";
+
             if (status === "Todo") {
                 status = "Pending";
                 toLoad = "todo";
@@ -176,14 +209,14 @@
                     id: id,
                     status: status
                 })
-            })
-                .then(function (response) {
-                    return response.json();
-                }).then(function (response) {
-                console.log(response);
+            }).then(function (response) {
+                return response.json();
+            }).then(function (response) {
                 if (response.error) {
+                    errorContainer.classList.add('d-flex');
                     errorContainer.innerText = response.error.message;
                 } else {
+                    errorContainer.classList.remove('d-flex');
                     loadTasks(status.toLowerCase());
                     loadTasks(toLoad);
                 }
