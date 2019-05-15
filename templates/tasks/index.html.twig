@@ -125,7 +125,7 @@
                         <div class="col-sm-12 mb-3">
                         <div class="card text-center">
                             <div class="card-header d-flex justify-content-between">
-                                <p class="card-text">${task.user == null ? "<a href=\"{ path('home') }\" class=\"card-link\">Assign to me</a>" : task.user}</p>
+                                <p class="card-text">${task.user == null && task.status == 'Todo' ? "<a href=\"{ path('home') }\" class=\"card-link\">Assign to me</a>" : task.user}</p>
                                 <p class="card-text">Priority: ${task.priority}</p>
                             </div>
                             <div class="card-body">

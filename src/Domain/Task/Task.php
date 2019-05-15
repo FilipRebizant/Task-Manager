@@ -6,6 +6,8 @@ namespace App\Domain\Task;
 
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
+use App\Domain\Task\Exception\UserAlreadyAssignedException;
+use App\Domain\Task\Exception\UserNotAssignedException;
 use App\Domain\Task\ValueObject\Title;
 use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
@@ -138,15 +140,15 @@ class Task
     /**
      * @param Status $status
      * @return Task
-     */
-
-    /**
-     * @param Status $status
-     * @return Task
      * @throws InvalidStatusOrderException
+     * @throws UserNotAssignedException
      */
     public function changeStatus(Status $status): Task
     {
+        if (!is_null($this->getAssignedUser())) {
+            throw new UserNotAssignedException("Can't change status of task without assigned user");
+        }
+
         if ($this->getStatus() == "Todo" && $status == "Pending") {
             $this->status = $status;
 
