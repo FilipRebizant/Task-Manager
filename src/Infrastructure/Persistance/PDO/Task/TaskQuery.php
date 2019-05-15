@@ -97,4 +97,41 @@ class TaskQuery implements TaskQueryInterface
             );
         }, $result);
     }
+
+    /**
+     * @param string $status
+     * @return array
+     */
+    public function getAllByStatus(string $status): array
+    {
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
+                FROM tasks
+                LEFT JOIN users
+                ON tasks.user_id = users.id
+                WHERE tasks.status = :status
+                ORDER BY created_at DESC
+                ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['status' => $status]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return array();
+        }
+
+        return array_map(function (array $result) {
+            return new TaskView(
+                Uuid::fromBytes($result['id'])->toString(),
+                $result['title'],
+                $result['status'],
+                $result['username'],
+                $result['priority'],
+                $result['description'],
+                $result['created_at'],
+                $result['updated_at']
+            );
+        }, $result);
+    }
+
 }

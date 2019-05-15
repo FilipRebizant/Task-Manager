@@ -46,10 +46,14 @@ class TaskController
      * @return JsonResponse
      * @throws \ReflectionException
      */
-    public function getTasks(): JsonResponse
+    public function getTasks(Request $request): JsonResponse
     {
         try {
-            $tasksList = $this->taskQuery->getAll();
+            if (!empty($request->get('status'))) {
+                $tasksList = $this->taskQuery->getAllByStatus($request->get('status'));
+            } else {
+                $tasksList = $this->taskQuery->getAll();
+            }
             $jsonTasksList = [];
 
             foreach ($tasksList as $task) {
@@ -186,7 +190,8 @@ class TaskController
     public function changeStatus(Request $request): JsonResponse
     {
         try {
-            $command = new ChangeTaskStatusCommand($request->get('id'), $request->get('status'));
+            $data = json_decode($request->getContent(), true);
+            $command = new ChangeTaskStatusCommand($data['id'], $data['status']);
             $this->commandBus->handle($command);
         } catch (InvalidStatusOrderException|InvalidArgumentException $e) {
             return new JsonResponse([
