@@ -11,6 +11,7 @@ use App\Application\Query\Task\TaskQueryInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\Exception\UserAlreadyAssignedException;
+use App\Domain\Task\Exception\UserNotAssignedException;
 use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
 use Symfony\Component\HttpFoundation\Request;
@@ -193,7 +194,7 @@ class TaskController
             $data = json_decode($request->getContent(), true);
             $command = new ChangeTaskStatusCommand($data['id'], $data['status']);
             $this->commandBus->handle($command);
-        } catch (InvalidStatusOrderException|InvalidArgumentException $e) {
+        } catch (InvalidStatusOrderException|InvalidArgumentException|UserNotAssignedException $e) {
             return new JsonResponse([
                 "error" => [
                     "status" => 400,

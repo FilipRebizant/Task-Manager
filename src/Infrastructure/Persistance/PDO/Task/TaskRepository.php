@@ -9,6 +9,10 @@ use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\ValueObject\Title;
+use App\Domain\User\User;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -147,27 +151,50 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function getTaskById(string $taskId): Task
     {
-        $taskIdBytes = Uuid::fromString($taskId)->getBytes();
-        $sql = "SELECT * FROM tasks WHERE id = :id";
+        $taskId = Uuid::fromString($taskId);
+        $sql = "
+                SELECT * 
+                FROM tasks
+                LEFT JOIN users
+                ON tasks.user_id = users.id 
+                WHERE tasks.id = :id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id' => $taskIdBytes]);
+        $stmt->execute(['id' => $taskId->getBytes()]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
             throw new NotFoundException("Task was not found.");
         }
 
-        $id = Uuid::fromBytes($result['id']);
+        if  ($result['username']) {
+            $user = new User(
+                Uuid::fromBytes($result['user_id']),
+                new Username($result['username']),
+                new Password($result['password']),
+                new Email($result['email']),
+                []
+            );
 
-        $task = new Task(
-            $id,
-            new Title($result['title']),
-            new Status($result['status']),
-            null,
-            new Priority($result['priority']),
-            new Description($result['description']),
-            $result['created_at']
-        );
+            $task = new Task(
+                $taskId,
+                new Title($result['title']),
+                new Status($result['status']),
+                $user,
+                new Priority($result['priority']),
+                new Description($result['description']),
+                $result['created_at']
+            );
+        } else {
+            $task = new Task(
+                $taskId,
+                new Title($result['title']),
+                new Status($result['status']),
+                null,
+                new Priority($result['priority']),
+                new Description($result['description']),
+                $result['created_at']
+            );
+        }
 
         return $task;
     }

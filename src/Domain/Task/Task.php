@@ -145,7 +145,7 @@ class Task
      */
     public function changeStatus(Status $status): Task
     {
-        if (!is_null($this->getAssignedUser())) {
+        if (is_null($this->getAssignedUser())) {
             throw new UserNotAssignedException("Can't change status of task without assigned user");
         }
 
