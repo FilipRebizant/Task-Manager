@@ -31,7 +31,10 @@
             <div class="form-group">
                 <label for="taskPriority">Assign user</label>
                 <select class="form-control" id="taskPriority">
-                    <option>1</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                        {{ dump(user) }}
+                    {% endfor %}
                 </select>
             </div>
 
