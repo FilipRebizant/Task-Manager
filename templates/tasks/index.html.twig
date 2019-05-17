@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Tasks{% endblock %}
+
 {% block body %}
     <h2 class="text-center mt-5">Add task</h2>
 
@@ -64,167 +66,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
-    <script type="application/javascript">
-        let createTaskForm = document.getElementById('createTaskForm');
-        createTaskForm.addEventListener('submit', addTask);
-
-        function addTask() {
-            event.preventDefault();
-
-            let title = document.getElementsByName('title')[0];
-            let priority = document.getElementsByName('priority')[0];
-            let username = document.getElementsByName('username')[0];
-            let description = document.getElementsByName('description')[0];
-            let errorContainer = document.getElementById('error');
-            let successContainer = document.getElementById('success');
-
-            let data = {
-                title: title.value,
-                priority: priority.value,
-                username: username.value,
-                description: description.value
-            };
-
-            fetch('/api/tasks', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(function (response) {
-                    return response.json();
-                }).then(function (response) {
-                if (response.error) {
-                    errorContainer.innerText = response.error.message;
-                } else {
-                    console.log(response);
-                    errorContainer.innerText = '';
-                    title.value = '';
-                    priority.value = '';
-                    username.value = '';
-                    description.value = '';
-                    successContainer.innerText = response.result;
-                    loadTasks("todo");
-                }
-            }).catch(function (error) {
-                errorContainer.innerText = error.error.message;
-            });
-        }
-
-        function loadTasks(taskStatus) {
-            fetch(`/api/tasks?status=${taskStatus}`)
-                .then(function (response) {
-                    return response.json();
-                }).then(function (response) {
-
-                const markup = `
-                    <div class="row">
-                        ${response.tasks.map(
-                    task => `
-                        <div class="col-sm-12 mb-3">
-                            <div class="card text-center">
-                                <div class="card-header d-flex justify-content-between">
-                                    <a href="" class="deleteTaskButton" data-task-status="${task.status}" data-task-id="${task.id}">Delete</a>
-                                    <p class="card-text">${task.user == null && task.status === 'Todo' ? "<a href=\"{ path('home') }\" class=\"card-link\">Assign to me</a>" : task.user}</p>
-                                    <p class="card-text">Priority: ${task.priority}</p>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">${task.title}</h5>
-                                    <p class="card-text">Status: <span class="font-weight-bold">${task.status}</span></p>
-                                    <p class="card-text">${task.description}</p>
-                                    <button data-task-status="${task.status}" data-task-id="${task.id}" class="btn btn-primary changeStatusButton">${task.status === "Todo" ? "Move to Pending" : task.status === "Pending" ? "Move to Done" : "Need work"}</button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join(' ')}
-
-                    </div>
-                `;
-                document.getElementById(taskStatus).innerHTML = markup;
-            });
-        };
-
-        document.addEventListener('click', function (event) {
-            if (!event.target.matches('.changeStatusButton')) return;
-            event.preventDefault();
-            changeStatus(event);
-        }, false);
-
-        document.addEventListener('click', function (event) {
-            if (!event.target.matches('.deleteTaskButton')) return;
-            event.preventDefault();
-            deleteTask(event);
-        }, false);
-
-        function deleteTask(e) {
-            let id = e.target.getAttribute('data-task-id');
-            let status = e.target.getAttribute('data-task-status');
-
-            fetch(`/api/tasks/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function (response) {
-                return response.json();
-            }).then(function (response) {
-                if (response.error) {
-                    errorContainer.classList.add('d-flex');
-                    errorContainer.innerText = response.error.message;
-                } else {
-                    loadTasks(status.toLowerCase());
-                }
-            });
-        }
-
-        loadTasks("todo");
-        loadTasks("pending");
-        loadTasks("done");
-
-        function changeStatus(e) {
-            let id = e.target.getAttribute('data-task-id');
-            let status = e.target.getAttribute('data-task-status');
-            let errorContainer = document.getElementById('changeStatusErrorContainer');
-            let toLoad = "todo";
-
-            if (status === "Todo") {
-                status = "Pending";
-                toLoad = "todo";
-            } else if (status === "Pending") {
-                status = "Done";
-                toLoad = "pending";
-            } else {
-                status = "Todo";
-                toLoad = "done"
-            }
-
-            fetch(`/api/tasks/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: id,
-                    status: status
-                })
-            }).then(function (response) {
-                return response.json();
-            }).then(function (response) {
-                if (response.error) {
-                    errorContainer.classList.add('d-flex');
-                    errorContainer.innerText = response.error.message;
-                } else {
-                    errorContainer.classList.remove('d-flex');
-                    loadTasks(status.toLowerCase());
-                    loadTasks(toLoad);
-                }
-            });
-        }
-
-        loadTasks("todo");
-        loadTasks("pending");
-        loadTasks("done");
-    </script>
+{% block javascripts %}
+{#<script type="application/javascript" src="{{ asset('build/tasks.js') }}"></script>#}
+    {{ encore_entry_script_tags('tasks') }}
 {% endblock %}
