@@ -51,7 +51,7 @@ class UserView
      */
     public function username(): string
     {
-        return $this->id;
+        return $this->username;
     }
 
     /**

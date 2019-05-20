@@ -16,6 +16,7 @@ class TaskQuery implements TaskQueryInterface
 
     /**
      * TaskQuery constructor.
+     *
      * @param PDOConnector $pdo
      */
     public function __construct(PDOConnector $PDOConnector)
@@ -42,7 +43,7 @@ class TaskQuery implements TaskQueryInterface
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'id' => $idBytes
+            'id' => $idBytes,
         ]);
         $result = $stmt->fetch();
 
@@ -50,7 +51,7 @@ class TaskQuery implements TaskQueryInterface
             throw new NotFoundException("Task was not found.");
         }
 
-        $updatedAt = is_null($result['updated_at']) ? '': $result['updated_at'];
+        $updatedAt = is_null($result['updated_at']) ? '' : $result['updated_at'];
 
         return new TaskView(
             $idString,
@@ -74,6 +75,7 @@ class TaskQuery implements TaskQueryInterface
                 FROM tasks
                 LEFT JOIN users
                 ON tasks.user_id = users.id
+                ORDER BY created_at DESC
                 ";
 
         $stmt = $this->pdo->query($sql);
@@ -81,6 +83,42 @@ class TaskQuery implements TaskQueryInterface
 
         if (!$result) {
             throw new NotFoundException("No tasks were found.");
+        }
+
+        return array_map(function (array $result) {
+            return new TaskView(
+                Uuid::fromBytes($result['id'])->toString(),
+                $result['title'],
+                $result['status'],
+                $result['username'],
+                $result['priority'],
+                $result['description'],
+                $result['created_at'],
+                $result['updated_at']
+            );
+        }, $result);
+    }
+
+    /**
+     * @param string $status
+     * @return array
+     */
+    public function getAllByStatus(string $status): array
+    {
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
+                FROM tasks
+                LEFT JOIN users
+                ON tasks.user_id = users.id
+                WHERE tasks.status = :status
+                ORDER BY created_at DESC
+                ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['status' => $status]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return array();
         }
 
         return array_map(function (array $result) {

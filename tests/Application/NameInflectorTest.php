@@ -19,7 +19,7 @@ class NameInflectorTest extends TestCase
 
     public function testShouldGetHandlerNameFromCommand()
     {
-        $command = new CreateTaskCommand('Todo', null,"Todo" , 1,'Desc');
+        $command = new CreateTaskCommand('Todo', null, 1,'Desc');
 
         $handler = $this->inflector->inflect($command);
 

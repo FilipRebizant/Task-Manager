@@ -9,9 +9,6 @@ class CreateTaskCommand implements CommandInterface
     /** @var string */
     private $title;
 
-    /** @var string  */
-    private $status;
-
     /** @var int  */
     private $priority;
 
@@ -25,20 +22,17 @@ class CreateTaskCommand implements CommandInterface
      * CreateTaskCommand constructor.
      * @param string $title
      * @param string|null $user
-     * @param string $status
      * @param int $priority
      * @param string $description
      */
     public function __construct(
         string $title,
         ?string $user,
-        string $status,
         int $priority,
         string $description
     ) {
         $this->title = $title;
         $this->user = $user;
-        $this->status = $status;
         $this->priority = $priority;
         $this->description = $description;
     }
@@ -49,14 +43,6 @@ class CreateTaskCommand implements CommandInterface
     public function description(): string
     {
         return $this->description;
-    }
-
-    /**
-     * @return string
-     */
-    public function status(): string
-    {
-        return $this->status;
     }
 
     /**

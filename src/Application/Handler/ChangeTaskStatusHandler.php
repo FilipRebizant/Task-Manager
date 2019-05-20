@@ -26,6 +26,8 @@ class ChangeTaskStatusHandler implements HandlerInterface
      * @param CommandInterface $command
      * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Domain\Task\Exception\InvalidStatusOrderException
+     * @throws \App\Domain\Task\Exception\UserNotAssignedException
+     * @throws \App\Infrastructure\Exception\NotFoundException
      */
     public function handle(CommandInterface $command): void
     {

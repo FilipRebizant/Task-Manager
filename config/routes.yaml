@@ -1,10 +1,16 @@
 home:
   resource: 'routes/home.yaml'
 
+tasks:
+  resource: 'routes/tasks.yaml'
+
 users:
-  resource: 'routes/user.yaml'
+  resource: 'routes/users.yaml'
+
+users_api:
+  resource: 'routes/users_api.yaml'
   prefix: api/
 
-tasks:
-  resource: 'routes/task.yaml'
+tasks_api:
+  resource: 'routes/tasks_api.yaml'
   prefix: api/

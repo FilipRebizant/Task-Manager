@@ -6,34 +6,41 @@ use App\Application\Command\AssignTaskToUserCommand;
 use App\Application\Command\ChangeTaskStatusCommand;
 use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
-use App\Application\CommandBus;
+use App\Application\CommandBusInterface;
+use App\Application\Query\Task\TaskQueryInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\Exception\UserAlreadyAssignedException;
+use App\Domain\Task\Exception\UserNotAssignedException;
 use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
-use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TaskController
 {
-    /** @var CommandBus */
+    /** @var CommandBusInterface */
     private $commandBus;
 
-    /** @var TaskQuery*/
+    /** @var TaskQueryInterface */
     private $taskQuery;
 
-    /** @var TaskService  */
+    /** @var TaskService */
     private $taskService;
+
     /**
      * TaskController constructor.
      *
-     * @param CommandBus $commandBus
+     * @param CommandBusInterface $commandBus
+     * @param TaskQueryInterface $taskQuery
+     * @param TaskService $taskService
+     *
      */
-    public function __construct(CommandBus $commandBus, TaskQuery $taskQuery, TaskService $taskService)
-    {
+    public function __construct(
+        CommandBusInterface $commandBus,
+        TaskQueryInterface $taskQuery,
+        TaskService $taskService
+    ) {
         $this->commandBus = $commandBus;
         $this->taskQuery = $taskQuery;
         $this->taskService = $taskService;
@@ -43,10 +50,14 @@ class TaskController
      * @return JsonResponse
      * @throws \ReflectionException
      */
-    public function getTasks(): JsonResponse
+    public function getTasks(Request $request): JsonResponse
     {
         try {
-            $tasksList = $this->taskQuery->getAll();
+            if (!empty($request->get('status'))) {
+                $tasksList = $this->taskQuery->getAllByStatus($request->get('status'));
+            } else {
+                $tasksList = $this->taskQuery->getAll();
+            }
             $jsonTasksList = [];
 
             foreach ($tasksList as $task) {
@@ -93,12 +104,16 @@ class TaskController
     public function createTask(Request $request): JsonResponse
     {
         try {
+//            $request->json
+            $data = json_decode($request->getContent());
+//            var_dump($data->title);
+//            $data
+//            return new JsonResponse($data, 200);
             $command = new CreateTaskCommand(
-                (string)$request->get("title"),
-                (string)$request->get("username"),
-                (string)$request->get("status"),
-                (int)$request->get("priority"),
-                (string)$request->get("description")
+                (string)$data->title,
+                (string)$data->username,
+                (int)$data->priority,
+                (string)$data->description
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException $e) {
@@ -179,9 +194,10 @@ class TaskController
     public function changeStatus(Request $request): JsonResponse
     {
         try {
-            $command = new ChangeTaskStatusCommand($request->get('id'), $request->get('status'));
+            $data = json_decode($request->getContent(), true);
+            $command = new ChangeTaskStatusCommand($data['id'], $data['status']);
             $this->commandBus->handle($command);
-        } catch (InvalidStatusOrderException|InvalidArgumentException $e) {
+        } catch (InvalidStatusOrderException|InvalidArgumentException|UserNotAssignedException $e) {
             return new JsonResponse([
                 "error" => [
                     "status" => 400,
