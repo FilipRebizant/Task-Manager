@@ -8,22 +8,7 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-    <script type="application/javascript">
+    {% block javascripts %}
 
-        fetch('/api/users')
-            .then(function (response) {
-                return response.json();
-            }).then(function (response) {
-            console.log(response);
-            const markup = `
-                <ul class="users">
-                    ${response.users.map(
-                        user => `<li class="user">${user.username} email: ${user.email}</li>`
-                    ).join(' ')}
-                </ul>
-            `;
-
-            document.getElementById('usersContainer').innerHTML = markup;
-        });
-    </script>
+    {% endblock %}
 {% endblock %}
