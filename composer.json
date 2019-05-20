@@ -6,6 +6,7 @@
     "ext-iconv": "*",
     "ext-json": "*",
     "ext-pdo": "*",
+    "auth0/jwt-auth-bundle": "^3.0",
     "php-di/php-di": "^6.0",
     "ramsey/uuid": "^3.8",
     "symfony/asset": "4.2.*",
