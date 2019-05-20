@@ -166,7 +166,7 @@ class TaskRepository implements TaskRepositoryInterface
             throw new NotFoundException("Task was not found.");
         }
 
-        if  ($result['username']) {
+        if ($result['username']) {
             $user = new User(
                 Uuid::fromBytes($result['user_id']),
                 new Username($result['username']),

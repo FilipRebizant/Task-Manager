@@ -16,6 +16,7 @@ class TaskQuery implements TaskQueryInterface
 
     /**
      * TaskQuery constructor.
+     *
      * @param PDOConnector $pdo
      */
     public function __construct(PDOConnector $PDOConnector)
@@ -42,7 +43,7 @@ class TaskQuery implements TaskQueryInterface
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'id' => $idBytes
+            'id' => $idBytes,
         ]);
         $result = $stmt->fetch();
 
@@ -50,7 +51,7 @@ class TaskQuery implements TaskQueryInterface
             throw new NotFoundException("Task was not found.");
         }
 
-        $updatedAt = is_null($result['updated_at']) ? '': $result['updated_at'];
+        $updatedAt = is_null($result['updated_at']) ? '' : $result['updated_at'];
 
         return new TaskView(
             $idString,
@@ -133,5 +134,4 @@ class TaskQuery implements TaskQueryInterface
             );
         }, $result);
     }
-
 }

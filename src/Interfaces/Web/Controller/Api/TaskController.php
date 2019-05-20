@@ -22,10 +22,10 @@ class TaskController
     /** @var CommandBusInterface */
     private $commandBus;
 
-    /** @var TaskQueryInterface*/
+    /** @var TaskQueryInterface */
     private $taskQuery;
 
-    /** @var TaskService  */
+    /** @var TaskService */
     private $taskService;
 
     /**
@@ -36,8 +36,11 @@ class TaskController
      * @param TaskService $taskService
      *
      */
-    public function __construct(CommandBusInterface $commandBus, TaskQueryInterface $taskQuery, TaskService $taskService)
-    {
+    public function __construct(
+        CommandBusInterface $commandBus,
+        TaskQueryInterface $taskQuery,
+        TaskService $taskService
+    ) {
         $this->commandBus = $commandBus;
         $this->taskQuery = $taskQuery;
         $this->taskService = $taskService;
