@@ -13,6 +13,8 @@ RUN apt-get update && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends yarn && \
+    docker-php-ext-enable xdebug  && \
+#    echo 'xdebug.remote_port=10000' >> /usr/local/etc/php/php.ini && \
     npm install -g npm
 
 USER docker

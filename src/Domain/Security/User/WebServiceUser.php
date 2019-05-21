@@ -2,8 +2,6 @@
 
 namespace App\Domain\Security\User;
 
-//use Symfony\Component\Sec
-
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
