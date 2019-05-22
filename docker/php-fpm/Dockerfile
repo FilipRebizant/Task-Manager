@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y --no-install-recommends yarn && \
     docker-php-ext-enable xdebug  && \
-#    echo 'xdebug.remote_port=10000' >> /usr/local/etc/php/php.ini && \
+    echo 'xdebug.remote_port=10000' >> /usr/local/etc/php/php.ini && \
     npm install -g npm
 
 USER docker
