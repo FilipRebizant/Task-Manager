@@ -13,6 +13,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('tasks', './assets/js/tasks/tasks.js')
+    .addEntry('users', './assets/js/users/users.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

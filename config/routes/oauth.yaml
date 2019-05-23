@@ -1,0 +1,19 @@
+getToken:
+  path:       /token
+  controller: App\Interfaces\Web\Controller\Api\AuthController::getToken
+  methods:    GET
+
+callback:
+  path:       /callback
+  controller: App\Interfaces\Web\Controller\Api\AuthController::callback
+  methods:    GET
+
+authorize:
+  path:       /authorize
+  controller: App\Interfaces\Web\Controller\Api\AuthController::authorize
+  methods:    GET
+
+login:
+  path:       /login
+  controller: App\Interfaces\Web\Controller\Api\AuthController::login
+  methods:    GET

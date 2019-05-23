@@ -12,6 +12,7 @@ use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\UserService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
+use Auth0\SDK\Exception\InvalidTokenException;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -108,6 +109,17 @@ class UserController
                     "message" => $e->getMessage(),
                 ]
             ], 404);
+        } catch(\Auth0\SDK\Exception\CoreException $e) {
+            header('HTTP/1.0 401 Unauthorized');
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(array("message" => $e->getMessage()));
+            exit();
+        }
+        catch(InvalidTokenException $e) {
+            header('HTTP/1.0 401 Unauthorized');
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(array("message" => $e->getMessage()));
+            exit();
         }
 
         return new JsonResponse(["users" => $jsonUsersList], 200);

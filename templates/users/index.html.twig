@@ -8,7 +8,13 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-    {% block javascripts %}
+    <p class="d-none" id="access_token">{{ access_token }}</p>
 
+    <a href="https://dev-gegxco2s.auth0.com/authorize?response_type=code&client_id=BsvnwZsXRHD6Jbpep70c6tgnsAnrB053&redirect_uri=https://localhost/callback&scope=appointments%20contacts&audience=appointments:api&state=xyzABC123">
+        Sign In
+    </a>
+    {% block javascripts %}
+        <script src="https://cdn.auth0.com/js/auth0/9.10/auth0.min.js"></script>
+        {{ encore_entry_script_tags('users') }}
     {% endblock %}
 {% endblock %}

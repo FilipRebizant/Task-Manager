@@ -13,5 +13,5 @@ security:
             provider: web_service_user_provider
 
     access_control:
-#        - { path: ^/api/users, roles: ROLE_OAUTH_AUTHENTICATED }
-        - { path: ^/api/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users, roles: ROLE_OAUTH_AUTHENTICATED }
+        - { path: ^/api/tasks, roles: IS_AUTHENTICATED_ANONYMOUSLY }
