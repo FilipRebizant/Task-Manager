@@ -38,7 +38,6 @@ class WebServiceUser implements UserInterface, EquatableInterface
 
     public function eraseCredentials()
     {
-
     }
 
     public function isEqualTo(UserInterface $user)
