@@ -20,25 +20,30 @@ class AuthController extends AbstractController
     public function __construct()
     {
         $this->auth0 = new Auth0([
-            'domain' => 'dev-gegxco2s.auth0.com', // getenv('DOMAIN')
+            'domain' => getenv('DOMAIN'),
             'client_id' => getenv('CLIENT_ID'),
             'client_secret' => getenv('CLIENT_SECRET'),
-            'redirect_uri' => 'http://localhost/callback', // getenv('REDIRECT_URI')
+            'redirect_uri' => getenv('REDIRECT_URI'),
             'audience' => 'http://localhost/api',
-            'scope' => 'openid email offline_access read:users',
+            'scope' => 'openid offline_access read:users',
             'persist_id_token' => true,
             'persist_access_token' => true,
             'persist_refresh_token' => true,
         ]);
-//        var_dump($this->auth0->getUser());
-//        var_dump($this->auth0);
+        $this->auth0->exchange();
     }
 
-    public function login()
+    /**
+     * Method logs user and redirects
+     */
+    public function login(): void
     {
         $this->auth0->login();
     }
 
+    /**
+     * @return RedirectResponse
+     */
     public function logout(): RedirectResponse
     {
         $this->auth0->logout();
@@ -46,13 +51,20 @@ class AuthController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    public function callback(Request $request)
+    /**
+     * Route to get code needed to exchange for token
+     *
+     * @return RedirectResponse
+     */
+    public function callback(): RedirectResponse
     {
-        var_dump($request);
-        return new JsonResponse();
-//        return new RedirectResponse('/');
+        return new RedirectResponse('/');
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function authorize(Request $request): Response
     {
         return $this->render('auth/login.html.twig');

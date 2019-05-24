@@ -37,9 +37,12 @@ class WebServiceUserProvider implements JWTUserProviderInterface
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    public function supportsClass($class)
+    /**
+     * @param string $class
+     * @return bool
+     */
+    public function supportsClass($class): bool
     {
         return $class === WebServiceUser::class;
-//        return $class === 'App\Domain\Security\User\WebServiceUser';
     }
 }
