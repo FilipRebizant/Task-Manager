@@ -17,9 +17,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $e = $event->getException();
-//        if (!$e instanceof CoreException) {
-//            return;
-//        }
 
         if ($e instanceof AccessDeniedHttpException) {
             $response = new JsonResponse(['error' => [
@@ -31,7 +28,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             $event->setResponse($response);
         }
 
-        $e = $event->getException();
         if ($e instanceof CoreException) {
             $response = new JsonResponse(['error' => [
                 'message' => $e->getMessage()
