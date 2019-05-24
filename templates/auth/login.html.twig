@@ -3,26 +3,8 @@
 {% block title %}Login Panel{% endblock %}
 
 {% block body %}
-    <form action="{{ path('authorize') }}"></form>
+
 {% endblock %}
 
 {% block javascripts %}
-{#    <script src="https://cdn.auth0.com/js/auth0/9.10/auth0.min.js"></script>#}
-{#    <script>#}
-{#        var webAuth = new auth0.WebAuth({#}
-{#            domain: 'dev-gegxco2s.auth0.com',#}
-{#            clientID: 'BsvnwZsXRHD6Jbpep70c6tgnsAnrB053',#}
-{#        });#}
-
-{#        console.log(webAuth);#}
-{#        console.log(webAuth.authorize({#}
-{#            audience: 'http://localhost/api',#}
-{#            responseType: 'code',#}
-{#            redirect_uri: 'http://localhost/callback'#}
-{#        }, function (res) {#}
-{#            XMLHttpRequest.abort();#}
-{#            console.log(res);#}
-{#        }));#}
-    </script>
-    {#    {{ encore_entry_script_tags('tasks') }}#}
 {% endblock %}

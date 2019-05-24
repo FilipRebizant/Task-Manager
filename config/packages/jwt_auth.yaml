@@ -1,4 +1,4 @@
 jwt_auth:
   domain: dev-gegxco2s.auth0.com
   authorized_issuer: https://dev-gegxco2s.auth0.com/
-  api_identifier: http://localhost:8000/api
+  api_identifier: http://localhost/api

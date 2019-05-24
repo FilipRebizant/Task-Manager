@@ -17,3 +17,8 @@ login:
   path:       /login
   controller: App\Interfaces\Web\Controller\Api\AuthController::login
   methods:    GET
+
+logout:
+  path:       /logout
+  controller: App\Interfaces\Web\Controller\Api\AuthController::logout
+  methods:    GET
