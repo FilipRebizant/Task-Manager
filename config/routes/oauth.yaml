@@ -22,3 +22,8 @@ logout:
   path:       /logout
   controller: App\Interfaces\Web\Controller\Api\AuthController::logout
   methods:    GET
+
+refreshToken:
+  path:       /api/refreshToken
+  controller: App\Interfaces\Web\Controller\Api\AuthController::refreshToken
+  methods:    GET

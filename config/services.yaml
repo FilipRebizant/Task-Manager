@@ -21,3 +21,9 @@ services:
     web_service_user_provider:
         class: App\Domain\Security\User\WebServiceUserProvider
         arguments: ["@jwt_auth.auth0_service"]
+
+    api_exception_subscriber:
+        class: App\Domain\Security\Listeners\ApiExceptionSubscriber
+        arguments: []
+        tags:
+            - { name: kernel.event_subscriber}

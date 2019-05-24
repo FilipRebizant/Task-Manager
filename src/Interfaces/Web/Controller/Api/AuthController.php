@@ -30,6 +30,7 @@ class AuthController extends AbstractController
             'persist_access_token' => true,
             'persist_refresh_token' => true,
         ]);
+
         $this->auth0->exchange();
     }
 
@@ -68,5 +69,16 @@ class AuthController extends AbstractController
     public function authorize(Request $request): Response
     {
         return $this->render('auth/login.html.twig');
+    }
+
+    public function refreshToken(): JsonResponse
+    {
+        $this->auth0->renewTokens();
+        $token = $this->auth0->getAccessToken();
+
+        return new JsonResponse([
+            'result' => 'Token has been refreshed',
+            'token' => $token
+        ], 200);
     }
 }
