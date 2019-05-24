@@ -17,3 +17,6 @@
     
 ### To run code sniffer open php-fpm conntainer and run:
     ./vendor/bin/phpcs
+
+### To run/compline yarn open php-fpm conntainer and run:
+    yarn dev or yarn dev --watch
