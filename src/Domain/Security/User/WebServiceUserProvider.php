@@ -8,6 +8,10 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class WebServiceUserProvider implements JWTUserProviderInterface
 {
+    /**
+     * @param string $jwt
+     * @return WebServiceUser
+     */
     public function loadUserByJWT($jwt)
     {
         $data = ['sub' => $jwt->sub];
@@ -17,6 +21,9 @@ class WebServiceUserProvider implements JWTUserProviderInterface
         return new WebServiceUser($data, $roles);
     }
 
+    /**
+     * @return WebServiceAnonymousUser
+     */
     public function getAnonymousUser()
     {
         return new WebServiceAnonymousUser();
@@ -25,6 +32,7 @@ class WebServiceUserProvider implements JWTUserProviderInterface
     public function loadUserByUsername($username)
     {
     }
+
 
     public function refreshUser(UserInterface $user)
     {

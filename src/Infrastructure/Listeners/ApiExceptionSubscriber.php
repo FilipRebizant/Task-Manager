@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Security\Listeners;
+namespace App\Infrastructure\Listeners;
 
 use Auth0\SDK\Exception\CoreException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

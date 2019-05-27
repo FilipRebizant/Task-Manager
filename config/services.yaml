@@ -23,7 +23,7 @@ services:
         arguments: ["@jwt_auth.auth0_service"]
 
     api_exception_subscriber:
-        class: App\Domain\Security\Listeners\ApiExceptionSubscriber
+        class: App\Infrastructure\Listeners\ApiExceptionSubscriber
         arguments: []
         tags:
             - { name: kernel.event_subscriber}
