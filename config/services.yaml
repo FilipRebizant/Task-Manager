@@ -22,6 +22,10 @@ services:
         class: App\Domain\Security\User\WebServiceUserProvider
         arguments: ["@jwt_auth.auth0_service"]
 
+    Auth0\SDK\Auth0:
+        class: Auth0\SDK\Auth0
+        arguments: ['%auth0%']
+
     api_exception_subscriber:
         class: App\Infrastructure\Listeners\ApiExceptionSubscriber
         arguments: []
