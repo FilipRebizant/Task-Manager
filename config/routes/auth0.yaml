@@ -1,16 +1,6 @@
-getToken:
-  path:       /token
-  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::getToken
-  methods:    GET
-
 callback:
   path:       /callback
   controller: App\Interfaces\Web\Controller\Api\Auth0Controller::callback
-  methods:    GET
-
-authorize:
-  path:       /authorize
-  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::authorize
   methods:    GET
 
 login:

@@ -6,7 +6,6 @@ use Auth0\SDK\Auth0;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class Auth0Controller extends AbstractController
 {
@@ -65,14 +64,6 @@ class Auth0Controller extends AbstractController
     public function callback(): RedirectResponse
     {
         return new RedirectResponse('/');
-    }
-
-    /**
-     * @return Response
-     */
-    public function authorize(): Response
-    {
-        return $this->render('auth/login.html.twig');
     }
 
     /**
