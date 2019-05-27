@@ -12,7 +12,6 @@ use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\UserService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
-use Auth0\SDK\Exception\InvalidTokenException;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
