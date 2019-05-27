@@ -2,11 +2,11 @@
 
 namespace App\Interfaces\Web\Controller;
 
-use App\Interfaces\Web\Controller\Api\AuthController;
+use App\Interfaces\Web\Controller\Api\Auth0Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends AuthController
+class UserController extends Auth0Controller
 {
     /**
      * @param Request $request

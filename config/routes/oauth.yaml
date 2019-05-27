@@ -1,29 +1,29 @@
 getToken:
   path:       /token
-  controller: App\Interfaces\Web\Controller\Api\AuthController::getToken
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::getToken
   methods:    GET
 
 callback:
   path:       /callback
-  controller: App\Interfaces\Web\Controller\Api\AuthController::callback
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::callback
   methods:    GET
 
 authorize:
   path:       /authorize
-  controller: App\Interfaces\Web\Controller\Api\AuthController::authorize
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::authorize
   methods:    GET
 
 login:
   path:       /login
-  controller: App\Interfaces\Web\Controller\Api\AuthController::login
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::login
   methods:    GET
 
 logout:
   path:       /logout
-  controller: App\Interfaces\Web\Controller\Api\AuthController::logout
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::logout
   methods:    GET
 
 refreshToken:
   path:       /api/refreshToken
-  controller: App\Interfaces\Web\Controller\Api\AuthController::refreshToken
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::refreshToken
   methods:    GET

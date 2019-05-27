@@ -6,25 +6,30 @@ use Auth0\SDK\Auth0;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthController extends AbstractController
+class Auth0Controller extends AbstractController
 {
+    /** @var Auth0  */
     protected $auth0;
 
+    /** @var String */
     protected $token;
 
-    protected $tokenInfo;
-
+    /**
+     * AuthController constructor.
+     *
+     * @throws \Auth0\SDK\Exception\ApiException
+     * @throws \Auth0\SDK\Exception\CoreException
+     */
     public function __construct()
     {
         $this->auth0 = new Auth0([
-            'domain' => getenv('DOMAIN'),
-            'client_id' => getenv('CLIENT_ID'),
-            'client_secret' => getenv('CLIENT_SECRET'),
-            'redirect_uri' => getenv('REDIRECT_URI'),
-            'audience' => 'http://localhost/api',
+            'domain' => getenv('AUTH0_DOMAIN'),
+            'client_id' => getenv('AUTH0_CLIENT_ID'),
+            'client_secret' => getenv('AUTH0_CLIENT_SECRET'),
+            'redirect_uri' => getenv('AUTH0_REDIRECT_URI'),
+            'audience' => getenv('AUTH0_AUDIENCE'),
             'scope' => 'openid offline_access read:users',
             'persist_id_token' => true,
             'persist_access_token' => true,
@@ -63,14 +68,18 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
-    public function authorize(Request $request): Response
+    public function authorize(): Response
     {
         return $this->render('auth/login.html.twig');
     }
 
+    /**
+     * @return JsonResponse
+     * @throws \Auth0\SDK\Exception\ApiException
+     * @throws \Auth0\SDK\Exception\CoreException
+     */
     public function refreshToken(): JsonResponse
     {
         $this->auth0->renewTokens();
