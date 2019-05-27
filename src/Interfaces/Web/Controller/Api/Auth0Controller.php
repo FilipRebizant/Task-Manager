@@ -16,26 +16,26 @@ class Auth0Controller extends AbstractController
     protected $token;
 
     /**
-     * AuthController constructor.
+     * Auth0Controller constructor.
      *
-     * @throws \Auth0\SDK\Exception\ApiException
-     * @throws \Auth0\SDK\Exception\CoreException
+     * @param Auth0 $auth0
      */
-    public function __construct()
+    public function __construct(Auth0 $auth0)
     {
-        $this->auth0 = new Auth0([
-            'domain' => getenv('AUTH0_DOMAIN'),
-            'client_id' => getenv('AUTH0_CLIENT_ID'),
-            'client_secret' => getenv('AUTH0_CLIENT_SECRET'),
-            'redirect_uri' => getenv('AUTH0_REDIRECT_URI'),
-            'audience' => getenv('AUTH0_AUDIENCE'),
-            'scope' => 'openid offline_access read:users',
-            'persist_id_token' => true,
-            'persist_access_token' => true,
-            'persist_refresh_token' => true,
-        ]);
-
-        $this->auth0->exchange();
+        $this->auth0 = $auth0;
+//        $this->auth0 = new Auth0([
+//            'domain' => getenv('AUTH0_DOMAIN'),
+//            'client_id' => getenv('AUTH0_CLIENT_ID'),
+//            'client_secret' => getenv('AUTH0_CLIENT_SECRET'),
+//            'redirect_uri' => getenv('AUTH0_REDIRECT_URI'),
+//            'audience' => getenv('AUTH0_AUDIENCE'),
+//            'scope' => 'openid offline_access read:users',
+//            'persist_id_token' => true,
+//            'persist_access_token' => true,
+//            'persist_refresh_token' => true,
+//        ]);
+//
+//        $this->auth0->exchange();
     }
 
     /**
