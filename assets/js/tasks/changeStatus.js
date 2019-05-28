@@ -1,3 +1,5 @@
+import {loadTasks} from './loadTasks';
+
 export function changeStatus(e) {
     let id = e.target.getAttribute('data-task-id');
     let status = e.target.getAttribute('data-task-status');

@@ -1,0 +1,28 @@
+.task {
+  &__main_header {
+    display: flex;
+    justify-content: space-between;
+    padding: .75rem 1.25rem;
+    .card-text {
+      margin: 0;
+    }
+  }
+
+  &__secondary_header {
+    @extend .task__main_header;
+    align-items: center;
+    background: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125)
+  }
+
+  &__text_button {
+    border: none;
+    background: none;
+    color: indianred;
+  }
+  &__date{
+    display: block;
+    font-size: 0.8em;
+  }
+}
+
