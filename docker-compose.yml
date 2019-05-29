@@ -6,6 +6,8 @@ services:
       context: ./docker/php-fpm
     volumes:
       - .:/var/www/html:cached
+    environment:
+      PHP_EXTENSION_XDEBUG: 1
 
   nginx:
     image: nginx:stable

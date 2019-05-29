@@ -96,7 +96,7 @@ class TaskRepository implements TaskRepositoryInterface
     public function assignTaskToUser(string $taskId, string $username): void
     {
         $sql = "UPDATE tasks
-                SET user_id = (SELECT id FROM users WHERE username = :username)
+                SET user_id = (SELECT id FROM users WHERE username = :username), updated_at = :updatedAt
                 WHERE id = :taskId
         ";
 
@@ -106,6 +106,7 @@ class TaskRepository implements TaskRepositoryInterface
         $stmt->execute([
             'username' => $username,
             'taskId' => $taskId,
+            'updatedAt' => new \DateTime(),
         ]);
 
         $result = $stmt->rowCount();
@@ -125,7 +126,7 @@ class TaskRepository implements TaskRepositoryInterface
     public function changeStatus(string $taskId, Status $status): void
     {
         $sql = "UPDATE tasks
-                SET status = :status
+                SET status = :status, updated_at = now()
                 WHERE id = :id
         ";
         $taskId = Uuid::fromString($taskId)->getBytes();
@@ -134,6 +135,7 @@ class TaskRepository implements TaskRepositoryInterface
         $stmt->execute([
             'status' => $status,
             'id' => $taskId,
+
         ]);
         $result = $stmt->rowCount();
         if (!$result) {

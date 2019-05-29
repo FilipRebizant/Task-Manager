@@ -1,0 +1,19 @@
+callback:
+  path:       /callback
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::callback
+  methods:    GET
+
+login:
+  path:       /login
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::login
+  methods:    GET
+
+logout:
+  path:       /logout
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::logout
+  methods:    GET
+
+refreshToken:
+  path:       /api/refreshToken
+  controller: App\Interfaces\Web\Controller\Api\Auth0Controller::refreshToken
+  methods:    GET

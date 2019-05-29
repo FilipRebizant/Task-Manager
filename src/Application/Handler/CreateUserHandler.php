@@ -23,10 +23,8 @@ class CreateUserHandler implements HandlerInterface
 
     /**
      * @param CommandInterface $command
+     * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Domain\User\Exception\EmailAlreadyExistsException
-     * @throws \App\Domain\User\Exception\InvalidEmailException
-     * @throws \App\Domain\User\Exception\InvalidPasswordException
-     * @throws \App\Domain\User\Exception\InvalidUsernameException
      * @throws \App\Domain\User\Exception\UserAlreadyExistsException
      */
     public function handle(CommandInterface $command): void

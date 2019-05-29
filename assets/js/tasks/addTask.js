@@ -1,4 +1,4 @@
-
+import {loadTasks} from './loadTasks';
 
 export function addTask() {
     event.preventDefault();
