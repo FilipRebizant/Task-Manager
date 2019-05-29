@@ -16,7 +16,7 @@ services:
       - ./public/build/:/var/www/html/public/build:ro
     depends_on:
       - php-fpm
-      - db
+      - mysql8.0
     ports:
       - "80:80"
     expose:
@@ -28,8 +28,9 @@ services:
       - ./:/app
     command: 'true'
 
-  db:
-    image: mysql:5.7
+  mysql8.0:
+    container_name: mysql.8
+    image: mysql:8
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
