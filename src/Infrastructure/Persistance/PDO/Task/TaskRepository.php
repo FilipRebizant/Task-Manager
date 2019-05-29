@@ -96,7 +96,7 @@ class TaskRepository implements TaskRepositoryInterface
     public function assignTaskToUser(string $taskId, string $username): void
     {
         $sql = "UPDATE tasks
-                SET user_id = (SELECT id FROM users WHERE username = :username), updated_at = :updatedAt
+                SET user_id = (SELECT id FROM users WHERE username = :username), updated_at = now()
                 WHERE id = :taskId
         ";
 
@@ -106,7 +106,6 @@ class TaskRepository implements TaskRepositoryInterface
         $stmt->execute([
             'username' => $username,
             'taskId' => $taskId,
-            'updatedAt' => new \DateTime(),
         ]);
 
         $result = $stmt->rowCount();
