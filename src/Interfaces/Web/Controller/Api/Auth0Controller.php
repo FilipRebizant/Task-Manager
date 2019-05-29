@@ -12,9 +12,6 @@ class Auth0Controller extends AbstractController
     /** @var Auth0  */
     protected $auth0;
 
-    /** @var String */
-    protected $token;
-
     /**
      * Auth0Controller constructor.
      *
