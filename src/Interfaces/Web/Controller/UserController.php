@@ -30,8 +30,6 @@ class UserController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        return $this->render('users/index.html.twig',
-            ['access_token' => $this->auth0->getAccessToken()]
-        );
+        return $this->render('users/index.html.twig', ['access_token' => $this->auth0->getAccessToken()]);
     }
 }
