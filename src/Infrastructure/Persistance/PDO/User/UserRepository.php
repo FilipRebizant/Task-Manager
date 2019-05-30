@@ -72,13 +72,13 @@ class UserRepository implements UserRepositoryInterface
      * @param string $username
      * @return User
      * @throws NotFoundException
-     * @throws \App\Domain\User\Exception\InvalidEmailException
-     * @throws \App\Domain\User\Exception\InvalidPasswordException
-     * @throws \App\Domain\User\Exception\InvalidUsernameException
+     * @throws \App\Domain\Exception\InvalidArgumentException
      */
     public function getUserByUsername(string $username): User
     {
-        $sql = "SELECT id, username, email, password FROM users WHERE username = :username";
+        $sql = "SELECT id, username, email, password 
+                FROM users 
+                WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
