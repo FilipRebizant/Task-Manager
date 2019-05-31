@@ -42,9 +42,7 @@ class UserRepositoryTest extends TestCase
 
     /**
      * @throws NotFoundException
-     * @throws \App\Domain\User\Exception\InvalidEmailException
-     * @throws \App\Domain\User\Exception\InvalidPasswordException
-     * @throws \App\Domain\User\Exception\InvalidUsernameException
+     * @throws \App\Domain\Exception\InvalidArgumentException
      */
     public function testCanSaveAndRetrieveUser() {
         $randomNumber = rand(0, 9999);
@@ -67,6 +65,6 @@ class UserRepositoryTest extends TestCase
     {
         $this->expectException(NotFoundException::class);
 
-        $this->userRepository->getUserByUsername("UnExisting user");
+        $this->userRepository->getByUsername("UnExisting user");
     }
 }

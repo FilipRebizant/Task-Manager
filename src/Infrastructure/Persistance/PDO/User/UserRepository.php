@@ -74,7 +74,7 @@ class UserRepository implements UserRepositoryInterface
      * @throws NotFoundException
      * @throws \App\Domain\Exception\InvalidArgumentException
      */
-    public function getUserByUsername(string $username): User
+    public function getByUsername(string $username): User
     {
         $sql = "SELECT id, username, email, password 
                 FROM users 

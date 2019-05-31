@@ -21,7 +21,7 @@ interface UserRepositoryInterface
      * @return User
      * @throws NotFoundException
      */
-    public function getUserByUsername(string $username): User;
+    public function getByUsername(string $username): User;
 
     /**
      * @param string $username

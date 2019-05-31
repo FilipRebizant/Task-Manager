@@ -5,6 +5,11 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
+use App\Domain\Security\Symfony\User\SecurityUser;
+use App\Domain\User\User;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -151,5 +156,58 @@ class UserQuery implements UserQueryInterface
         }
 
         return $users;
+    }
+
+    /**
+     * @param string $email
+     * @return SecurityUser
+     * @throws NotFoundException
+     */
+    public function getSecurityUserByEmail(string $email): SecurityUser
+    {
+        $sql = "SELECT id, username, email, password 
+                FROM users 
+                WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found.");
+        }
+
+        $user = new SecurityUser(
+            $result['username'],
+            $result['password']
+        );
+
+        return $user;
+    }
+
+    /**
+     * @param string $username
+     * @return SecurityUser
+     * @throws NotFoundException
+     */
+    public function getSecurityUserByUsername(string $username): SecurityUser
+    {
+        $sql = "
+                SELECT username, password 
+                FROM users 
+                WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found.");
+        }
+
+        $user = new SecurityUser(
+            $result['username'],
+            $result['password']
+        );
+
+        return $user;
     }
 }
