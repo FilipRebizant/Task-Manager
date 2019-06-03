@@ -82,8 +82,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
         try {
-        $user = $this->userQuery->getSecurityUserByEmail($credentials['email']);
-
+            $user = $this->userQuery->getSecurityUserByEmail($credentials['email']);
         } catch (NotFoundException $exception) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
