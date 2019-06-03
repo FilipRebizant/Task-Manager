@@ -3,7 +3,9 @@
 namespace App\Domain\User;
 
 use App\Application\AbstractService;
+use App\Application\Command\CreateUserCommand;
 use App\Application\CommandInterface;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\ValueObject\Email;
@@ -30,23 +32,27 @@ class UserService extends AbstractService
     /**
      * @param CommandInterface $command
      * @throws EmailAlreadyExistsException
+     * @throws InvalidArgumentException
      * @throws UserAlreadyExistsException
-     * @throws \App\Domain\Exception\InvalidArgumentException
      */
     public function createUser(CommandInterface $command): void
     {
         if ($this->userAlreadyExists(new Username($command->username()))) {
-            throw new UserAlreadyExistsException("Username already exists.");
+            throw new UserAlreadyExistsException("Username already exists");
         }
 
         if ($this->emailAlreadyExists(new Email($command->email()))) {
-            throw new EmailAlreadyExistsException("Email address already exists.");
+            throw new EmailAlreadyExistsException("Email address already exists");
+        }
+
+        if ($command->password1() !== $command->password2()) {
+            throw new InvalidArgumentException("Provided passwords doesn't match");
         }
 
         $user = new User(
             Uuid::uuid4(),
             new Username($command->username()),
-            new Password($command->password()),
+            new Password($command->password1()),
             new Email($command->email()),
             array()
         );

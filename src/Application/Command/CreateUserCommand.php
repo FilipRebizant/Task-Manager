@@ -13,19 +13,25 @@ class CreateUserCommand implements CommandInterface
     private $email;
 
     /** @var string */
-    private $password;
+    private $password1;
+
+    /** @var string */
+    private $password2;
 
     /**
      * CreateUserCommand constructor.
+     *
      * @param string $username
-     * @param string $password
      * @param string $email
+     * @param string $password1
+     * @param string $password2
      */
-    public function __construct(string $username, string $password, string $email)
+    public function __construct(string $username, string $email, string $password1, string $password2)
     {
         $this->username = $username;
         $this->email = $email;
-        $this->password = $password;
+        $this->password1 = $password1;
+        $this->password2 = $password2;
     }
 
     /**
@@ -47,8 +53,16 @@ class CreateUserCommand implements CommandInterface
     /**
      * @return string
      */
-    public function password(): string
+    public function password1(): string
     {
-        return $this->password;
+        return $this->password1;
+    }
+
+    /**
+     * @return string
+     */
+    public function password2(): string
+    {
+        return $this->password2;
     }
 }

@@ -13,7 +13,8 @@ export function addUser() {
     let data = {
         email: email.value,
         username: username.value,
-        password: password1.value
+        password1: password1.value,
+        password2: password2.value
     };
 
     loader.classList.remove('d-none');
