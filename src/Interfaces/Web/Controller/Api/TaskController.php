@@ -104,11 +104,7 @@ class TaskController
     public function createTask(Request $request): JsonResponse
     {
         try {
-//            $request->json
             $data = json_decode($request->getContent());
-//            var_dump($data->title);
-//            $data
-//            return new JsonResponse($data, 200);
             $command = new CreateTaskCommand(
                 (string)$data->title,
                 (string)$data->username,

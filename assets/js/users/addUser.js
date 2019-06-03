@@ -1,6 +1,9 @@
+import { loadUsers } from './loadUsers';
+
 export function addUser() {
-    let errorContainer = document.getElementById('errorContainer');
-    let successContainer = document.getElementById('successContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const successContainer = document.getElementById('successContainer');
+    const loader = document.querySelector('.loader');
 
     let email = document.getElementById('emailInput');
     let username = document.getElementById('usernameInput');
@@ -13,31 +16,40 @@ export function addUser() {
         password: password1.value
     };
 
-    fetch('/api/users', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(function (response) {
-        return response.json();
-    }).then(function (response) {
-        if (response.error) {
-            successContainer.classList.add('d-none');
-            errorContainer.classList.remove('d-none');
-            errorContainer.innerText = response.error.message;
-        } else {
-            errorContainer.classList.add('d-none');
-            successContainer.classList.remove('d-none');
-            successContainer.innerText = 'success';
-            console.log(response);
+    loader.classList.remove('d-none');
+    errorContainer.classList.add('d-none');
+    successContainer.classList.add('d-none');
+    if (password1.value === password2.value) {
+        fetch('/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function (response) {
+            return response.json();
+        }).then(function (response) {
+            if (response.error) {
+                loader.classList.add('d-none');
 
-            username.value = '';
-            email.value = '';
-            password1.value = '';
-            password2.value = '';
-        }
-    }).catch(function (error) {
-        errorContainer.innerText = error.error.message;
-    });
+                errorContainer.classList.remove('d-none');
+                errorContainer.innerText = response.error.message;
+            } else {
+                loader.classList.add('d-none');
+                loadUsers();
+                successContainer.classList.remove('d-none');
+                successContainer.innerText = response.result;
+                username.value = '';
+                email.value = '';
+                password1.value = '';
+                password2.value = '';
+            }
+        }).catch(function (error) {
+            errorContainer.innerText = error.error.message;
+        });
+    } else {
+        loader.classList.add('d-none');
+        errorContainer.classList.remove('d-none');
+        errorContainer.innerText = "Provided passwords doesn't match";
+    }
 }

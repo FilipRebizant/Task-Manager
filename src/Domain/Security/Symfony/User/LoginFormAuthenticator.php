@@ -3,6 +3,7 @@
 namespace App\Domain\Security\Symfony\User;
 
 use App\Application\Query\User\UserQueryInterface;
+use App\Infrastructure\Exception\NotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -80,10 +81,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
-
+        try {
         $user = $this->userQuery->getSecurityUserByEmail($credentials['email']);
 
-        if (!$user) {
+        } catch (NotFoundException $exception) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 

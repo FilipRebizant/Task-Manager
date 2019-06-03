@@ -48,10 +48,11 @@ class UserController
     public function createUser(Request $request): JsonResponse
     {
         try {
+            $data = json_decode($request->getContent(), true);
             $command = new CreateUserCommand(
-                (string)$request->get("username"),
-                (string)$request->get("password"),
-                (string)$request->get("email")
+                (string)$data["username"],
+                (string)$data["password"],
+                (string)$data["email"],
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException|UserAlreadyExistsException|EmailAlreadyExistsException $e) {
