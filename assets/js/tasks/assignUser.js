@@ -22,6 +22,7 @@ export function assignUserToTask(e) {
             errorContainer.classList.remove('d-none');
             errorContainer.innerText = response.error.message;
         } else {
+            errorContainer.classList.add('d-none');
             successContainer.classList.remove('d-none');
             successContainer.innerText = response.result;
             loadTasks("todo");

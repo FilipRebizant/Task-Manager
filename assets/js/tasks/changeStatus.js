@@ -3,7 +3,8 @@ import {loadTasks} from './loadTasks';
 export function changeStatus(e) {
     let id = e.target.getAttribute('data-task-id');
     let status = e.target.getAttribute('data-task-status');
-    let errorContainer = document.getElementById('changeStatusErrorContainer');
+    let errorContainer = document.getElementById('errorContainer');
+    let successContainer = document.getElementById('successContainer');
     let toLoad = "todo";
 
     if (status === "Todo") {
@@ -30,10 +31,13 @@ export function changeStatus(e) {
         return response.json();
     }).then(function (response) {
         if (response.error) {
-            errorContainer.classList.add('d-flex');
+            successContainer.classList.add('d-none');
+            errorContainer.classList.remove('d-none');
             errorContainer.innerText = response.error.message;
         } else {
-            errorContainer.classList.remove('d-flex');
+            errorContainer.classList.add('d-none');
+            successContainer.classList.remove('d-none');
+            successContainer.innerText = response.response;
             loadTasks(status.toLowerCase());
             loadTasks(toLoad);
         }
