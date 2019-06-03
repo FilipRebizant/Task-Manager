@@ -1,7 +1,12 @@
+import {addUser} from './addUser';
 
 document.getElementById('refreshTokenButton').addEventListener('click', function (event) {
     event.preventDefault();
     refreshToken(event);
+}, false);
+
+document.getElementById('addUserButton').addEventListener('click', function (event) {
+    addUser();
 }, false);
 
 document.addEventListener('click', function (event) {
