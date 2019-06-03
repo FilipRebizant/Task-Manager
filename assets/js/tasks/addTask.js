@@ -23,10 +23,9 @@ export function addTask() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    })
-        .then(function (response) {
-            return response.json();
-        }).then(function (response) {
+    }).then(function (response) {
+        return response.json();
+    }).then(function (response) {
         if (response.error) {
             errorContainer.innerText = response.error.message;
         } else {

@@ -16,7 +16,7 @@ export function loadTasks(taskStatus) {
                                         </div>
                                         <div class="task__secondary_header">
                                             <button class="task__text_button deleteTaskButton" data-task-status="${task.status}" data-task-id="${task.id}">Delete</button>
-                                            <p class="card-text">${task.user === null && task.status === 'Todo' ? "<a href=\"{{ path('home') }}\" class=\"card-link\">Assign to me</a>" : task.user}</p>
+                                            <p class="card-text">${task.user === null && task.status === 'Todo' ? `<button data-task-id=${task.id} class="assignTaskButton">Assign to me</button>` : task.user}</p>
                                             <p class="card-text">Priority: ${task.priority}</p>
                                         </div>
                                         <div class="card-body">
