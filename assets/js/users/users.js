@@ -10,10 +10,9 @@ document.addEventListener('click', function (event) {
     deleteUser(event);
 }, false);
 
-
 function refreshToken() {
     const infoContainer = document.getElementById('requestInfoContainer');
-    const refreshTokenButton = document.getElementById('refreshTokenButton')
+    const refreshTokenButton = document.getElementById('refreshTokenButton');
     let accessTokenContainer = document.getElementById('access_token');
 
     fetch('/api/refreshToken')
@@ -76,7 +75,7 @@ function loadUsers() {
             }
         } else {
             const markup = `
-                <table class="table">
+                <table class="table table-responsive">
                  <thead class="thead-dark">
                             <tr class="card-body">
                                 <th class="card-title">Username</th>
