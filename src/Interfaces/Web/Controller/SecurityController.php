@@ -70,7 +70,8 @@ class SecurityController extends AbstractController
         $session->set('jwt_token', $newToken);
 
         return new JsonResponse([
-            'result' => 'Token has been refreshed'
+            'result' => 'Token has been refreshed',
+            'token' => $newToken,
         ], 200);
     }
 }

@@ -2,8 +2,8 @@ import { loadUsers } from './loadUsers';
 
 export function addUser() {
     let token = document.getElementById('token').innerText;
-    const errorContainer = document.getElementById('errorContainer');
-    const successContainer = document.getElementById('successContainer');
+    const errorContainer = document.getElementById('modalErrorContainer');
+    const successContainer = document.getElementById('modalSuccessContainer');
     const loader = document.querySelector('.loader');
 
     let email = document.getElementById('emailInput');

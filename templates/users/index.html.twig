@@ -3,6 +3,7 @@
 {% block body %}
     <h1 class="text-center my-3">Users</h1>
     <p class="d-none" id="token">{{ app.session.get('jwt_token') }}</p>
+
     <!-- Button trigger modal -->
     <div class="text-center">
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addUserModal">
@@ -27,8 +28,8 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <div id="errorContainer" class="user__error_container d-none"></div>
-                    <div id="successContainer" class="user__success_container d-none"></div>
+                    <div id="modalErrorContainer" class="form__error_container d-none"></div>
+                    <div id="modalSuccessContainer" class="form__success_container d-none"></div>
                 </div>
 
                 <div class="modal-body">
@@ -62,6 +63,10 @@
         </div>
     </div>
 
+    <div id="errorContainer" class="justify-content-center alert alert-danger mb-3 d-none"></div>
+    <div id="successContainer" class="justify-content-center alert alert-success mb-3 d-none"></div>
+    <div id="infoContainer" class="justify-content-center alert alert-info mb-3 d-none"></div>
+
     <div id="usersContainer">
         <div class="d-flex justify-content-center">
             <div class="spinner-border" role="status">
@@ -69,10 +74,6 @@
             </div>
         </div>
     </div>
-
-    <p class="alert" id="requestInfoContainer"></p>
-
-    <button id="refreshTokenButton" class="d-none btn btn-primary">Refresh Token</button>
 
     {% block javascripts %}
         {{ encore_entry_script_tags('users') }}

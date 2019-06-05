@@ -3,7 +3,8 @@ import {loadUsers} from "./loadUsers";
 export function deleteUser(e) {
     let token = document.getElementById('token').innerText;
     let id = e.target.getAttribute('data-user-id');
-    const infoContainer = document.getElementById('requestInfoContainer');
+    const successContainer = document.getElementById('successContainer');
+    const errorContainer = document.getElementById('errorContainer');
 
     fetch(`/api/users/${id}`, {
         method: 'DELETE',
@@ -16,9 +17,11 @@ export function deleteUser(e) {
         return response.json();
     }).then(function (response) {
         if (response.error) {
-            infoContainer.innerText = response.error.message;
-            infoContainer.classList.add('alert-danger');
+            errorContainer.classList.remove('d-none');
+            errorContainer.innerText = response.error.message;
         } else {
+            successContainer.classList.remove('d-none');
+            successContainer.innerText = response.result;
             loadUsers();
         }
     });

@@ -1,7 +1,13 @@
 export function loadUsers() {
-    let token = document.getElementById('token').innerText;
-    const infoContainer = document.getElementById('requestInfoContainer');
+
+    const tokenContainer = document.getElementById('token');
+    const infoContainer = document.getElementById('infoContainer');
+    const errorContainer = document.getElementById('errorContainer');
     const usersContainer = document.getElementById('usersContainer');
+
+    let token = tokenContainer.innerText;
+
+    errorContainer.classList.add('d-none');
 
     fetch('/api/users', {
         headers: {
@@ -13,13 +19,26 @@ export function loadUsers() {
         return response.json();
     }).then(function (response) {
 
-        if (response.error) {
-            infoContainer.classList.add('alert-danger');
-            infoContainer.innerText = response.error.message;
-            usersContainer.innerText = '';
-            if (response.error.message === 'Expired token') {
-                const refreshTokenButton = document.getElementById('refreshTokenButton');
-                refreshTokenButton.classList.remove('d-none');
+        infoContainer.classList.add('d-none');
+
+        if (response.message) {
+            infoContainer.classList.add('d-none');
+            errorContainer.classList.remove('d-none');
+            errorContainer.innerText = response.message;
+
+            if (response.message === 'Expired JWT Token') {
+                fetch('/api/token/refresh').then(
+                    function (response) {
+                        return response.json();
+                    }).then(function (response) {
+
+                    tokenContainer.innerText = response.token;
+
+                    infoContainer.classList.remove('d-none');
+                    infoContainer.innerText = 'Refreshing token...';
+
+                    loadUsers();
+                });
             }
         } else {
             const markup = `

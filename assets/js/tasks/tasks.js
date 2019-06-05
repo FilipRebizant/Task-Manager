@@ -4,8 +4,9 @@ import { deleteTask } from './deleteTask';
 import { changeStatus } from './changeStatus';
 import { assignUserToTask } from './assignUser';
 
-let createTaskForm = document.getElementById('createTaskForm');
-createTaskForm.addEventListener('submit', addTask);
+let addTaskButton = document.getElementById('addTaskButton');
+
+addTaskButton.addEventListener('click', addTask);
 
 document.addEventListener('click', function (event) {
     if (!event.target.matches('.changeStatusButton')) return;
