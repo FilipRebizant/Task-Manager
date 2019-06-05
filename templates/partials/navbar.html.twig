@@ -15,9 +15,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('usersIndex') }}">Users</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('logout') }}">Log out</a>
-                </li>
+
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('login') }}">Login</a>
@@ -25,7 +23,13 @@
             {% endif %}
         </ul>
         <ul class="navbar-nav">
-            <li id="user" class="nav-link">{{ app.user }}</li>
+            <li id="user" class="nav-link">
+                {{ app.user }}
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('logout') }}">Log out</a>
+            </li>
         </ul>
     </div>
 </nav>
