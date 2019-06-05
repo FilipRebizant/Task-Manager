@@ -4,7 +4,7 @@
 
 {% block body %}
     <h2 class="text-center mt-5">Add task</h2>
-    <p id="token">{{ app.session.get('jwt_token') }}</p>
+    <p id="token" class="d-none">{{ app.session.get('jwt_token') }}</p>
 
     <form action="{{ path('createTask') }}" method="post" id="createTaskForm">
         <div class="form-group">

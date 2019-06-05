@@ -2,24 +2,33 @@
 
 namespace App\Interfaces\Web\Controller;
 
+use App\Application\Query\User\UserQueryInterface;
+use App\Infrastructure\Exception\NotFoundException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    /** @var JWTTokenManagerInterface  */
     private $jwtManager;
-    private $security;
 
+    /** @var UserQueryInterface  */
+    private $userQuery;
 
-    public function __construct(JWTTokenManagerInterface $jwtManager, Security $security)
+    /**
+     * SecurityController constructor.
+     *
+     * @param JWTTokenManagerInterface $jwtManager
+     * @param UserQueryInterface $userQuery
+     */
+    public function __construct(JWTTokenManagerInterface $jwtManager, UserQueryInterface $userQuery)
     {
         $this->jwtManager = $jwtManager;
-        $this->security = $security;
+        $this->userQuery = $userQuery;
     }
 
     /**
@@ -37,24 +46,32 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \App\Infrastructure\Exception\NotFoundException
+     */
     public function refreshToken(Request $request): JsonResponse
     {
-//        $token = $this->jwtManager->create();
-//        $token = $this->getService('lexik_jwt_authentication.encoder')
-//            ->encode(['username' => 'weaverryan']);
-        $token = $this->jwtManager->getUserIdentityField();
-//        $this->jwtManager->create();
-        $user1 = $this->security->getUser();
-        $user2 = $this->getUser();
         $session = $request->getSession();
-        var_dump($user1);
-        var_dump($user2);
-//        $this->
-//        var_dump($request);
-//        var_dump($request->getSession());
-//        die;
-        return new JsonResponse([
+        $username = $session->get('_security.last_username');
 
+        try {
+            $user = $this->userQuery->getSessionAuthUserByUsername($username);
+
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                'error' => [
+                    'message' => 'User was not found'
+                ]
+            ], 401);
+        }
+
+        $newToken = $this->jwtManager->create($user);
+        $session->set('jwt_token', $newToken);
+
+        return new JsonResponse([
+            'result' => 'Token has been refreshed'
         ], 200);
     }
 }

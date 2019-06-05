@@ -18,10 +18,10 @@ security:
         refresh:
             pattern:  ^/api/token/refresh
             provider: symfony_security_provider
-            anonymous: false
-            guard:
-                authenticators:
-                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
+            anonymous: true
+#            guard:
+#                authenticators:
+#                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
 #        secured_area:
 #            pattern: ^/api
 #            simple_preauth:
