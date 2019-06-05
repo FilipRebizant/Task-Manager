@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1 class="text-center my-3">Users</h1>
-
+    <p class="d-none" id="token">{{ app.session.get('jwt_token') }}</p>
     <!-- Button trigger modal -->
     <div class="text-center">
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addUserModal">
@@ -70,7 +70,6 @@
         </div>
     </div>
 
-    <p class="d-none" id="access_token">{{ access_token }}</p>
     <p class="alert" id="requestInfoContainer"></p>
 
     <button id="refreshTokenButton" class="d-none btn btn-primary">Refresh Token</button>

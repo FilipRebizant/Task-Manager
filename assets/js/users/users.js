@@ -1,5 +1,6 @@
 import { addUser } from './addUser';
 import { loadUsers } from './loadUsers';
+import { deleteUser } from './deleteUser';
 
 document.getElementById('refreshTokenButton').addEventListener('click', function (event) {
     event.preventDefault();
@@ -29,30 +30,6 @@ function refreshToken() {
             loadUsers();
             infoContainer.classList.add('d-none');
             refreshTokenButton.classList.add('d-none');
-    });
-}
-
-export function deleteUser(e) {
-    let id = e.target.getAttribute('data-user-id');
-    let accessToken = document.getElementById('access_token').innerText;
-    const infoContainer = document.getElementById('requestInfoContainer');
-
-    fetch(`/api/users/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        }
-    }).then(function (response) {
-        return response.json();
-    }).then(function (response) {
-        if (response.error) {
-            infoContainer.innerText = response.error.message;
-            infoContainer.classList.add('alert-danger');
-        } else {
-            loadUsers();
-        }
     });
 }
 

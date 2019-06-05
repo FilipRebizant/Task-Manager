@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Domain\Security\Symfony\User;
+declare(strict_types=1);
+
+namespace App\Domain\Security\Symfony\SessionAuth;
 
 use App\Application\Query\User\UserQueryInterface;
 use App\Infrastructure\Exception\NotFoundException;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -28,16 +33,26 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $csrfTokenManager;
     private $passwordEncoder;
 
+    private $successHandler;
+    private $jwtManager;
+
+    private $user;
+
     public function __construct(
         UserQueryInterface $userQuery,
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        JWTTokenManagerInterface $jwtManager,
+   AuthenticationSuccessHandler $successHandler
+
     ) {
         $this->userQuery = $userQuery;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->jwtManager = $jwtManager;
+        $this->successHandler = $successHandler;
     }
 
     /**
@@ -63,7 +78,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['email']
+            $credentials['email'],
         );
 
         return $credentials;
@@ -72,7 +87,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * @param mixed $credentials
      * @param UserProviderInterface $userProvider
-     * @return SecurityUser|UserInterface|null
+     * @return SessionAuthUser|UserInterface|null
      * @throws \App\Infrastructure\Exception\NotFoundException
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -82,11 +97,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
         try {
-            $user = $this->userQuery->getSecurityUserByEmail($credentials['email']);
+            $user = $this->userQuery->getSessionAuthUserByEmail($credentials['email']);
         } catch (NotFoundException $exception) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
-
+        $this->user = $user;
         return $user;
     }
 
@@ -108,6 +123,23 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+//        var_dump($providerKey);
+//        $jwtToken = $request->getSession()->set('jwt_token', $this->jwtManager->create($this->user));
+//        var_dump($request->getSession()->get('jwt_token'));
+//        var_dump($jwtToken);
+//        die;
+//        $authenticationSuccessHandler = $this->container->get('lexik_jwt_authentication.handler.authentication_success');
+        $this->successHandler->handleAuthenticationSuccess($this->user);
+
+        $token = $this->jwtManager->create($this->user);
+//        var_dump($token);
+//        die;
+        $request->getSession()->set('jwt_token', $token);
+//        var_dump($this->successHandler);
+
+//        var_dump($authenticationSuccessHandler);
+//        die;
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Security\Symfony\User;
+namespace App\Domain\Security\Symfony\SessionAuth;
 
 use App\Application\Query\User\UserQueryInterface;
 use App\Infrastructure\Exception\NotFoundException;
@@ -11,13 +11,13 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class SecurityUserProvider implements UserProviderInterface
+class SessionAuthUserProvider implements UserProviderInterface
 {
     /** @var UserQueryInterface  */
     private $userQuery;
 
     /**
-     * SecurityUserProvider constructor.
+     * SessionAuthUserProvider constructor.
      *
      * @param UserQueryInterface $userQuery
      */
@@ -41,7 +41,7 @@ class SecurityUserProvider implements UserProviderInterface
     public function loadUserByUsername($username): UserInterface
     {
         try {
-            $user =  $this->userQuery->getSecurityUserByUsername($username);
+            $user =  $this->userQuery->getSessionAuthUserByUsername($username);
         } catch (NotFoundException $exception) {
             throw new UsernameNotFoundException;
         }
@@ -66,6 +66,6 @@ class SecurityUserProvider implements UserProviderInterface
      */
     public function supportsClass($class): bool
     {
-        return SecurityUser::class === $class;
+        return SessionAuthUser::class === $class;
     }
 }

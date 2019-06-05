@@ -1,5 +1,5 @@
 export function loadUsers() {
-    let accessToken = document.getElementById('access_token').innerText;
+    let token = document.getElementById('token').innerText;
     const infoContainer = document.getElementById('requestInfoContainer');
     const usersContainer = document.getElementById('usersContainer');
 
@@ -7,7 +7,7 @@ export function loadUsers() {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${token}`
         }
     }).then(function (response) {
         return response.json();

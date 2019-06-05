@@ -1,6 +1,7 @@
 import {loadTasks} from './loadTasks';
 
 export function changeStatus(e) {
+    let token = document.getElementById('token').innerText;
     let id = e.target.getAttribute('data-task-id');
     let status = e.target.getAttribute('data-task-status');
     let errorContainer = document.getElementById('errorContainer');
@@ -21,7 +22,8 @@ export function changeStatus(e) {
     fetch(`/api/tasks/${id}`, {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             id: id,

@@ -1,7 +1,7 @@
 import {loadTasks} from "./loadTasks";
 
 export function assignUserToTask(e) {
-
+    let token = document.getElementById('token').innerText;
     let id = e.target.getAttribute('data-task-id');
     let username = document.getElementById('user').innerText;
     let errorContainer = document.getElementById('errorContainer');
@@ -10,7 +10,8 @@ export function assignUserToTask(e) {
     fetch(`/api/tasks/${id}/users/${username}`, {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             username: username

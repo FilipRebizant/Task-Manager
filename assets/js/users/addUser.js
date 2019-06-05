@@ -1,6 +1,7 @@
 import { loadUsers } from './loadUsers';
 
 export function addUser() {
+    let token = document.getElementById('token').innerText;
     const errorContainer = document.getElementById('errorContainer');
     const successContainer = document.getElementById('successContainer');
     const loader = document.querySelector('.loader');
@@ -24,7 +25,8 @@ export function addUser() {
         fetch('/api/users', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization':`Bearer ${token}`
             },
             body: JSON.stringify(data)
         }).then(function (response) {

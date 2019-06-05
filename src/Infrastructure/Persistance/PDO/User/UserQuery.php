@@ -5,11 +5,8 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
-use App\Domain\Security\Symfony\User\SecurityUser;
-use App\Domain\User\User;
-use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
-use App\Domain\User\ValueObject\Username;
+use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
+use App\Domain\Security\Symfony\TokenAuth\TokenAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -160,10 +157,10 @@ class UserQuery implements UserQueryInterface
 
     /**
      * @param string $email
-     * @return SecurityUser
+     * @return SessionAuthUser
      * @throws NotFoundException
      */
-    public function getSecurityUserByEmail(string $email): SecurityUser
+    public function getSessionAuthUserByEmail(string $email): SessionAuthUser
     {
         $sql = "SELECT id, username, email, password 
                 FROM users 
@@ -176,7 +173,7 @@ class UserQuery implements UserQueryInterface
             throw new NotFoundException("User was not found.");
         }
 
-        $user = new SecurityUser(
+        $user = new SessionAuthUser(
             $result['username'],
             $result['password']
         );
@@ -186,10 +183,10 @@ class UserQuery implements UserQueryInterface
 
     /**
      * @param string $username
-     * @return SecurityUser
+     * @return SessionAuthUser
      * @throws NotFoundException
      */
-    public function getSecurityUserByUsername(string $username): SecurityUser
+    public function getSessionAuthUserByUsername(string $username): SessionAuthUser
     {
         $sql = "
                 SELECT username, password 
@@ -203,7 +200,7 @@ class UserQuery implements UserQueryInterface
             throw new NotFoundException("User was not found.");
         }
 
-        $user = new SecurityUser(
+        $user = new SessionAuthUser(
             $result['username'],
             $result['password']
         );

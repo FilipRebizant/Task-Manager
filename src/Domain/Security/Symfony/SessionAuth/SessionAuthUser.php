@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Security\Symfony\User;
+namespace App\Domain\Security\Symfony\SessionAuth;
 
-use App\Domain\User\ValueObject\Password;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SecurityUser implements UserInterface, EquatableInterface
+class SessionAuthUser implements UserInterface, EquatableInterface
 {
     /** @var array  */
     private $roles = [];
@@ -16,7 +15,7 @@ class SecurityUser implements UserInterface, EquatableInterface
     /** @var string  */
     private $username;
 
-    /** @var Password  */
+    /** @var string  */
     private $password;
 
     public function __construct(string $username, string $password)

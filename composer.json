@@ -8,6 +8,7 @@
     "ext-pdo": "*",
     "auth0/auth0-php": "~5.0",
     "auth0/jwt-auth-bundle": "^3.0",
+    "lexik/jwt-authentication-bundle": "^2.6",
     "php-di/php-di": "^6.0",
     "ramsey/uuid": "^3.8",
     "symfony/asset": "4.2.*",

@@ -2,34 +2,36 @@
 
 namespace App\Application\Query\User;
 
-use App\Domain\Security\Symfony\User\SecurityUser;
-use App\Domain\User\User;
+use App\Domain\Security\Symfony\TokenAuth\TokenAuthUser;
+use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 
 interface UserQueryInterface
 {
     /**
      * @param string $userId
-     * @return User
+     * @return UserView
+     * @throws NotFoundException
      */
     public function getById(string $userId): UserView;
 
     /**
      * @return array
+     * @throws NotFoundException
      */
     public function getAll(): array;
 
     /**
      * @param string $email
-     * @return SecurityUser
+     * @return SessionAuthUser
      * @throws NotFoundException
      */
-    public function getSecurityUserByEmail(string $username): SecurityUser;
+    public function getSessionAuthUserByEmail(string $username): SessionAuthUser;
 
     /**
      * @param string $username
-     * @return SecurityUser
+     * @return SessionAuthUser
      * @throws NotFoundException
      */
-    public function getSecurityUserByUsername(string $username): SecurityUser;
+    public function getSessionAuthUserByUsername(string $username): SessionAuthUser;
 }
