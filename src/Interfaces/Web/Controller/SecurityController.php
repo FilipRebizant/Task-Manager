@@ -58,7 +58,6 @@ class SecurityController extends AbstractController
 
         try {
             $user = $this->userQuery->getSessionAuthUserByUsername($username);
-
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 'error' => [
