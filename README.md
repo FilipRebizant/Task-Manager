@@ -1,6 +1,13 @@
 # Task-Manager
 
 ## Installation commands:
+    In order to use this application you need to generate keys, instruction is given below:
+
+### To generate security keys:
+    $ mkdir config/jwt
+    $ openssl genrsa -out config/jwt/private.pem -aes256 4096
+    $ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+
 
 ### To build application:
     docker-compose build
