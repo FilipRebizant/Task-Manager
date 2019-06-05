@@ -23,12 +23,6 @@ services:
         tags:
             - { name: kernel.event_subscriber}
 
-    token_subscriber:
-        class: App\Infrastructure\Listeners\TokenSubscriber
-        arguments: []
-        tags:
-            - { name: kernel.event_subscriber, event: kernel.controller }
-
     security_user_provider:
         class: App\Domain\Security\Symfony\SessionAuth\SessionAuthUserProvider
 

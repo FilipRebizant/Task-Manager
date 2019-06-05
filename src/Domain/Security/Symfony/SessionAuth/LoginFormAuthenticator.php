@@ -44,8 +44,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder,
         JWTTokenManagerInterface $jwtManager,
-   AuthenticationSuccessHandler $successHandler
-
+        AuthenticationSuccessHandler $successHandler
     ) {
         $this->userQuery = $userQuery;
         $this->router = $router;
@@ -72,13 +71,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'email' => $request->request->get('email'),
+            'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['email'],
+            $credentials['username'],
         );
 
         return $credentials;
@@ -97,11 +96,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
         try {
-            $user = $this->userQuery->getSessionAuthUserByEmail($credentials['email']);
+            $user = $this->userQuery->getSessionAuthUserByUsername($credentials['username']);
         } catch (NotFoundException $exception) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
         $this->user = $user;
+
         return $user;
     }
 
@@ -123,22 +123,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-//        var_dump($providerKey);
-//        $jwtToken = $request->getSession()->set('jwt_token', $this->jwtManager->create($this->user));
-//        var_dump($request->getSession()->get('jwt_token'));
-//        var_dump($jwtToken);
-//        die;
-//        $authenticationSuccessHandler = $this->container->get('lexik_jwt_authentication.handler.authentication_success');
         $this->successHandler->handleAuthenticationSuccess($this->user);
-
         $token = $this->jwtManager->create($this->user);
-//        var_dump($token);
-//        die;
-        $request->getSession()->set('jwt_token', $token);
-//        var_dump($this->successHandler);
 
-//        var_dump($authenticationSuccessHandler);
-//        die;
+        $request->getSession()->set('jwt_token', $token);
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);

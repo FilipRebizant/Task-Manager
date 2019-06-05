@@ -30,6 +30,11 @@ class TaskController extends AbstractController
     public function index(Request $request): Response
     {
         $users = $this->userQuery->getAll();
+//        $user1 = $this->security->getUser();
+        $user2 = $this->getUser();
+        $session = $request->getSession();
+//        var_dump($user1);
+        var_dump($user2);
 
         return $this->render('tasks/index.html.twig', ['users' => $users]);
     }

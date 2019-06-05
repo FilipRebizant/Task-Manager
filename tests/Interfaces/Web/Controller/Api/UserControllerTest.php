@@ -21,9 +21,22 @@ class UserControllerTest extends TestCase
     }
 
     public function testGetUsers() {
-        $response = $this->client->post('/api/users');
+        $data = [
+            'username' => 'Filip',
+        ];
 
-        $this->assertEquals(200, $response->getStatusCode());
+//        var_dump($token = $this->getService('lexik_jwt_authentication.encoder')
+//            ->encode(['username' => 'weaverryan']));
+
+
+        $response = $this->client->post('/api/users', [
+            'body' => json_encode($data),
+            'headers' => [
+                'Authorization' => 'Bearer abc',
+            ]
+        ]);
+
+        $this->assertEquals(403, $response->getStatusCode());
 
         $finishedData = json_decode($response->getBody(true), true);
         $this->assertArrayHasKey('username', $finishedData);

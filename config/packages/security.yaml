@@ -14,6 +14,14 @@ security:
             cost: 12
 
     firewalls:
+
+        refresh:
+            pattern:  ^/api/token/refresh
+            provider: symfony_security_provider
+            anonymous: false
+            guard:
+                authenticators:
+                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
 #        secured_area:
 #            pattern: ^/api
 #            simple_preauth:
@@ -37,7 +45,6 @@ security:
             pattern: ^/api
             guard:
                 authenticators:
-#                    - App\Domain\Security\Symfony\TokenAuth\TokenAuthenticator
                     - lexik_jwt_authentication.jwt_token_authenticator
             provider: symfony_security_provider
 
@@ -55,6 +62,7 @@ security:
     access_control:
 #        - { path: ^/api/users, roles: ROLE_OAUTH_AUTHENTICATED }
 #        - { path: ^/api/tasks, roles: ROLE_USER }
+        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/api, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
