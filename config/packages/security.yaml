@@ -1,9 +1,5 @@
 security:
     providers:
-#        web_service_user_provider:
-#            id:
-#                web_service_user_provider
-
         symfony_security_provider:
             id:
                 security_user_provider
@@ -14,19 +10,11 @@ security:
             cost: 12
 
     firewalls:
-
         refresh:
             pattern:  ^/api/token/refresh
             provider: symfony_security_provider
             anonymous: true
-#            guard:
-#                authenticators:
-#                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
-#        secured_area:
-#            pattern: ^/api
-#            simple_preauth:
-#                authenticator: jwt_auth.jwt_authenticator
-#            provider: web_service_user_provider
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -60,9 +48,6 @@ security:
 
 
     access_control:
-#        - { path: ^/api/users, roles: ROLE_OAUTH_AUTHENTICATED }
-#        - { path: ^/api/tasks, roles: ROLE_USER }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/api, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
