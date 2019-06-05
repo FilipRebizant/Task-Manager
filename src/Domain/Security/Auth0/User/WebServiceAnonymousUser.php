@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain\Security\User;
+declare(strict_types=1);
+
+namespace App\Domain\Security\Auth0\User;
 
 class WebServiceAnonymousUser extends WebServiceUser
 {

@@ -26,3 +26,7 @@
   }
 }
 
+.assignTaskButton {
+  @extend .task__text_button;
+  color: #2b81af;
+}

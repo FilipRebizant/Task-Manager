@@ -1,0 +1,15 @@
+.login {
+  &__form {
+    height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .form-group {
+      text-align: center;
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}

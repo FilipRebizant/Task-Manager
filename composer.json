@@ -7,7 +7,7 @@
     "ext-json": "*",
     "ext-pdo": "*",
     "auth0/auth0-php": "~5.0",
-    "auth0/jwt-auth-bundle": "^3.0",
+    "lexik/jwt-authentication-bundle": "^2.6",
     "php-di/php-di": "^6.0",
     "ramsey/uuid": "^3.8",
     "symfony/asset": "4.2.*",
@@ -26,9 +26,9 @@
     "symfony/yaml": "^4.2"
   },
   "require-dev": {
+    "phpunit/php-code-coverage": "^7.0",
     "phpunit/phpunit": "^8",
-    "squizlabs/php_codesniffer": "3.*",
-    "phpunit/php-code-coverage": "^7.0"
+    "squizlabs/php_codesniffer": "3.*"
   },
   "config": {
     "preferred-install": {

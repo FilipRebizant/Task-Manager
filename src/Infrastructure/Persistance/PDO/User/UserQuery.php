@@ -5,6 +5,8 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
+use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
+use App\Domain\Security\Symfony\TokenAuth\TokenAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -151,5 +153,58 @@ class UserQuery implements UserQueryInterface
         }
 
         return $users;
+    }
+
+    /**
+     * @param string $email
+     * @return SessionAuthUser
+     * @throws NotFoundException
+     */
+    public function getSessionAuthUserByEmail(string $email): SessionAuthUser
+    {
+        $sql = "SELECT id, username, email, password 
+                FROM users 
+                WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found.");
+        }
+
+        $user = new SessionAuthUser(
+            $result['username'],
+            $result['password']
+        );
+
+        return $user;
+    }
+
+    /**
+     * @param string $username
+     * @return SessionAuthUser
+     * @throws NotFoundException
+     */
+    public function getSessionAuthUserByUsername(string $username): SessionAuthUser
+    {
+        $sql = "
+                SELECT username, password 
+                FROM users 
+                WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found.");
+        }
+
+        $user = new SessionAuthUser(
+            $result['username'],
+            $result['password']
+        );
+
+        return $user;
     }
 }

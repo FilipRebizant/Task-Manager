@@ -1,47 +1,35 @@
-import {loadTasks} from './loadTasks';
+import {loadTasks} from "./loadTasks";
 
-export function changeStatus(e) {
+export function assignUserToTask(e) {
     let token = document.getElementById('token').innerText;
     let id = e.target.getAttribute('data-task-id');
-    let status = e.target.getAttribute('data-task-status');
+    let username = document.getElementById('user').innerText;
     let errorContainer = document.getElementById('errorContainer');
     let successContainer = document.getElementById('successContainer');
-    let toLoad = "todo";
 
-    if (status === "Todo") {
-        status = "Pending";
-        toLoad = "todo";
-    } else if (status === "Pending") {
-        status = "Done";
-        toLoad = "pending";
-    } else {
-        status = "Todo";
-        toLoad = "done"
-    }
-
-    fetch(`/api/tasks/${id}`, {
+    fetch(`/api/tasks/${id}/users/${username}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-            id: id,
-            status: status
+            username: username
         })
     }).then(function (response) {
         return response.json();
     }).then(function (response) {
         if (response.error) {
-            successContainer.classList.add('d-none');
             errorContainer.classList.remove('d-none');
             errorContainer.innerText = response.error.message;
         } else {
             errorContainer.classList.add('d-none');
             successContainer.classList.remove('d-none');
-            successContainer.innerText = response.response;
-            loadTasks(status.toLowerCase());
-            loadTasks(toLoad);
+            successContainer.innerText = response.result;
+            loadTasks("todo");
         }
+    }).catch(function (error) {
+        errorContainer.classList.remove('d-none');
+        errorContainer.innerText = 'An error occurred';
     });
 }

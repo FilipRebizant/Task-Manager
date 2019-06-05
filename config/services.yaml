@@ -17,17 +17,21 @@ services:
         resource: '../src/Application/Handler/*'
         tags: [command_handler]
 
-    # Auth0
-    web_service_user_provider:
-        class: App\Domain\Security\User\WebServiceUserProvider
-        arguments: ["@jwt_auth.auth0_service"]
-
-    Auth0\SDK\Auth0:
-        class: Auth0\SDK\Auth0
-        arguments: ['%auth0%']
-
     api_exception_subscriber:
         class: App\Infrastructure\Listeners\ApiExceptionSubscriber
         arguments: []
         tags:
             - { name: kernel.event_subscriber}
+
+    security_user_provider:
+        class: App\Domain\Security\Symfony\SessionAuth\SessionAuthUserProvider
+
+    # Auth0
+    web_service_user_provider:
+        class: App\Domain\Security\Auth0\User\WebServiceUserProvider
+        arguments: ["@jwt_auth.auth0_service"]
+
+    # Auth0
+    Auth0\SDK\Auth0:
+        class: Auth0\SDK\Auth0
+        arguments: ['%auth0%']

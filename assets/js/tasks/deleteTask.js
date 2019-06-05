@@ -1,13 +1,15 @@
 import {loadTasks} from './loadTasks';
 
 export function deleteTask(e) {
+    let token = document.getElementById('token').innerText;
     let id = e.target.getAttribute('data-task-id');
     let status = e.target.getAttribute('data-task-status');
 
     fetch(`/api/tasks/${id}`, {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     }).then(function (response) {
         return response.json();

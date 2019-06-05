@@ -1,17 +1,68 @@
 security:
     providers:
-        web_service_user_provider:
+#        web_service_user_provider:
+#            id:
+#                web_service_user_provider
+
+        symfony_security_provider:
             id:
-                web_service_user_provider
+                security_user_provider
+
+    encoders:
+        App\Domain\Security\Symfony\SessionAuth\SessionAuthUser:
+            algorithm: bcrypt
+            cost: 12
 
     firewalls:
-        secured_area:
-            pattern: ^/api
+
+        refresh:
+            pattern:  ^/api/token/refresh
+            provider: symfony_security_provider
+            anonymous: true
+#            guard:
+#                authenticators:
+#                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
+#        secured_area:
+#            pattern: ^/api
+#            simple_preauth:
+#                authenticator: jwt_auth.jwt_authenticator
+#            provider: web_service_user_provider
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        login:
+            pattern:  ^/api/login
             stateless: true
-            simple_preauth:
-                authenticator: jwt_auth.jwt_authenticator
-            provider: web_service_user_provider
+            anonymous: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            stateless: true
+            anonymous: false
+            pattern: ^/api
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+            provider: symfony_security_provider
+
+        main:
+            anonymous: ~
+            logout:
+                path: /logout
+                target: /
+            guard:
+                authenticators:
+                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
+            provider: symfony_security_provider
+
 
     access_control:
-        - { path: ^/api/users, roles: ROLE_OAUTH_AUTHENTICATED }
-        - { path: ^/api/tasks, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/api/users, roles: ROLE_OAUTH_AUTHENTICATED }
+#        - { path: ^/api/tasks, roles: ROLE_USER }
+        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/, roles: ROLE_USER }

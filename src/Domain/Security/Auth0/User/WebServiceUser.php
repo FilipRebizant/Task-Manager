@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain\Security\User;
+declare(strict_types=1);
+
+namespace App\Domain\Security\Auth0\User;
 
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,7 +18,10 @@ class WebServiceUser implements UserInterface, EquatableInterface
         $this->jwt = $jwt;
     }
 
-    public function getRoles()
+    /**
+     * @return array
+     */
+    public function getRoles(): array
     {
         return $this->roles;
     }
