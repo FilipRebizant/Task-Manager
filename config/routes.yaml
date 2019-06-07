@@ -1,53 +1,16 @@
 home:
-  path:       /
-  controller: App\Interfaces\Web\Controller\HomeController::home
-  methods:    GET
+  resource: 'routes/home.yaml'
 
-getTasks:
-  path:       /tasks
-  controller: App\Interfaces\Web\Controller\TaskController::getTasks
-  methods:    GET
+tasks:
+  resource: 'routes/tasks.yaml'
 
-getTask:
-  path:       /task/{id}
-  controller: App\Interfaces\Web\Controller\TaskController::getTask
-  methods:    GET
+users:
+  resource: 'routes/users.yaml'
 
-createTask:
-  path:       /createTask
-  controller: App\Interfaces\Web\Controller\TaskController::createTask
-  methods:    POST
+users_api:
+  resource: 'routes/users_api.yaml'
+  prefix: api/
 
-assignUserToTask:
-  path:       /assignUserToTask
-  controller: App\Interfaces\Web\Controller\TaskController::assignUserToTask
-  methods:    POST
-
-deleteTask:
-  path:       /deleteTask
-  controller: App\Interfaces\Web\Controller\TaskController::deleteTask
-  methods:    POST
-
-
-
-
-
-createUser:
-  path:       /createUser
-  controller: App\Interfaces\Web\Controller\UserController::createUser
-  methods:    POST
-
-getUser:
-  path:       /user/{id}
-  controller: App\Interfaces\Web\Controller\UserController::getUser
-  methods:    GET
-
-getUsers:
-  path:       /users
-  controller: App\Interfaces\Web\Controller\UserController::getUsers
-  methods:    GET
-
-deleteUser:
-  path:       /deleteUser
-  controller: App\Interfaces\Web\Controller\UserController::deleteUser
-  methods:    POST
+tasks_api:
+  resource: 'routes/tasks_api.yaml'
+  prefix: api/

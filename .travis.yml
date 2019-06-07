@@ -1,5 +1,12 @@
 language: php
 
+env:
+  global:
+      - DB_HOST=localhost
+      - DB_NAME=task-manager
+      - DB_USER=root
+      - DB_PASS=new_password
+
 php:
   - '7.2'
   - '7.3'
@@ -9,6 +16,7 @@ before_script:
 
 script:
   - phpunit --configuration ./phpunit.xml
+  - ./vendor/bin/phpcs
 
 sudo: required
 

@@ -11,13 +11,14 @@ use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\Task;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Title;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use Ramsey\Uuid\Uuid;
 
 class CreateTaskHandler implements HandlerInterface
 {
-    /** @var TaskRepositoryInterface  */
+    /** @var TaskRepositoryInterface */
     private $taskRepository;
 
     /** @var UserRepository */
@@ -25,6 +26,7 @@ class CreateTaskHandler implements HandlerInterface
 
     /**
      * CreateTaskHandler constructor.
+     *
      * @param TaskRepository $taskRepository
      */
     public function __construct(TaskRepository $taskRepository, UserRepository $userRepository)
@@ -36,17 +38,20 @@ class CreateTaskHandler implements HandlerInterface
     /**
      * @param CommandInterface|CreateTaskCommand $command
      * @throws \App\Domain\Exception\InvalidArgumentException
+     * @throws \App\Infrastructure\Exception\NotFoundException
      */
     public function handle(CommandInterface $command): void
     {
-        if (!is_null($command->user())) {
-            $user = $this->userRepository->getUserByUsername($command->user());
+        if (!empty($command->user())) {
+            $user = $this->userRepository->getByUsername(new Username($command->user()));
+        } else {
+            $user = null;
         }
 
         $task = new Task(
             Uuid::uuid4(),
             new Title($command->title()),
-            new Status($command->status()),
+            new Status("Todo"),
             $user,
             new Priority($command->priority()),
             new Description($command->description())

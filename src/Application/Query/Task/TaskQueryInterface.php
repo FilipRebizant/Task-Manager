@@ -14,4 +14,10 @@ interface TaskQueryInterface
      * @return array
      */
     public function getAll(): array;
+
+    /**
+     * @param string $status
+     * @return array
+     */
+    public function getAllByStatus(string $status): array;
 }

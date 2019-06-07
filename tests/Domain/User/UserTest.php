@@ -4,6 +4,9 @@ namespace App\Tests\Domain\User;
 
 use App\Domain\Task\Task;
 use App\Domain\User\User;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -21,7 +24,13 @@ class UserTest extends TestCase
 
     public function setUp(): void
     {
-        $this->user = new User(Uuid::uuid4(), 'username', 'password', 'email@gmail.com', array());
+        $this->user = new User(
+            Uuid::uuid4(),
+            new Username('username'),
+            new Password('password'),
+            new Email('email@gmail.com'),
+            array()
+        );
         $this->taskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
     }
 

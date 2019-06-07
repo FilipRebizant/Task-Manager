@@ -8,7 +8,7 @@
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
         forceCoversAnnotation="false"
-        bootstrap="vendor/autoload.php"
+        bootstrap="config/bootstrap.php"
         processIsolation="false"
         stopOnError="false"
         stopOnFailure="false"

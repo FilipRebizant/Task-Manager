@@ -1,0 +1,4 @@
+tasksIndex:
+  path:       /tasks
+  controller: App\Interfaces\Web\Controller\TaskController::index
+  methods:    GET

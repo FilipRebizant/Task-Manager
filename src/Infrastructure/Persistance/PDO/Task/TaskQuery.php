@@ -16,6 +16,7 @@ class TaskQuery implements TaskQueryInterface
 
     /**
      * TaskQuery constructor.
+     *
      * @param PDOConnector $pdo
      */
     public function __construct(PDOConnector $PDOConnector)
@@ -30,49 +31,99 @@ class TaskQuery implements TaskQueryInterface
      */
     public function getById(string $taskId): TaskView
     {
-        $sql = "SELECT 
-                description, status, priority, username 
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
-                ON tasks.id = users.id
-                WHERE tasks.id = :id";
+                ON tasks.user_id = users.id
+                WHERE tasks.id = :id
+                ";
 
-        $id = Uuid::fromString($taskId)->getBytes();
+        $idString = Uuid::fromString($taskId);
+        $idBytes = $idString->getBytes();
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'id' => $id
+            'id' => $idBytes,
         ]);
         $result = $stmt->fetch();
 
         if (!$result) {
-            throw new NotFoundException();
+            throw new NotFoundException("Task was not found");
         }
 
-        return new TaskView($result['description'], $result['status'], $result['priority'], $result['username']);
+        $updatedAt = is_null($result['updated_at']) ? '' : $result['updated_at'];
+
+        return new TaskView(
+            $idString,
+            $result['title'],
+            $result['status'],
+            $result['username'],
+            $result['priority'],
+            $result['description'],
+            $result['created_at'],
+            $updatedAt
+        );
     }
 
-    /**
+    /**0
      * @return array
      * @throws NotFoundException
      */
     public function getAll(): array
     {
-        $sql = "SELECT title, status, priority, description, tasks.created_at, updated_at, username
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
                 FROM tasks
                 LEFT JOIN users
                 ON tasks.user_id = users.id
+                ORDER BY created_at DESC
                 ";
 
         $stmt = $this->pdo->query($sql);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("No rows were found.");
+            throw new NotFoundException("No tasks were found");
         }
 
         return array_map(function (array $result) {
             return new TaskView(
+                Uuid::fromBytes($result['id'])->toString(),
+                $result['title'],
+                $result['status'],
+                $result['username'],
+                $result['priority'],
+                $result['description'],
+                $result['created_at'],
+                $result['updated_at']
+            );
+        }, $result);
+    }
+
+    /**
+     * @param string $status
+     * @return array
+     */
+    public function getAllByStatus(string $status): array
+    {
+        $sql = "SELECT tasks.id as id, title, status, priority, description, tasks.created_at, updated_at, username
+                FROM tasks
+                LEFT JOIN users
+                ON tasks.user_id = users.id
+                WHERE tasks.status = :status
+                ORDER BY created_at DESC
+                ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['status' => $status]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return array();
+        }
+
+        return array_map(function (array $result) {
+            return new TaskView(
+                Uuid::fromBytes($result['id'])->toString(),
                 $result['title'],
                 $result['status'],
                 $result['username'],

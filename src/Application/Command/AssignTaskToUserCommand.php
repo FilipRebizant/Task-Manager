@@ -4,7 +4,7 @@ namespace App\Application\Command;
 
 use App\Application\CommandInterface;
 
-class AssignUserToTaskCommand implements CommandInterface
+class AssignTaskToUserCommand implements CommandInterface
 {
     /** @var string */
     private $task;
@@ -20,8 +20,7 @@ class AssignUserToTaskCommand implements CommandInterface
     public function __construct(
         string $task,
         string $user
-    )
-    {
+    ) {
         $this->user = $user;
         $this->task = $task;
     }

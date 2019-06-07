@@ -6,36 +6,30 @@ use PDO;
 
 class PDOConnector
 {
-    /** @var PDO  */
+    /** @var PDO */
     private $connection;
+
+    /** @var array */
+    private $settings;
 
     /**
      * PDOConnector constructor.
      */
     public function __construct()
     {
-        if (getenv('CI')) {
-            try {
-                $this->connection = new PDO(
-                    'mysql:host=localhost;dbname=task-manager',
-                    'root',
-                    'new_password',
-                    [PDO::ATTR_DEFAULT_FETCH_MODE, 'FETCH_ASSOC']
-                );
-            } catch (\Exception $e) {
-                echo "Connection error: " . $e->getMessage();
-            }
-        } else {
-            try {
-                $this->connection = new PDO(
-                    'mysql:host=172.20.0.5;dbname=task-manager',
-                    'root',
-                    'password',
-                    [PDO::ATTR_DEFAULT_FETCH_MODE, 'FETCH_ASSOC']
-                );
-            } catch (\Exception $e) {
-                echo "Connection error: " . $e->getMessage();
-            }
+        $this->settings = [
+            PDO::ATTR_DEFAULT_FETCH_MODE, 'FETCH_ASSOC',
+        ];
+
+        try {
+            $this->connection = new PDO(
+                'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
+                getenv('DB_USER'),
+                getenv('DB_PASS'),
+                $this->settings
+            );
+        } catch (\Exception $e) {
+            echo "Connection error: " . $e->getMessage();
         }
     }
 

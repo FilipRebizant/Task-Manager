@@ -4,6 +4,9 @@ namespace App\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -31,18 +34,19 @@ class UserRepository implements UserRepositoryInterface
         $data = [
             "id" => $user->getId()->getBytes(),
             "username" => $user->getUserName(),
+            "password" => $user->getPassword(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`) VALUES(:id, :username, :email, :created_at)";
+            $sql = "INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`) 
+                    VALUES(:id, :username, :password, :email, :created_at)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
             $this->pdo->commit();
-
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -60,25 +64,77 @@ class UserRepository implements UserRepositoryInterface
         $stmt->execute(['id' => $id]);
 
         if ($stmt->rowCount() == 0) {
-            throw new NotFoundException();
+            throw new NotFoundException("User was not found");
         };
     }
 
     /**
-     * @param string $id
-     * @return string
+     * @param string $username
+     * @return User
+     * @throws NotFoundException
+     * @throws \App\Domain\Exception\InvalidArgumentException
      */
-    public function getUserByUsername(string $username): User
+    public function getByUsername(string $username): User
     {
-        $sql = "SELECT id, username, email FROM users WHERE username = :username";
+        $sql = "SELECT id, username, email, password 
+                FROM users 
+                WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
+
         $id = Uuid::fromBytes($result['id']);
 
-        $user = new User($id, $result['username'], $result['email']);
+        $user = new User(
+            $id,
+            new Username($result['username']),
+            new Password($result['password']),
+            new Email($result['email']),
+            array()
+        );
 
         return $user;
+    }
+
+    /**
+     * @param string $username
+     * @return bool
+     * @throws NotFoundException
+     */
+    public function checkIfUsernameExists(string $username): bool
+    {
+        $sql = "SELECT count('username') FROM users WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $email
+     * @return bool
+     * @throws NotFoundException
+     */
+    public function checkIfEmailExists(string $email): bool
+    {
+        $sql = "SELECT count('email') FROM users WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
+
+        return true;
     }
 }

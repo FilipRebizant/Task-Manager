@@ -5,7 +5,7 @@ namespace App\Application\Query\Task;
 class TaskView
 {
     /** @var string */
-    private $description;
+    private $id;
 
     /** @var string */
     private $status;
@@ -20,6 +20,9 @@ class TaskView
     private $title;
 
     /** @var string */
+    private $description;
+
+    /** @var string */
     private $created_at;
 
     /** @var string|null */
@@ -27,6 +30,7 @@ class TaskView
 
     /**
      * TaskView constructor.
+     * @param string $id
      * @param string $title
      * @param string $status
      * @param string|null $user
@@ -36,15 +40,16 @@ class TaskView
      * @param string|null $updated_at
      */
     public function __construct(
+        string $id,
         string $title,
         string $status,
-        string $user = null,
+        ?string $user,
         int $priority,
         string $description,
         string $created_at,
-        string $updated_at = null
-    )
-    {
+        ?string $updated_at
+    ) {
+        $this->id = $id;
         $this->title = $title;
         $this->status = $status;
         $this->user = $user;
@@ -52,6 +57,14 @@ class TaskView
         $this->description = $description;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function id(): string
+    {
+        return $this->id;
     }
 
     /**

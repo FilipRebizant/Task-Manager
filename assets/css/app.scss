@@ -1,0 +1,17 @@
+@import "bootstrap.min.css";
+@import "tasks";
+@import "login";
+@import "users";
+@import "form";
+
+body {
+  background: #fdfdfd;
+}
+
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}

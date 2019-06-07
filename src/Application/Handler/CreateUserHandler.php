@@ -2,41 +2,33 @@
 
 namespace App\Application\Handler;
 
-use App\Application\Command\CreateUserCommand;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
-use App\Domain\User\User;
-use App\Domain\User\UserRepositoryInterface;
-use Ramsey\Uuid\Uuid;
+use App\Domain\User\UserService;
 
 class CreateUserHandler implements HandlerInterface
 {
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    /** @var UserService */
+    private $userService;
 
     /**
      * CreateUserHandler constructor.
-     * @param UserRepositoryInterface $userRepository
+     *
+     * @param UserService $userService
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
-     * @param CommandInterface|CreateUserCommand $command
-     * @return void
+     * @param CommandInterface $command
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     * @throws \App\Domain\User\Exception\EmailAlreadyExistsException
+     * @throws \App\Domain\User\Exception\UserAlreadyExistsException
      */
     public function handle(CommandInterface $command): void
     {
-        $user = new User(
-            Uuid::uuid4(),
-            $command->username(),
-            $command->password(),
-            $command->email(),
-            array()
-        );
-
-        $this->userRepository->create($user);
+        $this->userService->createUser($command);
     }
 }

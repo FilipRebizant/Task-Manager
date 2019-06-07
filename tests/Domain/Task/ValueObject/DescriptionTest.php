@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class DescriptionTest extends TestCase
 {
-    public function testCanCreatePriority()
+    public function testCanCreateDescription()
     {
         $description = new Description("Description of the task");
 
@@ -20,7 +20,7 @@ class DescriptionTest extends TestCase
     /**
      * @throws InvalidArgumentException
      */
-    public function testWillThrowExceptionOnNegativeValue()
+    public function testWillThrowExceptionOnEmptyDescription()
     {
         $this->expectException(InvalidArgumentException::class);
 

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Task;
 
+use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Task\Exception\InvalidStatusOrderException;
+use App\Domain\Task\Exception\UserAlreadyAssignedException;
+use App\Domain\Task\Exception\UserNotAssignedException;
 use App\Domain\Task\ValueObject\Title;
 use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
@@ -51,11 +55,10 @@ class Task
         Uuid $uuid,
         Title $title,
         Status $status,
-        User $user = null,
+        ?User $user,
         Priority $priority,
         Description $description
-    )
-    {
+    ) {
         $this->id = $uuid;
         $this->title = $title;
         $this->status = $status;
@@ -137,13 +140,32 @@ class Task
     /**
      * @param Status $status
      * @return Task
+     * @throws InvalidStatusOrderException
+     * @throws UserNotAssignedException
      */
-    public function updateStatus(Status $status): Task
+    public function changeStatus(Status $status): Task
     {
-        $this->status = $status;
+        if (is_null($this->getAssignedUser())) {
+            throw new UserNotAssignedException("Can't change status of task without assigned user");
+        }
 
-        return $this;
+        if ($this->getStatus() == "Todo" && $status == "Pending") {
+            $this->status = $status;
+
+            return $this;
+        } elseif ($this->status == "Pending" && $status == "Done") {
+            $this->status = $status;
+
+            return $this;
+        } elseif ($this->status == "Done" && $status == "Todo") {
+            $this->status = $status;
+
+            return $this;
+        } else {
+            throw new InvalidStatusOrderException("Invalid status order.");
+        }
     }
+
     /**
      * @return Priority
      */

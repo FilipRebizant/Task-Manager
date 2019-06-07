@@ -1,0 +1,43 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{Tests,Kernel.php}'
+
+    App\Interfaces\Web\Controller\:
+        resource: '../src/Interfaces/Web/Controller'
+        tags: ['controller.service_arguments']
+
+    command_handlers:
+        public: true
+        namespace: App\Application\Handler\
+        resource: '../src/Application/Handler/*'
+        tags: [command_handler]
+
+    api_exception_subscriber:
+        class: App\Infrastructure\Listeners\ApiExceptionSubscriber
+        arguments: []
+        tags:
+            - { name: kernel.event_subscriber}
+
+    security_user_provider:
+        class: App\Domain\Security\Symfony\SessionAuth\SessionAuthUserProvider
+
+    userQuery:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\UserQuery
+
+    taskQuery:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\TaskQuery
+
+    userRepository:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\UserRepository
+
+    taskRepository:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\TaskRepository
