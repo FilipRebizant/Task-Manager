@@ -2,6 +2,7 @@
 
 namespace App\Application\Handler;
 
+use App\Application\Command\CreateTaskCommand;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\Task\ValueObject\Description;
@@ -35,7 +36,7 @@ class CreateTaskHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface $command
+     * @param CommandInterface|CreateTaskCommand $command
      * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */

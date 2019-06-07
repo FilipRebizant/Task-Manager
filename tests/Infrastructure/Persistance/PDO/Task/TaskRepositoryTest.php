@@ -56,6 +56,8 @@ class TaskRepositoryTest extends TestCase
         $taskView = $this->taskQuery->getById($uuid->toString());
 
         $this->assertEquals($taskView->id(), $task->getId()->toString());
+
+        $this->taskRepository->delete($task->getId());
     }
 
     /**
@@ -80,12 +82,14 @@ class TaskRepositoryTest extends TestCase
         $taskView = $this->taskQuery->getById($uuid->toString());
 
         $this->assertEquals($taskView->id(), $task->getId()->toString());
+
+        $this->taskRepository->delete($task->getId());
     }
 
     public function testCanAssignUserToTask()
     {
         $uuid = Uuid::uuid4();
-        $randomNumber = rand(0, 9999);
+
         $task = new Task(
             $uuid,
             new Title("Task to assign user"),
@@ -96,9 +100,9 @@ class TaskRepositoryTest extends TestCase
         );
         $user = new User(
             Uuid::uuid4(),
-            new Username('username_to_assign_task_test' . $randomNumber),
+            new Username('username'),
             new Password('password'),
-            new Email('assign_task_test' . $randomNumber . '@gmail.com'),
+            new Email('username@gmail.com'),
             array()
         );
         $userRepository = new UserRepository($this->pdo);
@@ -110,5 +114,8 @@ class TaskRepositoryTest extends TestCase
         $actuallyAssignedUser = $this->taskQuery->getById($taskId)->user();
 
         $this->assertEquals($user->getUserName(), $actuallyAssignedUser);
+
+        $this->taskRepository->delete($task->getId());
+        $userRepository->delete($user->getId());
     }
 }

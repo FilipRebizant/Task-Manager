@@ -25,3 +25,19 @@ services:
 
     security_user_provider:
         class: App\Domain\Security\Symfony\SessionAuth\SessionAuthUserProvider
+
+    userQuery:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\UserQuery
+
+    taskQuery:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\TaskQuery
+
+    userRepository:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\UserRepository
+
+    taskRepository:
+        public: true
+        class: App\Infrastructure\Persistance\PDO\User\TaskRepository

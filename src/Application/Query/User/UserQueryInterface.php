@@ -16,6 +16,13 @@ interface UserQueryInterface
     public function getById(string $userId): UserView;
 
     /**
+     * @param string $username
+     * @return UserView
+     * @throws NotFoundException
+     */
+    public function getByUsername(string $username): UserView;
+
+    /**
      * @return array
      * @throws NotFoundException
      */

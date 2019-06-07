@@ -19,8 +19,6 @@ services:
       - mysql8.0
     ports:
       - "80:80"
-    expose:
-      - '3306'
 
   composer:
     image: composer:latest
@@ -39,3 +37,8 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       - '3306:3306'
+    expose:
+      - '3306'
+
+volumes:
+  mysql8.0:

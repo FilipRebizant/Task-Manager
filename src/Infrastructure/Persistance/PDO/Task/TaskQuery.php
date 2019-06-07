@@ -48,7 +48,7 @@ class TaskQuery implements TaskQueryInterface
         $result = $stmt->fetch();
 
         if (!$result) {
-            throw new NotFoundException("Task was not found.");
+            throw new NotFoundException("Task was not found");
         }
 
         $updatedAt = is_null($result['updated_at']) ? '' : $result['updated_at'];
@@ -82,7 +82,7 @@ class TaskQuery implements TaskQueryInterface
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("No tasks were found.");
+            throw new NotFoundException("No tasks were found");
         }
 
         return array_map(function (array $result) {

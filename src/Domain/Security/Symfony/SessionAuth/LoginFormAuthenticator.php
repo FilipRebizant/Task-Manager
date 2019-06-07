@@ -98,7 +98,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         try {
             $user = $this->userQuery->getSessionAuthUserByUsername($credentials['username']);
         } catch (NotFoundException $exception) {
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException('Username could not be found');
         }
         $this->user = $user;
 
