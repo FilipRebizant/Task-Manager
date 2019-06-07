@@ -2,8 +2,6 @@
 
 namespace App\Infrastructure\Listeners;
 
-use App\Domain\Exception\InvalidArgumentException;
-use Auth0\SDK\Exception\CoreException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -23,16 +21,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             $response = new JsonResponse(['error' => [
                 'message' => $e->getMessage()
             ]], 403);
-
-            $response->headers->set('Content-Type', 'application/problem+json');
-
-            $event->setResponse($response);
-        }
-
-        if ($e instanceof CoreException || $e instanceof InvalidArgumentException) {
-            $response = new JsonResponse(['error' => [
-                'message' => $e->getMessage()
-            ]], 400);
 
             $response->headers->set('Content-Type', 'application/problem+json');
 

@@ -7,12 +7,12 @@ use App\Application\Command\DeleteUserCommand;
 use App\Application\CommandBus;
 use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\UserService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

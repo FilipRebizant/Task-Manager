@@ -58,6 +58,7 @@ class UserRepositoryTest extends TestCase
         $foundUser = $this->userQuery->getById($user->getId()->toString());
 
         $this->assertEquals($user->getId()->toString(), $foundUser->id());
+        $this->userRepository->delete($user->getId());
     }
 
 

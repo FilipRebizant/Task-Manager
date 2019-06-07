@@ -56,7 +56,7 @@ class UserQuery implements UserQueryInterface
         $tasksResult = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("User was not found.");
+            throw new NotFoundException("User was not found");
         }
 
         $id = Uuid::fromBytes($result['id']);
@@ -76,6 +76,63 @@ class UserQuery implements UserQueryInterface
                     $taskResult['updated_at']
                 );
                 array_push($userTasks, $task);
+        }
+
+        return new UserView(
+            $id,
+            $result['username'],
+            $result['email'],
+            $result['created_at'],
+            $userTasks
+        );
+    }
+
+    public function getByUsername(string $username): UserView
+    {
+        $sql = "
+            SELECT id, username, email, created_at
+            FROM users
+            WHERE username = :username
+        ";
+
+        /**
+         * Query for user
+         */
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $userId = $result['id'];
+
+        /**
+         * Query for users tasks
+         */
+        $sqlTasks = "SELECT * FROM tasks WHERE user_id = :id";
+        $tasksStmt = $this->pdo->prepare($sqlTasks);
+        $tasksStmt->execute(['id' => $userId]);
+        $tasksResult = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
+
+        $id = Uuid::fromBytes($result['id']);
+
+        $userTasks = [];
+        foreach ($tasksResult as $taskResult) {
+            $id = Uuid::fromBytes($taskResult['id']);
+            $usrId = Uuid::fromBytes($taskResult['user_id']);
+            $task = new TaskView(
+                $id,
+                $taskResult['title'],
+                $taskResult['status'],
+                $usrId,
+                $taskResult['priority'],
+                $taskResult['description'],
+                $taskResult['created_at'],
+                $taskResult['updated_at']
+            );
+            array_push($userTasks, $task);
         }
 
         return new UserView(
@@ -115,7 +172,7 @@ class UserQuery implements UserQueryInterface
         $tasksResults = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$results) {
-            throw new NotFoundException("Users were not found.");
+            throw new NotFoundException("Users were not found");
         }
 
         /**
@@ -170,7 +227,7 @@ class UserQuery implements UserQueryInterface
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("User was not found.");
+            throw new NotFoundException("User was not found");
         }
 
         $user = new SessionAuthUser(
@@ -197,7 +254,7 @@ class UserQuery implements UserQueryInterface
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            throw new NotFoundException("User was not found.");
+            throw new NotFoundException("User was not found");
         }
 
         $user = new SessionAuthUser(
