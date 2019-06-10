@@ -23,10 +23,10 @@ class TaskView
     private $description;
 
     /** @var string */
-    private $created_at;
+    private $createdAt;
 
     /** @var string|null */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * TaskView constructor.
@@ -36,8 +36,8 @@ class TaskView
      * @param string|null $user
      * @param int $priority
      * @param string $description
-     * @param string $created_at
-     * @param string|null $updated_at
+     * @param string $createdAt
+     * @param string|null $updatedAt
      */
     public function __construct(
         string $id,
@@ -46,8 +46,8 @@ class TaskView
         ?string $user,
         int $priority,
         string $description,
-        string $created_at,
-        ?string $updated_at
+        string $createdAt,
+        ?string $updatedAt
     ) {
         $this->id = $id;
         $this->title = $title;
@@ -55,8 +55,8 @@ class TaskView
         $this->user = $user;
         $this->priority = $priority;
         $this->description = $description;
-        $this->created_at = $created_at;
-        $this->updated_at = $updated_at;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     /**
@@ -116,7 +116,7 @@ class TaskView
      */
     public function createdAt(): string
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
@@ -124,7 +124,34 @@ class TaskView
      */
     public function updatedAt(): ?string
     {
-        return $this->updated_at;
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function toArray(): array
+    {
+        $createdAt = new \DateTime($this->createdAt, new \DateTimeZone('UTC'));
+
+        if ($this->updatedAt()) {
+            $updatedAt = new \DateTime($this->updatedAt, new \DateTimeZone('UTC'));
+            $updatedAt = $updatedAt->format('c');
+        } else {
+            $updatedAt = $this->updatedAt;
+        }
+
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'priority' => $this->priority,
+            'status' => $this->status,
+            'user' => $this->user,
+            'created_at' => $createdAt->format('c'),
+            'updated_at' => $updatedAt,
+        ];
     }
 
     public function __toString()

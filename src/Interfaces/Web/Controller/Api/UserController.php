@@ -11,7 +11,6 @@ use App\Application\Query\User\UserView;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
-use App\Domain\User\UserService;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,21 +24,16 @@ class UserController
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var UserService  */
-    private $userService;
-
     /**
      * UserController constructor.
      *
      * @param CommandBusInterface $commandBus
      * @param UserQueryInterface $userQuery
-     * @param UserService $userService
      */
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, UserService $usrService)
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
     {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
-        $this->userService = $usrService;
     }
 
     /**
@@ -72,13 +66,12 @@ class UserController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws \ReflectionException
      */
     public function getUser(Request $request): JsonResponse
     {
         try {
             $user = $this->userQuery->getById($request->get('id'));
-            $jsonUser = $this->userService->dismount($user);
+            $userArray = $user->toArray();
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
@@ -88,7 +81,7 @@ class UserController
             ], 404);
         }
 
-        return new JsonResponse($jsonUser, 200);
+        return new JsonResponse($userArray, 200);
     }
 
     /**
@@ -99,11 +92,11 @@ class UserController
     {
         try {
             $users = $this->userQuery->getAll();
-            $jsonUsersList = [];
+            $usersList = [];
 
             /** @var UserView $user */
             foreach ($users as $user) {
-                array_push($jsonUsersList, ($user->toArray()));
+                array_push($usersList, ($user->toArray()));
             }
         } catch (NotFoundException $e) {
             return new JsonResponse([
@@ -114,7 +107,7 @@ class UserController
             ], 404);
         }
 
-        return new JsonResponse(["users" => $jsonUsersList], 200);
+        return new JsonResponse(["users" => $usersList], 200);
     }
 
     /**

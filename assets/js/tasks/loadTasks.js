@@ -1,3 +1,5 @@
+import { dateToString } from '../utils';
+
 export function loadTasks(taskStatus) {
     const tokenContainer = document.getElementById('token');
     const errorContainer = document.getElementById('errorContainer');
@@ -48,12 +50,12 @@ export function loadTasks(taskStatus) {
             const markup = `
                     <div class="row">
                         ${response.tasks.map(
-                task => `
+                            task => `
                                 <div class="col-sm-12 mb-3">
                                     <div class="card text-center">
                                         <div class="task__main_header">
-                                            <p class="card-text">Created: <span class="task__date">${task.created_at}</span></p>
-                                            <p class="card-text">${task.updated_at === null ? "Not updated" : `Updated: <span class="task__date">${task.updated_at}`}</span></p>                                            
+                                            <p class="card-text">Created: <span class="task__date"> ${ dateToString(task.created_at) }</span></p>
+                                            <p class="card-text">${task.updated_at === null ? "Not updated" : `Updated: <span class="task__date">${ dateToString(task.updated_at) }`}</span></p>                                            
                                         </div>
                                         <div class="task__secondary_header">
                                             <button class="task__text_button deleteTaskButton" data-task-status="${task.status}" data-task-id="${task.id}">Delete</button>
