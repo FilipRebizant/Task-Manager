@@ -28,7 +28,7 @@ class UserControllerTest extends WebTestCase
     private $userRepository;
 
     /** @var ContainerInterface */
-    protected static $container;
+//    protected static $container;
 
     /** @var string */
     private $token;
@@ -37,9 +37,9 @@ class UserControllerTest extends WebTestCase
     {
         self::bootKernel();
 
-        $this->container = self::$kernel->getContainer();
-        $this->userQuery = $this->container->get('userQuery');
-        $this->userRepository = $this->container->get('userRepository');
+        $container = self::$kernel->getContainer();
+        $this->userQuery = $container->get('userQuery');
+        $this->userRepository = $container->get('userRepository');
 
         $uuid = Uuid::uuid4();
         $this->user = new User(
@@ -53,7 +53,7 @@ class UserControllerTest extends WebTestCase
         $this->userRepository->create($this->user);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
-        $jwtManager = $this->container->get('lexik_jwt_authentication.jwt_manager');
+        $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
 
         $this->token = $jwtManager->create($securityUser);
 
