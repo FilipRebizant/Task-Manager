@@ -30,6 +30,9 @@ script:
   - phpunit --configuration ./phpunit.xml
   - ./vendor/bin/phpcs
 
+after_script:
+  - docker-compose stop
+
 sudo: required
 
 addons:
@@ -39,8 +42,6 @@ addons:
     packages:
       - mysql-server
       - mysql-client
-
-
 
 
 before_install:
