@@ -48,7 +48,7 @@ class UserController
                 (string)$data["username"],
                 (string)$data["email"],
                 (string)$data["password1"],
-                (string)$data["password2"],
+                (string)$data["password2"]
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException|UserAlreadyExistsException|EmailAlreadyExistsException $e) {
