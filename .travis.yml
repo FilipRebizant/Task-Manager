@@ -6,7 +6,7 @@ env:
       - DB_NAME=task-manager
       - DB_USER=root
       - DB_PASS=new_password
-      - DOCKER_COMPOSE_VERSION=1.4.2
+      - DOCKER_COMPOSE_VERSION=3.7.0
 
 php:
   - '7.2'
