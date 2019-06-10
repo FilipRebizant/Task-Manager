@@ -6,7 +6,7 @@ env:
       - DB_NAME=task-manager
       - DB_USER=root
       - DB_PASS=new_password
-      - DOCKER_COMPOSE_VERSION=3.7
+      - DOCKER_COMPOSE_VERSION=1.23.2
 
 php:
   - '7.2'
@@ -14,7 +14,7 @@ php:
 
 before_script:
   - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/3.7/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
