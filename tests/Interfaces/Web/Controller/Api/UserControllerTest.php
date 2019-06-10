@@ -76,7 +76,7 @@ class UserControllerTest extends WebTestCase
             'password2' => 'password',
         ];
 
-        $response = $this->client->post('nginx/api/users', [
+        $response = $this->client->post('http://localhost/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
