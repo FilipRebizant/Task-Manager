@@ -24,6 +24,9 @@ before_script:
   - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 
 script:
+  - docker-compose -v
+  - docker-compose build
+  - docker-compose up
   - phpunit --configuration ./phpunit.xml
   - ./vendor/bin/phpcs
 
@@ -38,9 +41,7 @@ addons:
       - mysql-client
 
 
-install:
-  - docker-compose build
-  - docker-compose up
+
 
 before_install:
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
