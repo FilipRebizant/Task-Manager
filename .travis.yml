@@ -13,7 +13,9 @@ php:
 
 before_script:
   - composer install
-  - openssl req  -nodes -new -x509  -keyout server.key -out server.cert
+  - mkdir config/jwt
+  - openssl genrsa -out config/jwt/private.pem
+  - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 
 script:
   - phpunit --configuration ./phpunit.xml

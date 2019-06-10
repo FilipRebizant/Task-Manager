@@ -77,30 +77,30 @@ class UsersSchemaTest extends WebTestCase
         $this->assertTrue($result->isValid());
     }
 
-    public function testIsSchemaValid()
-    {
-        $path = dirname(__DIR__);
-        $schema = Schema::fromJsonString(file_get_contents($path . '/../src/JsonSchema/get_user_schema.json'));
-        $validator = new Validator();
-
-        $response = $this->client->get('nginx/api/users', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->token,
-            ]
-        ]);
-
-        $json = json_decode($response->getBody());
-
-        /** @var ValidationResult $result */
-        $result = $validator->schemaValidation($json, $schema);
-
-        if (!$result->isValid()) {
-            $error = $result->getFirstError();
-            echo '$data is invalid', PHP_EOL;
-            echo "Error: ", $error->keyword(), PHP_EOL;
-            echo json_encode($error->keywordArgs(), JSON_PRETTY_PRINT), PHP_EOL;
-        }
-
-        $this->assertTrue($result->isValid());
-    }
+//    public function testIsSchemaValid()
+//    {
+//        $path = dirname(__DIR__);
+//        $schema = Schema::fromJsonString(file_get_contents($path . '/../src/JsonSchema/get_user_schema.json'));
+//        $validator = new Validator();
+//
+//        $response = $this->client->get('nginx/api/users', [
+//            'headers' => [
+//                'Authorization' => 'Bearer ' . $this->token,
+//            ]
+//        ]);
+//
+//        $json = json_decode($response->getBody());
+//
+//        /** @var ValidationResult $result */
+//        $result = $validator->schemaValidation($json, $schema);
+//
+//        if (!$result->isValid()) {
+//            $error = $result->getFirstError();
+//            echo '$data is invalid', PHP_EOL;
+//            echo "Error: ", $error->keyword(), PHP_EOL;
+//            echo json_encode($error->keywordArgs(), JSON_PRETTY_PRINT), PHP_EOL;
+//        }
+//
+//        $this->assertTrue($result->isValid());
+//    }
 }
