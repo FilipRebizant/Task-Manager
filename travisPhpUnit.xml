@@ -21,6 +21,7 @@
         <testsuite name="Test Suite">
             <directory>tests</directory>
             <exclude>tests/Interfaces/Web/Controller/Api/UserControllerTest.php</exclude>
+            <exclude>tests/JsonSchema/UsersSchemaTest.php</exclude>
         </testsuite>
     </testsuites>
 

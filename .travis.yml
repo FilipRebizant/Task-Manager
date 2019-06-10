@@ -6,32 +6,17 @@ env:
       - DB_NAME=task-manager
       - DB_USER=root
       - DB_PASS=new_password
-      - DOCKER_COMPOSE_VERSION=1.23.2
-
 php:
   - '7.2'
   - '7.3'
 
 before_script:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-
   - composer install
-  - mkdir config/jwt
-  - openssl genrsa -out config/jwt/private.pem
-  - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+
 
 script:
-  - docker-compose -v
-  - docker-compose build
-  - sudo docker-compose up -d
   - phpunit --configuration ./phpunit.xml
   - ./vendor/bin/phpcs
-
-after_script:
-  - docker-compose stop
 
 sudo: required
 
