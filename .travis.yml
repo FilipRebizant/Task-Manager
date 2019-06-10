@@ -26,8 +26,8 @@ before_script:
 script:
   - docker-compose -v
   - docker-compose build
-  - sudo docker-compose up
-  - phpunit --configuration ./travisPhpUnit.xml
+  - sudo docker-compose up -d
+  - phpunit --configuration ./phpunit.xml
   - ./vendor/bin/phpcs
 
 after_script:
