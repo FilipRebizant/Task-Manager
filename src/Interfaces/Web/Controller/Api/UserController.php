@@ -7,6 +7,7 @@ use App\Application\Command\DeleteUserCommand;
 use App\Application\CommandBus;
 use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
+use App\Application\Query\User\UserView;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
@@ -61,7 +62,7 @@ class UserController
                 "error" => [
                     "status" => 400,
                     "message" => $e->getMessage(),
-                ]
+                ],
             ], 400);
         }
 
@@ -83,7 +84,7 @@ class UserController
                 "error" => [
                     "status" => 404,
                     "message" => $e->getMessage(),
-                ]
+                ],
             ], 404);
         }
 
@@ -100,15 +101,16 @@ class UserController
             $users = $this->userQuery->getAll();
             $jsonUsersList = [];
 
+            /** @var UserView $user */
             foreach ($users as $user) {
-                array_push($jsonUsersList, $this->userService->dismount($user));
+                array_push($jsonUsersList, ($user->toArray()));
             }
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
                     "status" => 404,
                     "message" => $e->getMessage(),
-                ]
+                ],
             ], 404);
         }
 
@@ -129,7 +131,7 @@ class UserController
                 "error" => [
                     "status" => 404,
                     "message" => $e->getMessage(),
-                ]
+                ],
             ], 404);
         }
 

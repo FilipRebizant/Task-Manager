@@ -77,4 +77,21 @@ class UserView
     {
         return $this->tasks;
     }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function toArray(): array
+    {
+        $date = new \DateTime($this->createdAt);
+
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'email' => $this->email,
+            'created_at' => $date->format('c'),
+            'tasks' => $this->tasks,
+        ];
+    }
 }

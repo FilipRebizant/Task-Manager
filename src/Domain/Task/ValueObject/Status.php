@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Task\ValueObject;
 
 use App\Domain\Exception\InvalidArgumentException;
-use App\Domain\Task\Exception\InvalidStatusOrderException;
 
 class Status
 {
