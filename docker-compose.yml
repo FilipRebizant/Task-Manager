@@ -16,7 +16,7 @@ services:
       - ./public/build/:/var/www/html/public/build:ro
     depends_on:
       - php-fpm
-      - mysql8.0
+#      - mysql8.0
     ports:
       - "80:80"
 
