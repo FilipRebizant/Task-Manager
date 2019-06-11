@@ -11,6 +11,7 @@ CREATE TABLE `users` (
    `created_at` datetime DEFAULT NULL,
    `password` varchar(60) NOT NULL,
    `role` varchar(15) DEFAULT NULL,
+   `activation_token` binary(16) DEFAULT NULL,
    PRIMARY KEY (`id`),
    UNIQUE KEY `username_UNIQUE` (`username`),
    UNIQUE KEY `email_UNIQUE` (`email`)

@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 
+use App\Application\Command\CreatePasswordCommand;
 use App\Application\Command\CreateUserCommand;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
@@ -50,15 +51,6 @@ class UserService
             throw new EmailAlreadyExistsException("Email address already exists");
         }
 
-        if ($command->password1() !== $command->password2()) {
-            throw new InvalidArgumentException("Provided passwords doesn't match");
-        }
-
-        $password = new Password($command->password1()); // Create Password instance to validate
-
-        $encoder = $this->passwordEncoder->getEncoder(SessionAuthUser::class);
-        $encodedPassword = $encoder->encodePassword($password, getenv('APP_SALT'));
-
         $user = new User(
             Uuid::uuid4(),
             new Username($command->username()),
@@ -102,5 +94,19 @@ class UserService
         }
 
         return false;
+    }
+
+    public function createPassword(CreatePasswordCommand $command): void
+    {
+        if ($command->password1() !== $command->password2()) {
+            throw new InvalidArgumentException("Provided passwords doesn't match");
+        }
+
+        $password = new Password($command->password1()); // Create Password instance to validate
+
+        $encoder = $this->passwordEncoder->getEncoder(SessionAuthUser::class);
+        $encodedPassword = $encoder->encodePassword($password, getenv('APP_SALT'));
+
+//        $this->userRepository->
     }
 }

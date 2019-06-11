@@ -2,3 +2,13 @@ usersIndex:
   path:       /users
   controller: App\Interfaces\Web\Controller\UserController::index
   methods:    GET
+
+createRegistration:
+  path: /confirm/{token}
+  controller: App\Interfaces\Web\Controller\UserController::confirmRegistration
+  methods: GET
+
+createPassword:
+  path: /users/{id}/createPassword
+  controller: App\Interfaces\Web\Controller\UserController::createPassword
+  methods: POST
