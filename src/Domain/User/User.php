@@ -35,16 +35,14 @@ class User
      *
      * @param Uuid $uuid
      * @param Username $username
-     * @param Password $password
      * @param Email $email
      * @param array $tasks
      * @throws \Exception
      */
-    public function __construct(Uuid $uuid, Username $username, Password $password, Email $email, array $tasks)
+    public function __construct(Uuid $uuid, Username $username, Email $email, array $tasks)
     {
         $this->id = $uuid;
         $this->userName = $username;
-        $this->password = $password;
         $this->email = $email;
         $this->createdAt = new \DateTimeImmutable('now');
         $this->tasks = $tasks;

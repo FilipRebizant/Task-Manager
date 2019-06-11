@@ -38,6 +38,10 @@ class UserController extends AbstractController
         return $this->render('users/index.html.twig');
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function confirmRegistration(Request $request): Response
     {
         return $this->render('users/confirm_registration.html.twig');

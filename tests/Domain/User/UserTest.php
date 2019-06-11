@@ -27,7 +27,6 @@ class UserTest extends TestCase
         $this->user = new User(
             Uuid::uuid4(),
             new Username('username'),
-            new Password('password'),
             new Email('email@gmail.com'),
             array()
         );

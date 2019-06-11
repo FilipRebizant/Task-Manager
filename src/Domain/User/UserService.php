@@ -54,7 +54,6 @@ class UserService
         $user = new User(
             Uuid::uuid4(),
             new Username($command->username()),
-            new Password($encodedPassword),
             new Email($command->email()),
             array()
         );
