@@ -33,4 +33,4 @@
     ./vendor/bin/phpcs
 
 ### Code Sniffer:
-    vendor/bin/phpmd src/ xml phpmd.xml --reportfile messdetector.xml
+    vendor/bin/phpmd src/ xml phpmd.xml --reportfile messDetectorResultReport.xml
