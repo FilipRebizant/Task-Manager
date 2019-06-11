@@ -16,8 +16,8 @@ before_script:
 
 script:
   - phpunit --configuration ./travisPhpUnit.xml
-  - phpcs
-  - phpcpd
+  - vendor/bin/phpcs
+  - vendor/bin/phpcpd
 
 sudo: required
 
