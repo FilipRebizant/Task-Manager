@@ -31,3 +31,6 @@
     
 ### Run code sniffer open php-fpm container and run:
     ./vendor/bin/phpcs
+
+### Code Sniffer:
+    vendor/bin/phpmd src/ xml phpmd.xml --reportfile messdetector.xml

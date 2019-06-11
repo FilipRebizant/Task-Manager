@@ -41,18 +41,19 @@ class TaskController
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
     public function getTasks(Request $request): JsonResponse
     {
         try {
+            $tasksArray = [];
+
             if (!empty($request->get('status'))) {
                 $tasksList = $this->taskQuery->getAllByStatus($request->get('status'));
             } else {
                 $tasksList = $this->taskQuery->getAll();
             }
-
-            $tasksArray = [];
 
             /** @var TaskView $task */
             foreach ($tasksList as $task) {

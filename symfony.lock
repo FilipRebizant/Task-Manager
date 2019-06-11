@@ -29,6 +29,12 @@
     "opis/json-schema": {
         "version": "1.0.18"
     },
+    "pdepend/pdepend": {
+        "version": "2.5.2"
+    },
+    "phpmd/phpmd": {
+        "version": "2.6.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
