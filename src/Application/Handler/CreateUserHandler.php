@@ -2,11 +2,10 @@
 
 namespace App\Application\Handler;
 
-use App\Application\CommandInterface;
-use App\Application\HandlerInterface;
+use App\Application\Command\CreateUserCommand;
 use App\Domain\User\UserService;
 
-class CreateUserHandler implements HandlerInterface
+class CreateUserHandler
 {
     /** @var UserService */
     private $userService;
@@ -22,12 +21,12 @@ class CreateUserHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface $command
+     * @param CreateUserCommand $command
      * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Domain\User\Exception\EmailAlreadyExistsException
      * @throws \App\Domain\User\Exception\UserAlreadyExistsException
      */
-    public function handle(CommandInterface $command): void
+    public function handle(CreateUserCommand $command): void
     {
         $this->userService->createUser($command);
     }

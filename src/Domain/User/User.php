@@ -139,7 +139,7 @@ class User
      */
     public function getAssignedTasks(): array
     {
-        if (is_null($this->tasks)) {
+        if (!$this->tasks) {
             return array();
         }
 
@@ -147,7 +147,7 @@ class User
     }
 
     /**
-     * @param array $tasks
+     * @param Task $task
      * @return User
      */
     public function assignTask(Task $task): User

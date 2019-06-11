@@ -27,9 +27,6 @@ class UserControllerTest extends WebTestCase
     /** @var UserRepositoryInterface */
     private $userRepository;
 
-    /** @var ContainerInterface */
-//    protected static $container;
-
     /** @var string */
     private $token;
 
@@ -65,10 +62,11 @@ class UserControllerTest extends WebTestCase
 
     protected function tearDown(): void
     {
-        $this->userRepository->delete($this->user->getId());
+        $this->userRepository->delete($this->user->getId()->toString());
     }
 
-    public function testCanCreateUserSuccessfully() {
+    public function testCanCreateUserSuccessfully()
+    {
         $data = [
             'username' => 'testUsername',
             'email' => 'testUsername@gmail.com',
@@ -76,11 +74,11 @@ class UserControllerTest extends WebTestCase
             'password2' => 'password',
         ];
 
-        $response = $this->client->post('http://localhost/api/users', [
+        $response = $this->client->post('nginx/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $returnedUser = $this->userQuery->getByUsername('testUsername');
@@ -91,7 +89,8 @@ class UserControllerTest extends WebTestCase
         $this->userRepository->delete($returnedUser->id());
     }
 
-    public function testCanNotCreateUserOnWrongUsername() {
+    public function testCanNotCreateUserOnWrongUsername()
+    {
         $data = [
             'username' => '2testUsername',
             'email' => 'testUsername@gmail.com',
@@ -102,22 +101,23 @@ class UserControllerTest extends WebTestCase
         $expectedResult = json_encode([
             'error' => [
                 'status' => 400,
-                'message' => 'Provided username is invalid'
-            ]
+                'message' => 'Provided username is invalid',
+            ],
         ]);
 
         $response = $this->client->post('nginx/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
 
-    public function testCanNotCreateUserOnWrongEmail() {
+    public function testCanNotCreateUserOnWrongEmail()
+    {
         $data = [
             'username' => 'testUsername',
             'email' => '2testUsername@gmail.com',
@@ -128,22 +128,23 @@ class UserControllerTest extends WebTestCase
         $expectedResult = json_encode([
             'error' => [
                 'status' => 400,
-                'message' => 'Provided email address is invalid'
-            ]
+                'message' => 'Provided email address is invalid',
+            ],
         ]);
 
         $response = $this->client->post('nginx/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
 
-    public function testCanNotCreateUserOnWrongPassword() {
+    public function testCanNotCreateUserOnWrongPassword()
+    {
         $data = [
             'username' => 'testUsername',
             'email' => 'testUsername@gmail.com',
@@ -154,22 +155,23 @@ class UserControllerTest extends WebTestCase
         $expectedResult = json_encode([
             'error' => [
                 'status' => 400,
-                'message' => 'Provided password is invalid'
-            ]
+                'message' => 'Provided password is invalid',
+            ],
         ]);
 
         $response = $this->client->post('nginx/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
 
-    public function testCanNotCreateUserWhenPasswordsDoesntMatch() {
+    public function testCanNotCreateUserWhenPasswordsDoesntMatch()
+    {
         $data = [
             'username' => 'testUsername',
             'email' => 'testUsername@gmail.com',
@@ -180,26 +182,27 @@ class UserControllerTest extends WebTestCase
         $expectedResult = json_encode([
             'error' => [
                 'status' => 400,
-                'message' => 'Provided passwords doesn\'t match'
-            ]
+                'message' => 'Provided passwords doesn\'t match',
+            ],
         ]);
 
         $response = $this->client->post('nginx/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
 
-    public function testCanGetUser() {
+    public function testCanGetUser()
+    {
         $response = $this->client->get('nginx/api/users/' . $this->user->getId()->toString(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $resultArray = json_decode($response->getBody(), true);
@@ -208,11 +211,12 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals('username1', $resultArray['username']);
     }
 
-    public function testGetUsers() {
+    public function testGetUsers()
+    {
         $response = $this->client->get('nginx/api/users', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $finishedData = json_decode($response->getBody(), true);
@@ -221,7 +225,8 @@ class UserControllerTest extends WebTestCase
         $this->assertArrayHasKey('users', $finishedData);
     }
 
-    public function testDeleteUser() {
+    public function testDeleteUser()
+    {
         $expectedResult = json_encode(['result' => 'User has been deleted']);
         $uuid = Uuid::uuid4();
         $user = new User(
@@ -237,25 +242,26 @@ class UserControllerTest extends WebTestCase
         $response = $this->client->delete('nginx/api/users/' . $returnedUser->id(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
 
-    public function testDeleteUserErrorOnNonExistingUser() {
+    public function testDeleteUserErrorOnNonExistingUser()
+    {
         $expectedResult = json_encode([
             'error' => [
                 'status' => 404,
-                'message' => 'User was not found'
-            ]
+                'message' => 'User was not found',
+            ],
         ]);
 
         $response = $this->client->delete('nginx/api/users/' . Uuid::uuid4()->toString(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-            ]
+            ],
         ]);
 
         $this->assertEquals(404, $response->getStatusCode());

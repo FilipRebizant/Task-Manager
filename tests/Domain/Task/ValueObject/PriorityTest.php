@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain;
+namespace App\Tests\Domain\Task\ValueObject;
 
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\ValueObject\Priority;

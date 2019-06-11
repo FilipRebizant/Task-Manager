@@ -2,11 +2,10 @@
 
 namespace App\Application\Handler;
 
-use App\Application\CommandInterface;
-use App\Application\HandlerInterface;
+use App\Application\Command\AssignTaskToUserCommand;
 use App\Domain\Task\TaskService;
 
-class AssignTaskToUserHandler implements HandlerInterface
+class AssignTaskToUserHandler
 {
     /** @var TaskService */
     private $taskService;
@@ -22,11 +21,11 @@ class AssignTaskToUserHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface $command
+     * @param AssignTaskToUserCommand $command
      * @throws \App\Domain\User\Exception\UserAlreadyExistsException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */
-    public function handle(CommandInterface $command): void
+    public function handle(AssignTaskToUserCommand $command): void
     {
         $this->taskService->assignUserToTask($command);
     }

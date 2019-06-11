@@ -17,7 +17,7 @@ class TaskQuery implements TaskQueryInterface
     /**
      * TaskQuery constructor.
      *
-     * @param PDOConnector $pdo
+     * @param PDOConnector $PDOConnector
      */
     public function __construct(PDOConnector $PDOConnector)
     {
