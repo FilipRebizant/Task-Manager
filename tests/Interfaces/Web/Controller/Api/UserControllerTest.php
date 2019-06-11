@@ -28,7 +28,7 @@ class UserControllerTest extends WebTestCase
     private $userRepository;
 
     /** @var ContainerInterface */
-    protected static $container;
+//    protected static $container;
 
     /** @var string */
     private $token;
@@ -37,9 +37,9 @@ class UserControllerTest extends WebTestCase
     {
         self::bootKernel();
 
-        $this->container = self::$kernel->getContainer();
-        $this->userQuery = $this->container->get('userQuery');
-        $this->userRepository = $this->container->get('userRepository');
+        $container = self::$kernel->getContainer();
+        $this->userQuery = $container->get('userQuery');
+        $this->userRepository = $container->get('userRepository');
 
         $uuid = Uuid::uuid4();
         $this->user = new User(
@@ -47,12 +47,13 @@ class UserControllerTest extends WebTestCase
             new Username('username1'),
             new Password('password'),
             new Email('username1@gmail.com'),
-            []);
+            []
+        );
 
         $this->userRepository->create($this->user);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
-        $jwtManager = $this->container->get('lexik_jwt_authentication.jwt_manager');
+        $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
 
         $this->token = $jwtManager->create($securityUser);
 
@@ -75,7 +76,7 @@ class UserControllerTest extends WebTestCase
             'password2' => 'password',
         ];
 
-        $response = $this->client->post('nginx/api/users', [
+        $response = $this->client->post('http://localhost/api/users', [
             'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
@@ -195,18 +196,7 @@ class UserControllerTest extends WebTestCase
     }
 
     public function testCanGetUser() {
-        $uuid = Uuid::uuid4();
-        $user = new User(
-            $uuid,
-            new Username('testGetUsername'),
-            new Password('password'),
-            new Email('test_get_username@gmail.com'),
-            []
-        );
-
-        $this->userRepository->create($user);
-
-        $response = $this->client->get('nginx/api/users/' . $uuid->toString(), [
+        $response = $this->client->get('nginx/api/users/' . $this->user->getId()->toString(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
             ]
@@ -215,9 +205,7 @@ class UserControllerTest extends WebTestCase
         $resultArray = json_decode($response->getBody(), true);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('testGetUsername', $resultArray['username']);
-
-        $this->userRepository->delete($uuid->toString());
+        $this->assertEquals('username1', $resultArray['username']);
     }
 
     public function testGetUsers() {
@@ -241,7 +229,8 @@ class UserControllerTest extends WebTestCase
             new Username('testDeleteUsername'),
             new Password('password'),
             new Email('testDeleteUsername@gmail.com'),
-            []);
+            []
+        );
         $this->userRepository->create($user);
         $returnedUser = $this->userQuery->getByUsername('testDeleteUsername');
 

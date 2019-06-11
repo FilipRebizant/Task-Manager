@@ -2,13 +2,12 @@
 
 namespace App\Domain\Task;
 
-use App\Application\AbstractService;
 use App\Application\Command\AssignTaskToUserCommand;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Exception\NotFoundException;
 
-class TaskService extends AbstractService
+class TaskService
 {
     /** @var TaskRepositoryInterface */
     private $taskRepository;

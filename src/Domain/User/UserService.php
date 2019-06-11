@@ -2,7 +2,6 @@
 
 namespace App\Domain\User;
 
-use App\Application\AbstractService;
 use App\Application\CommandInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
@@ -15,7 +14,7 @@ use App\Infrastructure\Exception\NotFoundException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class UserService extends AbstractService
+class UserService
 {
     /** @var UserRepositoryInterface */
     private $userRepository;

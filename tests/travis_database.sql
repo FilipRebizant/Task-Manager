@@ -10,7 +10,7 @@ CREATE TABLE `users` (
    `email` varchar(45) NOT NULL,
    `created_at` datetime DEFAULT NULL,
    `password` varchar(60) NOT NULL,
-   `token` varchar(60) DEFAULT NULL,
+   `role` varchar(15) DEFAULT NULL,
    PRIMARY KEY (`id`),
    UNIQUE KEY `username_UNIQUE` (`username`),
    UNIQUE KEY `email_UNIQUE` (`email`)
