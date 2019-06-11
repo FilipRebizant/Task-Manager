@@ -2,12 +2,10 @@
 
 namespace App\Application\Handler;
 
-use App\Application\Command\DeleteTaskCommand;
-use App\Application\CommandInterface;
-use App\Application\HandlerInterface;
+use App\Application\Command\DeleteUserCommand;
 use App\Domain\User\UserRepositoryInterface;
 
-class DeleteUserHandler implements HandlerInterface
+class DeleteUserHandler
 {
     /** @var UserRepositoryInterface  */
     private $userRepository;
@@ -22,10 +20,10 @@ class DeleteUserHandler implements HandlerInterface
     }
 
     /**
-     * @param DeleteTaskCommand $command
+     * @param DeleteUserCommand $command
      * @return void
      */
-    public function handle(CommandInterface $command): void
+    public function handle(DeleteUserCommand $command): void
     {
         $this->userRepository->delete($command->id());
     }

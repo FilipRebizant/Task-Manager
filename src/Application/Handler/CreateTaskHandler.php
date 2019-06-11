@@ -3,8 +3,6 @@
 namespace App\Application\Handler;
 
 use App\Application\Command\CreateTaskCommand;
-use App\Application\CommandInterface;
-use App\Application\HandlerInterface;
 use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
@@ -16,7 +14,7 @@ use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use Ramsey\Uuid\Uuid;
 
-class CreateTaskHandler implements HandlerInterface
+class CreateTaskHandler
 {
     /** @var TaskRepositoryInterface */
     private $taskRepository;
@@ -40,7 +38,7 @@ class CreateTaskHandler implements HandlerInterface
      * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */
-    public function handle(CommandInterface $command): void
+    public function handle(CreateTaskCommand $command): void
     {
         $user = null;
 

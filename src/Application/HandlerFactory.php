@@ -21,9 +21,8 @@ class HandlerFactory
 
     /**
      * @param string $handler
-     * @return HandlerInterface
      */
-    public function make(string $handler): HandlerInterface
+    public function make(string $handler)
     {
         return $this->container->get($handler);
     }

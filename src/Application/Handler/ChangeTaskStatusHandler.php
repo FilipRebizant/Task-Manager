@@ -3,12 +3,10 @@
 namespace App\Application\Handler;
 
 use App\Application\Command\ChangeTaskStatusCommand;
-use App\Application\CommandInterface;
-use App\Application\HandlerInterface;
 use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Status;
 
-class ChangeTaskStatusHandler implements HandlerInterface
+class ChangeTaskStatusHandler
 {
     /** @var TaskRepositoryInterface  */
     private $taskRepository;
@@ -24,13 +22,13 @@ class ChangeTaskStatusHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface|ChangeTaskStatusCommand $command
+     * @param ChangeTaskStatusCommand $command
      * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Domain\Task\Exception\InvalidStatusOrderException
      * @throws \App\Domain\Task\Exception\UserNotAssignedException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */
-    public function handle(CommandInterface $command): void
+    public function handle(ChangeTaskStatusCommand $command): void
     {
         $status = new Status($command->status());
         $task = $this->taskRepository->getTaskById($command->taskId());

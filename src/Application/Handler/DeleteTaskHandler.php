@@ -3,11 +3,9 @@
 namespace App\Application\Handler;
 
 use App\Application\Command\DeleteTaskCommand;
-use App\Application\CommandInterface;
-use App\Application\HandlerInterface;
 use App\Domain\Task\TaskRepositoryInterface;
 
-class DeleteTaskHandler implements HandlerInterface
+class DeleteTaskHandler
 {
     /** @var TaskRepositoryInterface  */
     private $taskRepository;
@@ -26,7 +24,7 @@ class DeleteTaskHandler implements HandlerInterface
      * @param DeleteTaskCommand $command
      * @throws \Exception
      */
-    public function handle(CommandInterface $command): void
+    public function handle(DeleteTaskCommand $command): void
     {
         $this->taskRepository->delete($command->id());
     }
