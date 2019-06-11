@@ -20,7 +20,7 @@ class Task
     /** @var Uuid */
     private $id;
 
-    /** @var User */
+    /** @var User|null */
     private $user;
 
     /** @var Status */

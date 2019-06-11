@@ -96,7 +96,7 @@ class TaskView
      */
     public function user(): string
     {
-        if (!is_null($this->user)) {
+        if ($this->user) {
             return $this->user;
         }
 

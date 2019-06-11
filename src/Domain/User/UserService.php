@@ -3,7 +3,6 @@
 namespace App\Domain\User;
 
 use App\Application\Command\CreateUserCommand;
-use App\Application\CommandInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
@@ -36,12 +35,12 @@ class UserService
     }
 
     /**
-     * @param CommandInterface|CreateUserCommand $command
+     * @param CreateUserCommand $command
      * @throws EmailAlreadyExistsException
      * @throws InvalidArgumentException
      * @throws UserAlreadyExistsException
      */
-    public function createUser(CommandInterface $command): void
+    public function createUser(CreateUserCommand $command): void
     {
         if ($this->userAlreadyExists(new Username($command->username()))) {
             throw new UserAlreadyExistsException("Username already exists");

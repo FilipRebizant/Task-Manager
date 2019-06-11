@@ -139,7 +139,7 @@ class User
      */
     public function getAssignedTasks(): array
     {
-        if (is_null($this->tasks)) {
+        if (!$this->tasks) {
             return array();
         }
 
