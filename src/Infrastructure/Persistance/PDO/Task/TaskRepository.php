@@ -26,11 +26,11 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * TaskRepository constructor.
      *
-     * @param PDOConnector $pdo
+     * @param PDOConnector $PDOConnector
      */
-    public function __construct(PDOConnector $pdo)
+    public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $pdo->getConnection();
+        $this->pdo = $PDOConnector->getConnection();
     }
 
     /**
@@ -182,8 +182,7 @@ class TaskRepository implements TaskRepositoryInterface
                 new Status($result['status']),
                 $user,
                 new Priority($result['priority']),
-                new Description($result['description']),
-                $result['created_at']
+                new Description($result['description'])
             );
         } else {
             $task = new Task(
@@ -192,8 +191,7 @@ class TaskRepository implements TaskRepositoryInterface
                 new Status($result['status']),
                 null,
                 new Priority($result['priority']),
-                new Description($result['description']),
-                $result['created_at']
+                new Description($result['description'])
             );
         }
 

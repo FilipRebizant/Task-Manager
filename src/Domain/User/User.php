@@ -147,7 +147,7 @@ class User
     }
 
     /**
-     * @param array $tasks
+     * @param Task $task
      * @return User
      */
     public function assignTask(Task $task): User

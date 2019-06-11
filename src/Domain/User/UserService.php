@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 
+use App\Application\Command\CreateUserCommand;
 use App\Application\CommandInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
@@ -35,7 +36,7 @@ class UserService
     }
 
     /**
-     * @param CommandInterface $command
+     * @param CommandInterface|CreateUserCommand $command
      * @throws EmailAlreadyExistsException
      * @throws InvalidArgumentException
      * @throws UserAlreadyExistsException

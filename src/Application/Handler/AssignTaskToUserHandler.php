@@ -2,6 +2,7 @@
 
 namespace App\Application\Handler;
 
+use App\Application\Command\AssignTaskToUserCommand;
 use App\Application\CommandInterface;
 use App\Application\HandlerInterface;
 use App\Domain\Task\TaskService;
@@ -22,7 +23,7 @@ class AssignTaskToUserHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface $command
+     * @param AssignTaskToUserCommand|CommandInterface $command
      * @throws \App\Domain\User\Exception\UserAlreadyExistsException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */

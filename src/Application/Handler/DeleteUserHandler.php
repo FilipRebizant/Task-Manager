@@ -22,7 +22,7 @@ class DeleteUserHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface|DeleteTaskCommand $command
+     * @param DeleteTaskCommand $command
      * @return void
      */
     public function handle(CommandInterface $command): void

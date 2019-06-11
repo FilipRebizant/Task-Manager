@@ -37,7 +37,7 @@
     vendor/bin/phpmd src/ xml phpmd.xml --reportfile messDetectorResultReport.xml
     
 ### Copy paste detector
-    phpcpd src/
+    phpcpd  --fuzzy src/
 
 ### PHP Stan
     vendor/bin/phpstan analyse src tests --level {0-7}

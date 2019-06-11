@@ -36,7 +36,7 @@ class CreateTaskHandler implements HandlerInterface
     }
 
     /**
-     * @param CommandInterface|CreateTaskCommand $command
+     * @param CreateTaskCommand $command
      * @throws \App\Domain\Exception\InvalidArgumentException
      * @throws \App\Infrastructure\Exception\NotFoundException
      */

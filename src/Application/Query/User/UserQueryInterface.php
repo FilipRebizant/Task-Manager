@@ -33,7 +33,7 @@ interface UserQueryInterface
      * @return SessionAuthUser
      * @throws NotFoundException
      */
-    public function getSessionAuthUserByEmail(string $username): SessionAuthUser;
+    public function getSessionAuthUserByEmail(string $email): SessionAuthUser;
 
     /**
      * @param string $username

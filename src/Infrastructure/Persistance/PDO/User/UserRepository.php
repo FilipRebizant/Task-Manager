@@ -19,11 +19,11 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * UserRepository constructor.
-     * @param PDOConnector $pdo
+     * @param PDOConnector $PDOConnector
      */
-    public function __construct(PDOConnector $pdo)
+    public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $pdo->getConnection();
+        $this->pdo = $PDOConnector->getConnection();
     }
 
     /**
