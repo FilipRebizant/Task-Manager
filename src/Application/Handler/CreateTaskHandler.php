@@ -42,10 +42,10 @@ class CreateTaskHandler implements HandlerInterface
      */
     public function handle(CommandInterface $command): void
     {
+        $user = null;
+
         if (!empty($command->user())) {
             $user = $this->userRepository->getByUsername(new Username($command->user()));
-        } else {
-            $user = null;
         }
 
         $task = new Task(

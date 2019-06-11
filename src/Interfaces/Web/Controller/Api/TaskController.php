@@ -8,11 +8,11 @@ use App\Application\Command\CreateTaskCommand;
 use App\Application\Command\DeleteTaskCommand;
 use App\Application\CommandBusInterface;
 use App\Application\Query\Task\TaskQueryInterface;
+use App\Application\Query\Task\TaskView;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\Exception\UserAlreadyAssignedException;
 use App\Domain\Task\Exception\UserNotAssignedException;
-use App\Domain\Task\TaskService;
 use App\Infrastructure\Exception\NotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,66 +25,40 @@ class TaskController
     /** @var TaskQueryInterface */
     private $taskQuery;
 
-    /** @var TaskService */
-    private $taskService;
-
     /**
      * TaskController constructor.
      *
      * @param CommandBusInterface $commandBus
      * @param TaskQueryInterface $taskQuery
-     * @param TaskService $taskService
      *
      */
     public function __construct(
         CommandBusInterface $commandBus,
-        TaskQueryInterface $taskQuery,
-        TaskService $taskService
+        TaskQueryInterface $taskQuery
     ) {
         $this->commandBus = $commandBus;
         $this->taskQuery = $taskQuery;
-        $this->taskService = $taskService;
-    }
-
-    /**
-     * @return JsonResponse
-     * @throws \ReflectionException
-     */
-    public function getTasks(Request $request): JsonResponse
-    {
-        try {
-            if (!empty($request->get('status'))) {
-                $tasksList = $this->taskQuery->getAllByStatus($request->get('status'));
-            } else {
-                $tasksList = $this->taskQuery->getAll();
-            }
-            $jsonTasksList = [];
-
-            foreach ($tasksList as $task) {
-                array_push($jsonTasksList, $this->taskService->dismount($task));
-            }
-        } catch (NotFoundException $e) {
-            return new JsonResponse([
-                "error" => [
-                    "status" => 404,
-                    "message" => $e->getMessage(),
-                ],
-            ], 404);
-        }
-
-        return new JsonResponse(["tasks" => $jsonTasksList], 200);
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws \ReflectionException
      */
-    public function getTask(Request $request): JsonResponse
+    public function getTasks(Request $request): JsonResponse
     {
         try {
-            $task = $this->taskQuery->getById($request->get('id'));
-            $jsonTask = $this->taskService->dismount($task);
+            $tasksArray = [];
+
+            if (!empty($request->get('status'))) {
+                $tasksList = $this->taskQuery->getAllByStatus($request->get('status'));
+            } else {
+                $tasksList = $this->taskQuery->getAll();
+            }
+
+            /** @var TaskView $task */
+            foreach ($tasksList as $task) {
+                array_push($tasksArray, $task->toArray());
+            }
         } catch (NotFoundException $e) {
             return new JsonResponse([
                 "error" => [
@@ -94,7 +68,28 @@ class TaskController
             ], 404);
         }
 
-        return new JsonResponse($jsonTask, 200);
+        return new JsonResponse(["tasks" => $tasksArray], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getTask(Request $request): JsonResponse
+    {
+        try {
+            $task = $this->taskQuery->getById($request->get('id'));
+            $taskArray = $task->toArray();
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 404,
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return new JsonResponse($taskArray, 200);
     }
 
     /**
