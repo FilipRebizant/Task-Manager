@@ -15,7 +15,7 @@ class CreateTaskCommand implements CommandInterface
     /** @var string  */
     private $description;
 
-    /** @var string */
+    /** @var string|null */
     private $user;
 
     /**
