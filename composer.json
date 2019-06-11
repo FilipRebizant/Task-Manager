@@ -30,6 +30,7 @@
   "require-dev": {
     "phpunit/php-code-coverage": "^7.0",
     "phpunit/phpunit": "^8",
+    "sebastian/phpcpd": "^4.1",
     "squizlabs/php_codesniffer": "3.*"
   },
   "config": {
