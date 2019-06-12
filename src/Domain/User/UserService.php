@@ -10,6 +10,7 @@ use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use Ramsey\Uuid\Uuid;
@@ -55,6 +56,7 @@ class UserService
             Uuid::uuid4(),
             new Username($command->username()),
             new Email($command->email()),
+            new Role($command->role()),
             array()
         );
 
@@ -109,5 +111,8 @@ class UserService
 //        $this->userRepository->createPassword()
     }
 
-//    public function setRole
+    public function assignRole(string $role)
+    {
+
+    }
 }

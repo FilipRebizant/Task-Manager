@@ -6,6 +6,7 @@ use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
@@ -36,13 +37,14 @@ class UserRepository implements UserRepositoryInterface
             "username" => $user->getUserName(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
-            "activation_token" => Uuid::uuid4()->getBytes(),
+            "activation_token" => Uuid::uuid4()->toString(),
+            "role" => $user->getRole(),
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`, `activation_token`) 
-                    VALUES(:id, :username, :email, :created_at, :activation_token)";
+            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`, `activation_token`, `role`) 
+                    VALUES(:id, :username, :email, :created_at, :activation_token, :role)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
@@ -76,7 +78,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getByUsername(string $username): User
     {
-        $sql = "SELECT id, username, email, password 
+        $sql = "SELECT id, username, email, password, role
                 FROM users 
                 WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
@@ -93,6 +95,7 @@ class UserRepository implements UserRepositoryInterface
             $id,
             new Username($result['username']),
             new Email($result['email']),
+            new Role($result['role']),
             array()
         );
 
@@ -137,6 +140,11 @@ class UserRepository implements UserRepositoryInterface
         return true;
     }
 
+    /**
+     * @param string $userId
+     * @param string $password
+     * @throws NotFoundException
+     */
     public function createPassword(string $userId, string $password): void
     {
         $sql = "UPDATE users SET password = :password WHERE id = :id";
@@ -144,6 +152,27 @@ class UserRepository implements UserRepositoryInterface
         $stmt->execute([
             'id' => $userId,
             'password' => $password,
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
+    }
+
+    /**
+     * @param string $userId
+     * @param string $role
+     * @throws NotFoundException
+     */
+    public function assignRole(string $userId, string $role): void
+    {
+        $sql = "UPDATE users SET role = :role WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id' => $userId,
+            'role' => $role,
         ]);
 
         $result = $stmt->fetch(PDO::FETCH_COLUMN);

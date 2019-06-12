@@ -7,6 +7,7 @@ namespace App\Domain\User;
 use App\Domain\Task\Task;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use Ramsey\Uuid\Uuid;
 
@@ -30,6 +31,9 @@ class User
     /** @var array */
     private $tasks;
 
+    /** @var Role */
+    private $role;
+
     /** @var Uuid */
     private $activationToken;
 
@@ -39,15 +43,17 @@ class User
      * @param Uuid $uuid
      * @param Username $username
      * @param Email $email
+     * @param Role $role
      * @param array $tasks
      * @throws \Exception
      */
-    public function __construct(Uuid $uuid, Username $username, Email $email, array $tasks)
+    public function __construct(Uuid $uuid, Username $username, Email $email, Role $role, array $tasks)
     {
         $this->id = $uuid;
         $this->userName = $username;
         $this->email = $email;
         $this->createdAt = new \DateTimeImmutable('now');
+        $this->role = $role;
         $this->tasks = $tasks;
     }
 
@@ -133,6 +139,22 @@ class User
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @return Role
+     */
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function setRole(Role $role): void
+    {
+        $this->role = $role;
     }
 
     /**

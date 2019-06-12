@@ -33,7 +33,7 @@ class UserQuery implements UserQueryInterface
     public function getById(string $userId): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at, role
+            SELECT id, username, email, created_at,activation_token, role
             FROM users
             WHERE users.id = :id
         ";
@@ -82,6 +82,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
+            $result['activation_token'],
             $result['role'],
             $userTasks
         );
@@ -90,7 +91,7 @@ class UserQuery implements UserQueryInterface
     public function getByUsername(string $username): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at, role
+            SELECT id, username, email, created_at, activation_token, role
             FROM users
             WHERE username = :username
         ";
@@ -140,6 +141,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
+            $result['activation_token'],
             $result['role'],
             $userTasks
         );
@@ -152,7 +154,7 @@ class UserQuery implements UserQueryInterface
     public function getAll(): array
     {
         $sql = "
-            SELECT id, username, email, created_at, role
+            SELECT id, username, email, created_at, activation_token, role
             FROM users
             GROUP BY username
         ";
@@ -205,6 +207,7 @@ class UserQuery implements UserQueryInterface
                 $result['username'],
                 $result['email'],
                 $result['created_at'],
+                $result['activation_token'],
                 $result['role'],
                 $userTasks
             );

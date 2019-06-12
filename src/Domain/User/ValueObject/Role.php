@@ -26,7 +26,7 @@ class Role
     public function __construct(string $role)
     {
         if (!in_array($role, $this->validRoles)) {
-            throw new InvalidArgumentException("This is not a valid status.");
+            throw new InvalidArgumentException("This is not a valid role.");
         }
 
         $this->role = $role;

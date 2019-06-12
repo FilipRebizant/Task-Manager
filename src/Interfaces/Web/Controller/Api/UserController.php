@@ -48,7 +48,8 @@ class UserController
             $data = json_decode($request->getContent(), true);
             $command = new CreateUserCommand(
                 (string)$data["username"],
-                (string)$data["email"]
+                (string)$data["email"],
+                (string)$data["role"]
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException|UserAlreadyExistsException|EmailAlreadyExistsException $e) {

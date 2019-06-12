@@ -48,15 +48,17 @@ export function loadUsers() {
                                 <th scope="col">Username</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Role</th>
+                                <th scope="col">Account status</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                     ${response.users.map(
                         user => `
                              <tr>
-                                <td scope="row">${user.username}</td>
-                                <td scope="row">${user.email}</td>
+                                <td scope="row">${ user.username }</td>
+                                <td scope="row">${ user.email }</td>
                                 <td scope="row">${ user.role === null ? 'Account not activated' : user.role }</td>
+                                <td scope="row">${ user.activation_token === null ? 'Active' : 'Not active' }</td>
                                 <td scope="row">
                                     <button class="btn btn-outline-danger deleteUserButton" data-user-id="${user.id}">Delete</button>
                                 </td>

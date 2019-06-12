@@ -13,7 +13,9 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('users/index.html.twig');
+        $roles = ['ADMIN', 'USER'];
+
+        return $this->render('users/index.html.twig', ['roles' => $roles]);
     }
 
     /**

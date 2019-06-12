@@ -24,6 +24,9 @@ class UserView
     /** @var string|null */
     private $role;
 
+    /** @var string|null */
+    private $activationToken;
+
     /**
      * UserView constructor.
      *
@@ -31,6 +34,7 @@ class UserView
      * @param string $username
      * @param string $email
      * @param string $createdAt
+     * @param string|null $activationToken
      * @param string|null $role
      * @param array $tasks
      */
@@ -39,6 +43,7 @@ class UserView
         string $username,
         string $email,
         string $createdAt,
+        ?string $activationToken,
         ?string $role,
         array $tasks
     ) {
@@ -46,8 +51,9 @@ class UserView
         $this->username = $username;
         $this->email = $email;
         $this->createdAt = $createdAt;
-        $this->tasks = $tasks;
+        $this->activationToken = $activationToken;
         $this->role = $role;
+        $this->tasks = $tasks;
     }
 
     /**
@@ -99,6 +105,14 @@ class UserView
     }
 
     /**
+     * @return string
+     */
+    public function getActivationToken(): string
+    {
+        return $this->activationToken;
+    }
+
+    /**
      * @return array
      * @throws \Exception
      */
@@ -111,6 +125,7 @@ class UserView
             'username' => $this->username,
             'email' => $this->email,
             'created_at' => $date->format('c'),
+            'activation_token' => $this->activationToken,
             'role' => $this->role,
             'tasks' => $this->tasks,
         ];
