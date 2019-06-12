@@ -34,9 +34,6 @@ class User
     /** @var Role */
     private $role;
 
-    /** @var Uuid */
-    private $activationToken;
-
     /**
      * User constructor.
      *

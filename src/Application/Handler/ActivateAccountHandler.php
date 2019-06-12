@@ -2,10 +2,10 @@
 
 namespace App\Application\Handler;
 
-use App\Application\Command\CreatePasswordCommand;
+use App\Application\Command\ActivateAccountCommand;
 use App\Domain\User\UserService;
 
-class CreatePasswordHandler
+class ActivateAccountHandler
 {
     /** @var UserService */
     private $userService;
@@ -21,11 +21,10 @@ class CreatePasswordHandler
     }
 
     /**
-     * @param CreatePasswordCommand $command
-     * @throws \App\Domain\Exception\InvalidArgumentException
+     * @param ActivateAccountCommand $command
      */
-    public function handle(CreatePasswordCommand $command): void
+    public function handle(ActivateAccountCommand $command): void
     {
-        $this->userService->createPassword($command);
+        $this->userService->activateAccount($command);
     }
 }

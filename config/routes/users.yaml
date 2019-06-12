@@ -4,11 +4,11 @@ usersIndex:
   methods:    GET
 
 createRegistration:
-  path: /confirm/{token}
+  path: /activation/confirm/{token}
   controller: App\Interfaces\Web\Controller\UserController::loadConfirmRegistrationView
   methods: GET
 
-createPassword:
-  path: /users/{id}
-  controller: App\Interfaces\Web\Controller\UserController::createPassword
+activateAccount:
+  path: /activation/confirm/{token}
+  controller: App\Interfaces\Web\Controller\SecurityController::activateAccount
   methods: PATCH

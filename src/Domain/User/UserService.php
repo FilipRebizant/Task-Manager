@@ -2,7 +2,8 @@
 
 namespace App\Domain\User;
 
-use App\Application\Command\CreatePasswordCommand;
+use App\Application\Command\ActivateAccountCommand;
+use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
@@ -97,22 +98,63 @@ class UserService
         return false;
     }
 
-    public function createPassword(CreatePasswordCommand $command): void
+    /**
+     * @param ChangePasswordCommand $command
+     * @throws InvalidArgumentException
+     * @throws NotFoundException
+     */
+    public function changePassword(ChangePasswordCommand $command)
     {
-        if ($command->password1() !== $command->password2()) {
+        $data = [
+            'password1' => $command->password1(),
+            'password2' => $command->password2(),
+        ];
+        $this->validatePassword($data);
+        $encodedPassword = $this->encodePassword($command->password1());
+        $this->userRepository->changePassword($command->userId(), $encodedPassword);
+    }
+
+    /**
+     * @param ChangePasswordCommand $command
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    private function validatePassword(array $data): bool
+    {
+        if ($data['password1'] !== $data['password2']) {
             throw new InvalidArgumentException("Provided passwords doesn't match");
         }
 
-        $password = new Password($command->password1()); // Create Password instance to validate
+        new Password($data['password1']); // Create Password instance to validate
 
+        return true;
+    }
+
+    /**
+     * @param string $password
+     * @return string
+     */
+    private function encodePassword(string $password): string
+    {
         $encoder = $this->passwordEncoder->getEncoder(SessionAuthUser::class);
         $encodedPassword = $encoder->encodePassword($password, getenv('APP_SALT'));
 
-//        $this->userRepository->createPassword()
+        return $encodedPassword;
     }
 
-    public function assignRole(string $role)
+    /**
+     * @param ActivateAccountCommand $command
+     * @throws InvalidArgumentException
+     */
+    public function activateAccount(ActivateAccountCommand $command)
     {
+        $data = [
+            'password1' => $command->password1(),
+            'password2' => $command->password2(),
+        ];
 
+        $this->validatePassword($data);
+        $encodedPassword = $this->encodePassword($command->password1());
+        $this->userRepository->activateNewUser($command->token(), $encodedPassword);
     }
 }

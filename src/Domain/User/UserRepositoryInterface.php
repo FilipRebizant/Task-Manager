@@ -36,4 +36,17 @@ interface UserRepositoryInterface
      * @throws NotFoundException
      */
     public function checkIfEmailExists(string $username): bool;
+
+    /**
+     * @param string $userId
+     * @param string $password
+     * @throws NotFoundException
+     */
+    public function changePassword(string $userId, string $password): void;
+
+    /**
+     * @param string $activationToken
+     * @throws NotFoundException
+     */
+    public function activateNewUser(string $activationToken, $password): void;
 }

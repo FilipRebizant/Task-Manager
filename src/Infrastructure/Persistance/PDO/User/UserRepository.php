@@ -145,7 +145,7 @@ class UserRepository implements UserRepositoryInterface
      * @param string $password
      * @throws NotFoundException
      */
-    public function createPassword(string $userId, string $password): void
+    public function changePassword(string $userId, string $password): void
     {
         $sql = "UPDATE users SET password = :password WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
@@ -162,20 +162,21 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param string $userId
-     * @param string $role
+     * @param string $activationToken
      * @throws NotFoundException
      */
-    public function assignRole(string $userId, string $role): void
+    public function activateNewUser(string $activationToken, $password): void
     {
-        $sql = "UPDATE users SET role = :role WHERE id = :id";
+        $sql = "UPDATE users 
+                SET activation_token = null, password = :password 
+                WHERE activation_token = :activation_token
+                ";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'id' => $userId,
-            'role' => $role,
+            'activation_token' => $activationToken,
+            'password' => $password
         ]);
-
-        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        $result = $stmt->rowCount();
 
         if (!$result) {
             throw new NotFoundException("User was not found");

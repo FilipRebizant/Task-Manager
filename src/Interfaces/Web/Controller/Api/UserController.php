@@ -2,7 +2,7 @@
 
 namespace App\Interfaces\Web\Controller\Api;
 
-use App\Application\Command\CreatePasswordCommand;
+use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
 use App\Application\Command\DeleteUserCommand;
 use App\Application\CommandBus;
@@ -136,11 +136,12 @@ class UserController
      * @param Request $request
      * @return Response
      */
-    public function createPassword(Request $request): Response
+    public function changePassword(Request $request): Response
     {
         try {
             $data = json_decode($request->getContent(), true);
-            $command = new CreatePasswordCommand(
+            $command = new ChangePasswordCommand(
+                (string)$data['userId'],
                 (string)$data["password1"],
                 (string)$data["password2"]
             );
