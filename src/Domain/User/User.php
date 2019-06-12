@@ -30,6 +30,9 @@ class User
     /** @var array */
     private $tasks;
 
+    /** @var Uuid */
+    private $activationToken;
+
     /**
      * User constructor.
      *

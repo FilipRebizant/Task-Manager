@@ -34,15 +34,15 @@ class UserRepository implements UserRepositoryInterface
         $data = [
             "id" => $user->getId()->getBytes(),
             "username" => $user->getUserName(),
-            "password" => $user->getPassword(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            "activation_token" => Uuid::uuid4()->getBytes(),
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`) 
-                    VALUES(:id, :username, :password, :email, :created_at)";
+            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`, `activation_token`) 
+                    VALUES(:id, :username, :email, :created_at, :activation_token)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
@@ -92,7 +92,6 @@ class UserRepository implements UserRepositoryInterface
         $user = new User(
             $id,
             new Username($result['username']),
-            new Password($result['password']),
             new Email($result['email']),
             array()
         );
@@ -136,5 +135,21 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return true;
+    }
+
+    public function createPassword(string $userId, string $password): void
+    {
+        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id' => $userId,
+            'password' => $password,
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
     }
 }

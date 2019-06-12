@@ -106,6 +106,8 @@ class UserService
         $encoder = $this->passwordEncoder->getEncoder(SessionAuthUser::class);
         $encodedPassword = $encoder->encodePassword($password, getenv('APP_SALT'));
 
-//        $this->userRepository->
+//        $this->userRepository->createPassword()
     }
+
+//    public function setRole
 }

@@ -5,10 +5,10 @@ usersIndex:
 
 createRegistration:
   path: /confirm/{token}
-  controller: App\Interfaces\Web\Controller\UserController::confirmRegistration
+  controller: App\Interfaces\Web\Controller\UserController::loadConfirmRegistrationView
   methods: GET
 
 createPassword:
-  path: /users/{id}/createPassword
+  path: /users/{id}
   controller: App\Interfaces\Web\Controller\UserController::createPassword
-  methods: POST
+  methods: PATCH

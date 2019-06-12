@@ -48,6 +48,7 @@ security:
 
 
     access_control:
+        - { path: ^/users/, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [PATCH] }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

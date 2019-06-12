@@ -2,7 +2,9 @@
 
 namespace App\Application\Command;
 
-class CreatePasswordCommand
+use App\Application\CommandInterface;
+
+class CreatePasswordCommand implements CommandInterface
 {
     /** @var string */
     private $password1;

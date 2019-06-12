@@ -33,7 +33,7 @@ class UserQuery implements UserQueryInterface
     public function getById(string $userId): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at
+            SELECT id, username, email, created_at, role
             FROM users
             WHERE users.id = :id
         ";
@@ -82,6 +82,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
+            $result['role'],
             $userTasks
         );
     }
@@ -89,7 +90,7 @@ class UserQuery implements UserQueryInterface
     public function getByUsername(string $username): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at
+            SELECT id, username, email, created_at, role
             FROM users
             WHERE username = :username
         ";
@@ -139,6 +140,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
+            $result['role'],
             $userTasks
         );
     }
@@ -150,7 +152,7 @@ class UserQuery implements UserQueryInterface
     public function getAll(): array
     {
         $sql = "
-            SELECT id, username, email, created_at
+            SELECT id, username, email, created_at, role
             FROM users
             GROUP BY username
         ";
@@ -203,6 +205,7 @@ class UserQuery implements UserQueryInterface
                 $result['username'],
                 $result['email'],
                 $result['created_at'],
+                $result['role'],
                 $userTasks
             );
             array_push($users, $user);
@@ -218,7 +221,7 @@ class UserQuery implements UserQueryInterface
      */
     public function getSessionAuthUserByEmail(string $email): SessionAuthUser
     {
-        $sql = "SELECT id, username, email, password 
+        $sql = "SELECT username, email
                 FROM users 
                 WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);

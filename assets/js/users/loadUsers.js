@@ -43,11 +43,12 @@ export function loadUsers() {
         } else {
             const markup = `
                 <table class="table table-responsive-sm">
-                 <thead class="">
-                            <tr class="card-body">
-                                <th class="card-title">Username</th>
-                                <th class="card-text">Email</th>
-                                <th></th>
+                 <thead class="theme-dark">
+                            <tr>
+                                <th scope="col">Username</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                     ${response.users.map(
@@ -55,6 +56,7 @@ export function loadUsers() {
                              <tr>
                                 <td scope="row">${user.username}</td>
                                 <td scope="row">${user.email}</td>
+                                <td scope="row">${ user.role === null ? 'Account not activated' : user.role }</td>
                                 <td scope="row">
                                     <button class="btn btn-outline-danger deleteUserButton" data-user-id="${user.id}">Delete</button>
                                 </td>
