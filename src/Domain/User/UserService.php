@@ -14,7 +14,9 @@ use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
+use App\SendGrid\SendGrid;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class UserService
@@ -25,16 +27,22 @@ class UserService
     /** @var EncoderFactoryInterface */
     private $passwordEncoder;
 
+    private $container;
+
     /**
      * UserService constructor.
      *
      * @param UserRepositoryInterface $userRepository
      * @param EncoderFactoryInterface $passwordEncoder
      */
-    public function __construct(UserRepositoryInterface $userRepository, EncoderFactoryInterface $passwordEncoder)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        EncoderFactoryInterface $passwordEncoder,
+        ContainerInterface $container
+    ) {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
+        $this->container = $container;
     }
 
     /**
@@ -60,6 +68,12 @@ class UserService
             new Role($command->role()),
             array()
         );
+
+        $sendGrid = new SendGrid($this->container->get('twig'));
+        $sendGrid->sendEmail([
+            'subject' => 'Confirm Registration at Task-Manager',
+            'email' => $command->email(),
+        ]);
 
         $this->userRepository->create($user);
     }

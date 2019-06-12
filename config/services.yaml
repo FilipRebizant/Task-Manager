@@ -41,3 +41,8 @@ services:
     taskRepository:
         public: true
         class: App\Infrastructure\Persistance\PDO\User\TaskRepository
+
+#    sendgrid_provider:
+#        public: true
+#        class: 'App\SendGrid\SendGrid'
+#        arguments: ['@twig']

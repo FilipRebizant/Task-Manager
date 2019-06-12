@@ -12,6 +12,7 @@
     "php-di/php-di": "^6.0",
     "phpmd/phpmd": "^2.6",
     "ramsey/uuid": "^3.8",
+    "sendgrid/sendgrid": "^7.3",
     "symfony/asset": "4.2.*",
     "symfony/config": "^4.2",
     "symfony/console": "4.2.*",
