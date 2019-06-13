@@ -224,7 +224,7 @@ class UserQuery implements UserQueryInterface
      */
     public function getSessionAuthUserByEmail(string $email): SessionAuthUser
     {
-        $sql = "SELECT username, email
+        $sql = "SELECT id, username, email, role
                 FROM users 
                 WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -236,8 +236,10 @@ class UserQuery implements UserQueryInterface
         }
 
         $user = new SessionAuthUser(
+            Uuid::fromBytes($result['id'])->toString(),
             $result['username'],
-            $result['password']
+            $result['password'],
+            $result['role']
         );
 
         return $user;
@@ -251,7 +253,7 @@ class UserQuery implements UserQueryInterface
     public function getSessionAuthUserByUsername(string $username): SessionAuthUser
     {
         $sql = "
-                SELECT username, password 
+                SELECT id, username, password, role
                 FROM users 
                 WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
@@ -263,8 +265,10 @@ class UserQuery implements UserQueryInterface
         }
 
         $user = new SessionAuthUser(
+            Uuid::fromBytes($result['id'])->toString(),
             $result['username'],
-            $result['password']
+            $result['password'],
+            $result['role']
         );
 
         return $user;

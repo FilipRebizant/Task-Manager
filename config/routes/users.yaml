@@ -1,6 +1,6 @@
-usersIndex:
-  path:       /users
-  controller: App\Interfaces\Web\Controller\UserController::index
+showProfile:
+  path:       /profile
+  controller: App\Interfaces\Web\Controller\UserController::showProfile
   methods:    GET
 
 createRegistration:

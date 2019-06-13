@@ -2,9 +2,15 @@ import { addUser } from './addUser';
 import { loadUsers } from './loadUsers';
 import { deleteUser } from './deleteUser';
 import { activateAccount } from './activateAccount';
+import { loadProfile } from './profile';
 
 const usersContainer = document.getElementById('usersContainer');
 const createPasswordForm = document.getElementById('createPasswordForm');
+const profileContainer = document.getElementById('profileContainer');
+
+if (profileContainer) {
+    loadProfile();
+}
 
 if (createPasswordForm) {
     document.getElementById('createPasswordForm').addEventListener('submit', function (event) {

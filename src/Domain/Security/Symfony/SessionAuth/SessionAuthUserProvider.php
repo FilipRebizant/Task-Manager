@@ -41,7 +41,7 @@ class SessionAuthUserProvider implements UserProviderInterface
     public function loadUserByUsername($username): UserInterface
     {
         try {
-            $user =  $this->userQuery->getSessionAuthUserByUsername($username);
+            $user = $this->userQuery->getSessionAuthUserByUsername($username);
         } catch (NotFoundException $exception) {
             throw new UsernameNotFoundException;
         }

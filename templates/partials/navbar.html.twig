@@ -10,9 +10,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('tasksIndex') }}">Tasks</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('usersIndex') }}">Users</a>
-                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('adminPanel') }}">Admin Panel</a>
+                    </li>
+                {% endif %}
 
             {% else %}
                 <li class="nav-item">
@@ -22,8 +24,8 @@
         </ul>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <ul class="navbar-nav">
-                <li id="user" class="nav-link">
-                    {{ app.user }}
+                <li class="nav-item">
+                    <a id="user" class="nav-link" data-user-id="{{ app.user.id }}" href="{{ path('showProfile') }}">{{ app.user.username }}</a>
                 </li>
 
                 <li class="nav-item">

@@ -1,0 +1,9 @@
+adminUsersIndex:
+  path:       /admin_panel/users
+  controller: App\Interfaces\Web\Controller\AdminPanelController::usersIndex
+  methods:    GET
+
+adminPanel:
+  path:       /admin_panel
+  controller: App\Interfaces\Web\Controller\AdminPanelController::index
+  methods:    GET

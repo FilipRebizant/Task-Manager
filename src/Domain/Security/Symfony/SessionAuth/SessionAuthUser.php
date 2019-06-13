@@ -9,8 +9,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class SessionAuthUser implements UserInterface, EquatableInterface
 {
-    /** @var array  */
-    private $roles = [];
+    /** @var string  */
+    private $role;
 
     /** @var string  */
     private $username;
@@ -18,10 +18,15 @@ class SessionAuthUser implements UserInterface, EquatableInterface
     /** @var string  */
     private $password;
 
-    public function __construct(string $username, string $password)
+    /** @var string */
+    private $id;
+
+    public function __construct(string $id, string $username, string $password, string $role)
     {
+        $this->id = $id;
         $this->username = $username;
         $this->password = $password;
+        $this->role = $role;
     }
 
     /**
@@ -29,10 +34,17 @@ class SessionAuthUser implements UserInterface, EquatableInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_' . $this->role;
 
         return array_unique($roles);
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     /**

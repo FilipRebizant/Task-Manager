@@ -16,8 +16,6 @@ export function activateAccount() {
     errorContainer.classList.add('d-none');
     successContainer.classList.add('d-none');
 
-    console.log(route);
-
     fetch(route, {
         method: 'PATCH',
         headers: {
@@ -37,6 +35,9 @@ export function activateAccount() {
             successContainer.innerText = response.result;
             passwordInput1.value = '';
             passwordInput2.value = '';
+            setTimeout(function () {
+                window.location = 'http://localhost/';
+            }, 2000);
         }
     }).catch(function (error) {
         errorContainer.innerText = "Server error occurred, try again in few minutes";
