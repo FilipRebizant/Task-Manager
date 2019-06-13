@@ -9,7 +9,7 @@ interface UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function create(User $user): void;
+    public function create(User $user, string $token): void;
 
     /**
      * @param string $user

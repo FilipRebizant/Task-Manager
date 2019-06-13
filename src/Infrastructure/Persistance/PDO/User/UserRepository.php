@@ -30,14 +30,14 @@ class UserRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function create(User $user): void
+    public function create(User $user, string $token): void
     {
         $data = [
             "id" => $user->getId()->getBytes(),
             "username" => $user->getUserName(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
-            "activation_token" => Uuid::uuid4()->toString(),
+            "activation_token" => $token,
             "role" => $user->getRole(),
         ];
 

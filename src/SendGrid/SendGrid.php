@@ -27,9 +27,12 @@ class SendGrid
         $email = new \SendGrid\Mail\Mail();
         $email->setFrom(getenv('EMAIL_FROM'));
         $email->setSubject($data['subject']);
-        $email->addTo($data['email']);
+        $email->addTo($data['delivery_address']);
         $email->addContent(
-            "text/html", $this->templating->render('email/activate_account.html.twig')
+            "text/html",
+            $this->templating->render('email/activate_account.html.twig', [
+                'activation_link' => $data['activation_link']
+            ])
         );
 
         $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));

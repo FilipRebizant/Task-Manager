@@ -27,6 +27,7 @@ class UserService
     /** @var EncoderFactoryInterface */
     private $passwordEncoder;
 
+    /** @var ContainerInterface  */
     private $container;
 
     /**
@@ -34,7 +35,9 @@ class UserService
      *
      * @param UserRepositoryInterface $userRepository
      * @param EncoderFactoryInterface $passwordEncoder
+     * @param ContainerInterface $container
      */
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $passwordEncoder,
@@ -50,6 +53,10 @@ class UserService
      * @throws EmailAlreadyExistsException
      * @throws InvalidArgumentException
      * @throws UserAlreadyExistsException
+     * @throws \SendGrid\Mail\TypeException
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function createUser(CreateUserCommand $command): void
     {
@@ -68,14 +75,18 @@ class UserService
             new Role($command->role()),
             array()
         );
+        $token = Uuid::uuid4()->toString();
+
+        $activationLink = '';
 
         $sendGrid = new SendGrid($this->container->get('twig'));
         $sendGrid->sendEmail([
-            'subject' => 'Confirm Registration at Task-Manager',
-            'email' => $command->email(),
+            'subject' => 'Confirm Registration on Task-Manager',
+            'activation_link' => $activationLink,
+            'delivery_address' => $command->email(),
         ]);
 
-        $this->userRepository->create($user);
+        $this->userRepository->create($user, $token);
     }
 
     /**
