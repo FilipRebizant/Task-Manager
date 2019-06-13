@@ -17,6 +17,9 @@ use App\Infrastructure\Exception\NotFoundException;
 use App\SendGrid\SendGrid;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class UserService
@@ -30,6 +33,8 @@ class UserService
     /** @var ContainerInterface  */
     private $container;
 
+    private $router;
+
     /**
      * UserService constructor.
      *
@@ -41,11 +46,13 @@ class UserService
     public function __construct(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $passwordEncoder,
-        ContainerInterface $container
+        ContainerInterface $container,
+        RouterInterface $router
     ) {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->container = $container;
+        $this->router = $router;
     }
 
     /**
@@ -77,7 +84,7 @@ class UserService
         );
         $token = Uuid::uuid4()->toString();
 
-        $activationLink = '';
+        $activationLink =  $this->router->generate('activateAccount', ['token' => $token],UrlGenerator::ABSOLUTE_URL);
 
         $sendGrid = new SendGrid($this->container->get('twig'));
         $sendGrid->sendEmail([

@@ -179,7 +179,7 @@ class UserRepository implements UserRepositoryInterface
         $result = $stmt->rowCount();
 
         if (!$result) {
-            throw new NotFoundException("User was not found");
+            throw new NotFoundException("Token has expired");
         }
     }
 }
