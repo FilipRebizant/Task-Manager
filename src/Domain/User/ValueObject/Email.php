@@ -46,10 +46,10 @@ class Email
      */
     private function isEmailValid(string $email): bool
     {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $pattern = '/\b^[a-z][.\w]+@[a-z-0-9]+\.[a-z]{2,3}\b(.[a-z]{2})?$/';
+        if (preg_match($pattern, $email)) {
             return true;
         }
-
         return false;
     }
 }

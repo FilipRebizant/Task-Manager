@@ -6,6 +6,7 @@ use App\Domain\Task\Task;
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +29,7 @@ class UserTest extends TestCase
             Uuid::uuid4(),
             new Username('username'),
             new Email('email@gmail.com'),
+            new Role('ADMIN'),
             array()
         );
         $this->taskMock = $this->getMockBuilder(Task::class)->disableOriginalConstructor()->getMock();
@@ -79,5 +81,21 @@ class UserTest extends TestCase
         $actualCount = count($this->user->getAssignedTasks());
 
         $this->assertEquals($expectedCount, $actualCount);
+    }
+
+    public function testSetters()
+    {
+        $date = new \DateTimeImmutable();
+        $date->setDate(2000,1,1);
+
+        $this->user->setPassword(new Password('NewPassword'));
+        $this->user->setRole(new Role('USER'));
+        $this->user->setCreatedAt($date);
+        $this->user->setUserName(new Username('newUsername'));
+        $this->user->setEmail(new Email('newEmail@email.com'));
+
+        $this->assertEquals('USER', $this->user->getRole());
+        $this->assertEquals('NewPassword', $this->user->getPassword());
+        $this->assertEquals($date, $this->user->getCreatedAt());
     }
 }

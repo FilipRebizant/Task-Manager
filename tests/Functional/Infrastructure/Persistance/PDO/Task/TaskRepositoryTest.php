@@ -10,6 +10,7 @@ use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
@@ -86,6 +87,10 @@ class TaskRepositoryTest extends TestCase
         $this->taskRepository->delete($task->getId());
     }
 
+    /**
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     * @throws \App\Infrastructure\Exception\NotFoundException
+     */
     public function testCanAssignUserToTask()
     {
         $uuid = Uuid::uuid4();
@@ -101,14 +106,14 @@ class TaskRepositoryTest extends TestCase
         $user = new User(
             Uuid::uuid4(),
             new Username('username'),
-            new Password('password'),
             new Email('username@gmail.com'),
+            new Role('ADMIN'),
             array()
         );
         $userRepository = new UserRepository($this->pdo);
 
         $this->taskRepository->create($task);
-        $userRepository->create($user);
+        $userRepository->create($user, null);
         $taskId = $task->getId()->toString();
         $this->taskRepository->assignTaskToUser($taskId, $user->getUserName());
         $actuallyAssignedUser = $this->taskQuery->getById($taskId)->user();

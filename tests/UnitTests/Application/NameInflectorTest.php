@@ -9,21 +9,12 @@ use PHPUnit\Framework\TestCase;
 
 class NameInflectorTest extends TestCase
 {
-    /** @var NameInflector */
-    private $inflector;
-
-    public function setUp(): void
-    {
-        $this->inflector = new NameInflector();
-    }
-
     public function testShouldGetHandlerNameFromCommand()
     {
         $command = new CreateTaskCommand('Todo', null, 1,'Desc');
-
-        $handler = $this->inflector->inflect($command);
+        $inflector = new NameInflector();
+        $handler = $inflector->inflect($command);
 
         $this->assertEquals(CreateTaskHandler::class, $handler);
-
     }
 }

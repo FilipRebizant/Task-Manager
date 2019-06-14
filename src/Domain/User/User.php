@@ -22,13 +22,13 @@ class User
     /** @var Email */
     private $email;
 
-    /** @var Password */
+    /** @var Password|null */
     private $password;
 
     /** @var \DateTimeImmutable */
     private $createdAt;
 
-    /** @var array */
+    /** @var Task[] */
     private $tasks;
 
     /** @var Role */
@@ -101,18 +101,18 @@ class User
     }
 
     /**
-     * @return Password
+     * @return Password|null
      */
-    public function getPassword(): Password
+    public function getPassword(): ?Password
     {
         return $this->password;
     }
 
     /**
-     * @param Password $password
+     * @param Password|null $password
      * @return User
      */
-    public function setPassword(Password $password): User
+    public function setPassword(?Password $password): User
     {
         $this->password = $password;
 
@@ -155,7 +155,7 @@ class User
     }
 
     /**
-     * @return array
+     * @return Task[]
      */
     public function getAssignedTasks(): array
     {

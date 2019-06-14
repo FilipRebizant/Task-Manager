@@ -18,7 +18,6 @@ use App\SendGrid\SendGrid;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -33,6 +32,7 @@ class UserService
     /** @var ContainerInterface  */
     private $container;
 
+    /** @var RouterInterface  */
     private $router;
 
     /**
@@ -84,7 +84,7 @@ class UserService
         );
         $token = Uuid::uuid4()->toString();
 
-        $activationLink =  $this->router->generate('activateAccount', ['token' => $token],UrlGenerator::ABSOLUTE_URL);
+        $activationLink =  $this->router->generate('activateAccount', ['token' => $token], UrlGenerator::ABSOLUTE_URL);
 
         $sendGrid = new SendGrid($this->container->get('twig'));
         $sendGrid->sendEmail([

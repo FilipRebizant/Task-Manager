@@ -5,7 +5,6 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
@@ -29,12 +28,14 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param User $user
+     * @param string|null $token
      */
-    public function create(User $user, string $token): void
+    public function create(User $user, ?string $token): void
     {
         $data = [
             "id" => $user->getId()->getBytes(),
             "username" => $user->getUserName(),
+            "password" => $user->getPassword(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
             "activation_token" => $token,
@@ -43,8 +44,16 @@ class UserRepository implements UserRepositoryInterface
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `users` (`id`, `username`, `email`, `created_at`, `activation_token`, `role`) 
-                    VALUES(:id, :username, :email, :created_at, :activation_token, :role)";
+            $sql = "INSERT INTO `users` (
+                     `id`,
+                     `username`,
+                     `password`,
+                     `email`,
+                     `created_at`,
+                     `activation_token`,
+                     `role`
+                     ) 
+                    VALUES(:id, :username, :password, :email, :created_at, :activation_token, :role)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 

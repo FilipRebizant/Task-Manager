@@ -6,12 +6,11 @@ use App\Application\Query\User\UserQueryInterface;
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use GuzzleHttp\Client;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class UserControllerTest extends WebTestCase
 {
@@ -43,10 +42,11 @@ class UserControllerTest extends WebTestCase
             $uuid,
             new Username('username1'),
             new Email('username1@gmail.com'),
+            new Role('ADMIN'),
             []
         );
 
-        $this->userRepository->create($this->user);
+        $this->userRepository->create($this->user, null);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
         $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
@@ -81,9 +81,9 @@ class UserControllerTest extends WebTestCase
         $returnedUser = $this->userQuery->getByUsername('testUsername');
 
         $this->assertEquals(201, $response->getStatusCode());
-        $this->assertEquals('testUsername', $returnedUser->username());
+        $this->assertEquals('testUsername', $returnedUser->getUsername());
 
-        $this->userRepository->delete($returnedUser->id());
+        $this->userRepository->delete($returnedUser->getId());
     }
 
     public function testCanNotCreateUserOnWrongUsername()

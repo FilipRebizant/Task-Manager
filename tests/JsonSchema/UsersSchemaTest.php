@@ -3,8 +3,10 @@
 namespace App\Tests\JsonSchema;
 
 use App\Domain\User\User;
+use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use GuzzleHttp\Client;
 use Opis\JsonSchema\Schema;
@@ -21,23 +23,31 @@ class UsersSchemaTest extends WebTestCase
     /** @var string */
     private $token;
 
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    /** @var User */
+    private $user;
+
     protected function setUp(): void
     {
         self::bootKernel();
 
         $container = self::$kernel->getContainer();
         $userQuery = $container->get('userQuery');
-        $userRepository = $container->get('userRepository');
+        $this->userRepository = $container->get('userRepository');
 
         $uuid = Uuid::uuid4();
-        $user = new User(
+        $this->user = new User(
             $uuid,
             new Username('username1'),
-            new Password('password'),
             new Email('username1@gmail.com'),
+            new Role('ADMIN'),
             []);
+        $this->user->setPassword(new Password('testpassword'));
+        $token = Uuid::uuid4()->toString();
 
-        $userRepository->create($user);
+        $this->userRepository->create($this->user, $token);
 
         $securityUser = $userQuery->getSessionAuthUserByUsername('username1');
         $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
@@ -48,6 +58,11 @@ class UsersSchemaTest extends WebTestCase
             'allow_redirects' => true,
             'http_errors' => false,
         ]);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->userRepository->delete($this->user->getId()->toString());
     }
 
     public function testIsGetUsersSchemaValid()

@@ -28,6 +28,8 @@ class EmailTest extends TestCase
             'email with numbers' => ['validemail_2000@gmail.com'],
             'with dot' => ['valid.email_2000@gmail.com'],
             'two part domain' => ['validEmail@gmail.co.uk'],
+            'domain with dash' => ['validEmail@two-part.com'],
+            'two part domain with dash' => ['validEmail@two-part.co.uk'],
         ];
     }
 

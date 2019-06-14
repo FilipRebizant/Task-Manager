@@ -4,7 +4,7 @@ namespace App\Tests\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
@@ -49,23 +49,41 @@ class UserRepositoryTest extends TestCase
         $user = new User(
             Uuid::uuid4(),
             new Username('username_for_testing'. $randomNumber),
-            new Password('password'),
             new Email('email_for_testing' . $randomNumber . '@gmail.com'),
+            new Role('ADMIN'),
             array()
         );
+        $token = Uuid::uuid4()->toString();
 
-        $this->userRepository->create($user);
+        $this->userRepository->create($user, $token);
         $foundUser = $this->userQuery->getById($user->getId()->toString());
 
-        $this->assertEquals($user->getId()->toString(), $foundUser->id());
+        $this->assertEquals($user->getId()->toString(), $foundUser->getId());
         $this->userRepository->delete($user->getId());
     }
 
-
+    /**
+     * @throws NotFoundException
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
     public function testWillThrowNotFoundException()
     {
         $this->expectException(NotFoundException::class);
 
         $this->userRepository->getByUsername("UnExisting user");
+    }
+
+    public function testWillThrowNotFoundExceptionWhenTokenIsExpired()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->userRepository->activateNewUser('expired token', 'password');
+    }
+
+    public function testWillThrowNotFoundExceptionWhenEmailDoesNotExist()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->userRepository->checkIfEmailExists('nonexistingemail@notexisingemail.com');
     }
 }

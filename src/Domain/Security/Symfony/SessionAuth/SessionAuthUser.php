@@ -34,6 +34,7 @@ class SessionAuthUser implements UserInterface, EquatableInterface
      */
     public function getRoles(): array
     {
+        $roles[] = 'ROLE_USER';
         $roles[] = 'ROLE_' . $this->role;
 
         return array_unique($roles);

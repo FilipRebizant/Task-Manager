@@ -41,3 +41,11 @@ services:
     taskRepository:
         public: true
         class: App\Infrastructure\Persistance\PDO\User\TaskRepository
+
+    userService:
+        public: true
+        class: App\Domain\User\UserService
+
+    command_bus:
+        public: true
+        class: App\Application\CommandBus
