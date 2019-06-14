@@ -5,7 +5,7 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
-use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
+use App\Symfony\Security\Symfony\SessionAuth\SessionAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
