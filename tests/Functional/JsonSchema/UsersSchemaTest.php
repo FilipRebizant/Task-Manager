@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\JsonSchema;
+namespace App\Tests\Functional\JsonSchema;
 
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;

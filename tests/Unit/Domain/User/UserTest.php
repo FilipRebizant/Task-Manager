@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\User;
+namespace App\Tests\Unit\Domain\User;
 
 use App\Domain\Task\Task;
 use App\Domain\User\User;

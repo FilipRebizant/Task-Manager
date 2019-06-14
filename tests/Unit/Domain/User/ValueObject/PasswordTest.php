@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\User\ValueObject;
+namespace App\Tests\Unit\Domain\User\ValueObject;
 
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\ValueObject\Password;

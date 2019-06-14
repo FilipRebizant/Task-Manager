@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Task;
+namespace App\Tests\Unit\Domain\Task;
 
 use App\Domain\Task\Exception\InvalidStatusOrderException;
 use App\Domain\Task\Task;

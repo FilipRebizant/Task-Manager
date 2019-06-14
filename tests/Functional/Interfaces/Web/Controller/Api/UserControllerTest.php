@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Interfaces\Web\Controller\Api;
+namespace App\Tests\Functional\Interfaces\Web\Controller\Api;
 
 use App\Application\Query\User\UserQueryInterface;
 use App\Domain\User\User;

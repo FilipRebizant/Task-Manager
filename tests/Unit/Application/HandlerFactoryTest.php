@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application;
+namespace App\Tests\Unit\Application;
 
 use App\Application\Handler\CreateUserHandler;
 use App\Application\HandlerFactory;

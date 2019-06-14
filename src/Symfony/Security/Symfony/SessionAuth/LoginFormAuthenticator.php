@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Security\Symfony\SessionAuth;
+namespace App\Symfony\Security\Symfony\SessionAuth;
 
 use App\Application\Query\User\UserQueryInterface;
 use App\Infrastructure\Exception\NotFoundException;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;

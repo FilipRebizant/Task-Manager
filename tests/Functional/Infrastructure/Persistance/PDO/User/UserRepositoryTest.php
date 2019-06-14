@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Persistance\PDO\User;
+namespace App\Tests\Functional\Infrastructure\Persistance\PDO\User;
 
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;

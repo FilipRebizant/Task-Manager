@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application;
+namespace App\Tests\Unit\Application;
 
 use App\Application\Command\CreateTaskCommand;
 use App\Application\Handler\CreateTaskHandler;

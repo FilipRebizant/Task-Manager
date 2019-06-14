@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Persistance\PDO\Task;
+namespace App\Tests\Functional\Infrastructure\Persistance\PDO\Task;
 
 use App\Domain\Task\Task;
 use App\Domain\Task\ValueObject\Description;
