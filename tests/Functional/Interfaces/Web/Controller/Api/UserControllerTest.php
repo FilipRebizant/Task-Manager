@@ -68,6 +68,7 @@ class UserControllerTest extends WebTestCase
     {
         $data = [
             'username' => 'testUsername',
+            'role' => 'ADMIN',
             'email' => 'testUsername@gmail.com',
         ];
 
@@ -90,6 +91,7 @@ class UserControllerTest extends WebTestCase
     {
         $data = [
             'username' => '2testUsername',
+            'role' => 'ADMIN',
             'email' => 'testUsername@gmail.com',
         ];
 
@@ -115,6 +117,7 @@ class UserControllerTest extends WebTestCase
     {
         $data = [
             'username' => 'testUsername',
+            'role' => 'ADMIN',
             'email' => '2testUsername@gmail.com',
         ];
 
@@ -224,12 +227,13 @@ class UserControllerTest extends WebTestCase
             $uuid,
             new Username('testDeleteUsername'),
             new Email('testDeleteUsername@gmail.com'),
+            new Role('ADMIN'),
             []
         );
-        $this->userRepository->create($user);
+        $this->userRepository->create($user, null);
         $returnedUser = $this->userQuery->getByUsername('testDeleteUsername');
 
-        $response = $this->client->delete('nginx/api/users/' . $returnedUser->id(), [
+        $response = $this->client->delete('nginx/api/users/' . $returnedUser->getId(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
             ],

@@ -15,13 +15,13 @@ class SessionAuthUser implements UserInterface, EquatableInterface
     /** @var string  */
     private $username;
 
-    /** @var string  */
+    /** @var string|null  */
     private $password;
 
     /** @var string */
     private $id;
 
-    public function __construct(string $id, string $username, string $password, string $role)
+    public function __construct(string $id, string $username, ?string $password, string $role)
     {
         $this->id = $id;
         $this->username = $username;
@@ -49,9 +49,9 @@ class SessionAuthUser implements UserInterface, EquatableInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
