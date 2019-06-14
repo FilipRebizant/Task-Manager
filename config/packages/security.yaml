@@ -5,7 +5,7 @@ security:
                 security_user_provider
 
     encoders:
-        App\Domain\Security\Symfony\SessionAuth\SessionAuthUser:
+        App\Symfony\Security\Symfony\SessionAuth\SessionAuthUser:
             algorithm: bcrypt
             cost: 12
 
@@ -43,7 +43,7 @@ security:
                 target: /
             guard:
                 authenticators:
-                    - App\Domain\Security\Symfony\SessionAuth\LoginFormAuthenticator
+                    - App\Symfony\Security\Symfony\SessionAuth\LoginFormAuthenticator
             provider: symfony_security_provider
 
     access_control:

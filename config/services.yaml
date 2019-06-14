@@ -24,7 +24,7 @@ services:
             - { name: kernel.event_subscriber}
 
     security_user_provider:
-        class: App\Domain\Security\Symfony\SessionAuth\SessionAuthUserProvider
+        class: App\Symfony\Security\Symfony\SessionAuth\SessionAuthUserProvider
 
     userQuery:
         public: true

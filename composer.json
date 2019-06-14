@@ -8,9 +8,6 @@
     "ext-pdo": "*",
     "guzzlehttp/guzzle": "~6.0",
     "lexik/jwt-authentication-bundle": "^2.6",
-    "opis/json-schema": "^1.0",
-    "php-di/php-di": "^6.0",
-    "phpmd/phpmd": "^2.6",
     "ramsey/uuid": "^3.8",
     "sendgrid/sendgrid": "^7.3",
     "symfony/asset": "4.2.*",
@@ -29,6 +26,8 @@
     "symfony/yaml": "^4.2"
   },
   "require-dev": {
+    "phpmd/phpmd": "^2.6",
+    "opis/json-schema": "^1.0",
     "phpstan/phpstan": "^0.11.8",
     "phpunit/php-code-coverage": "^7.0",
     "phpunit/phpunit": "^8",
