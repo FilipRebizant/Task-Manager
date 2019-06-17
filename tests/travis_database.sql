@@ -31,4 +31,14 @@ KEY `user_id_idx` (`user_id`),
 CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `activation_tokens` (
+     `id` binary(16) NOT NULL,
+     `token` varchar(36) DEFAULT NULL,
+     `created_at` timestamp NULL DEFAULT NULL,
+     `activated_at` timestamp NULL DEFAULT NULL,
+     `user_id` binary(16) DEFAULT NULL,
+     PRIMARY KEY (`id`),
+     KEY `used_id_idx` (`user_id`),
+     CONSTRAINT `used_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
