@@ -12,6 +12,7 @@ use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
@@ -171,8 +172,8 @@ class TaskRepository implements TaskRepositoryInterface
             $user = new User(
                 Uuid::fromBytes($result['user_id']),
                 new Username($result['username']),
-                new Password($result['password']),
                 new Email($result['email']),
+                new Role($result['role']),
                 []
             );
 
