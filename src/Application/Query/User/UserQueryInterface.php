@@ -2,8 +2,7 @@
 
 namespace App\Application\Query\User;
 
-use App\Domain\Security\Symfony\TokenAuth\TokenAuthUser;
-use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
+use App\Symfony\Security\Symfony\SessionAuth\SessionAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 
 interface UserQueryInterface
@@ -33,7 +32,7 @@ interface UserQueryInterface
      * @return SessionAuthUser
      * @throws NotFoundException
      */
-    public function getSessionAuthUserByEmail(string $username): SessionAuthUser;
+    public function getSessionAuthUserByEmail(string $email): SessionAuthUser;
 
     /**
      * @param string $username

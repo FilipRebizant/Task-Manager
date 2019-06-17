@@ -5,8 +5,7 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
-use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
-use App\Domain\Security\Symfony\TokenAuth\TokenAuthUser;
+use App\Symfony\Security\Symfony\SessionAuth\SessionAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -34,7 +33,7 @@ class UserQuery implements UserQueryInterface
     public function getById(string $userId): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at
+            SELECT id, username, email, created_at,activation_token, role
             FROM users
             WHERE users.id = :id
         ";
@@ -83,6 +82,8 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
+            $result['activation_token'],
+            $result['role'],
             $userTasks
         );
     }
@@ -90,7 +91,7 @@ class UserQuery implements UserQueryInterface
     public function getByUsername(string $username): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at
+            SELECT id, username, email, created_at, activation_token, role
             FROM users
             WHERE username = :username
         ";
@@ -140,6 +141,8 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
+            $result['activation_token'],
+            $result['role'],
             $userTasks
         );
     }
@@ -151,7 +154,7 @@ class UserQuery implements UserQueryInterface
     public function getAll(): array
     {
         $sql = "
-            SELECT id, username, email, created_at
+            SELECT id, username, email, created_at, activation_token, role
             FROM users
             GROUP BY username
         ";
@@ -204,6 +207,8 @@ class UserQuery implements UserQueryInterface
                 $result['username'],
                 $result['email'],
                 $result['created_at'],
+                $result['activation_token'],
+                $result['role'],
                 $userTasks
             );
             array_push($users, $user);
@@ -219,7 +224,7 @@ class UserQuery implements UserQueryInterface
      */
     public function getSessionAuthUserByEmail(string $email): SessionAuthUser
     {
-        $sql = "SELECT id, username, email, password 
+        $sql = "SELECT id, username, email, role
                 FROM users 
                 WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -231,8 +236,10 @@ class UserQuery implements UserQueryInterface
         }
 
         $user = new SessionAuthUser(
+            Uuid::fromBytes($result['id'])->toString(),
             $result['username'],
-            $result['password']
+            $result['password'],
+            $result['role']
         );
 
         return $user;
@@ -246,7 +253,7 @@ class UserQuery implements UserQueryInterface
     public function getSessionAuthUserByUsername(string $username): SessionAuthUser
     {
         $sql = "
-                SELECT username, password 
+                SELECT id, username, password, role
                 FROM users 
                 WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
@@ -258,8 +265,10 @@ class UserQuery implements UserQueryInterface
         }
 
         $user = new SessionAuthUser(
+            Uuid::fromBytes($result['id'])->toString(),
             $result['username'],
-            $result['password']
+            $result['password'],
+            $result['role']
         );
 
         return $user;

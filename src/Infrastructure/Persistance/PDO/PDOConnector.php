@@ -36,7 +36,7 @@ class PDOConnector
     /**
      * @return PDO
      */
-    public function getConnection()
+    public function getConnection(): PDO
     {
         return $this->connection;
     }

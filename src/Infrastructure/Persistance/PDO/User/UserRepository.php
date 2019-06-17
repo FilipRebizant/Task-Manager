@@ -5,7 +5,7 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
@@ -19,17 +19,18 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * UserRepository constructor.
-     * @param PDOConnector $pdo
+     * @param PDOConnector $PDOConnector
      */
-    public function __construct(PDOConnector $pdo)
+    public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $pdo->getConnection();
+        $this->pdo = $PDOConnector->getConnection();
     }
 
     /**
      * @param User $user
+     * @param string|null $token
      */
-    public function create(User $user): void
+    public function create(User $user, ?string $token): void
     {
         $data = [
             "id" => $user->getId()->getBytes(),
@@ -37,12 +38,22 @@ class UserRepository implements UserRepositoryInterface
             "password" => $user->getPassword(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            "activation_token" => $token,
+            "role" => $user->getRole(),
         ];
 
         try {
             $this->pdo->beginTransaction();
-            $sql = "INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`) 
-                    VALUES(:id, :username, :password, :email, :created_at)";
+            $sql = "INSERT INTO `users` (
+                     `id`,
+                     `username`,
+                     `password`,
+                     `email`,
+                     `created_at`,
+                     `activation_token`,
+                     `role`
+                     ) 
+                    VALUES(:id, :username, :password, :email, :created_at, :activation_token, :role)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 
@@ -76,7 +87,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getByUsername(string $username): User
     {
-        $sql = "SELECT id, username, email, password 
+        $sql = "SELECT id, username, email, password, role
                 FROM users 
                 WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
@@ -92,8 +103,8 @@ class UserRepository implements UserRepositoryInterface
         $user = new User(
             $id,
             new Username($result['username']),
-            new Password($result['password']),
             new Email($result['email']),
+            new Role($result['role']),
             array()
         );
 
@@ -136,5 +147,48 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param string $userId
+     * @param string $password
+     * @throws NotFoundException
+     */
+    public function changePassword(string $userId, string $password): void
+    {
+        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id' => $userId,
+            'password' => $password,
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+        if (!$result) {
+            throw new NotFoundException("User was not found");
+        }
+    }
+
+    /**
+     * @param string $activationToken
+     * @throws NotFoundException
+     */
+    public function activateNewUser(string $activationToken, $password): void
+    {
+        $sql = "UPDATE users 
+                SET activation_token = null, password = :password 
+                WHERE activation_token = :activation_token
+                ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'activation_token' => $activationToken,
+            'password' => $password
+        ]);
+        $result = $stmt->rowCount();
+
+        if (!$result) {
+            throw new NotFoundException("Token has expired");
+        }
     }
 }

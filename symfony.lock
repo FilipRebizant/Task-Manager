@@ -1,4 +1,7 @@
 {
+    "composer/xdebug-handler": {
+        "version": "1.3.3"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.3"
     },
@@ -7,6 +10,9 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.5.2"
+    },
+    "jean85/pretty-package-versions": {
+        "version": "1.2"
     },
     "lcobucci/jwt": {
         "version": "3.3.1"
@@ -26,6 +32,33 @@
     "namshi/jose": {
         "version": "7.2.3"
     },
+    "nette/bootstrap": {
+        "version": "v3.0.0"
+    },
+    "nette/di": {
+        "version": "v3.0.0"
+    },
+    "nette/finder": {
+        "version": "v2.5.0"
+    },
+    "nette/neon": {
+        "version": "v3.0.0"
+    },
+    "nette/php-generator": {
+        "version": "v3.2.2"
+    },
+    "nette/robot-loader": {
+        "version": "v3.2.0"
+    },
+    "nette/schema": {
+        "version": "v1.0.0"
+    },
+    "nette/utils": {
+        "version": "v3.0.1"
+    },
+    "ocramius/package-versions": {
+        "version": "1.4.0"
+    },
     "opis/json-schema": {
         "version": "1.0.18"
     },
@@ -34,6 +67,12 @@
     },
     "phpmd/phpmd": {
         "version": "2.6.0"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "0.3.5"
+    },
+    "phpstan/phpstan": {
+        "version": "0.11.8"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -47,8 +86,20 @@
     "ralouphie/getallheaders": {
         "version": "2.0.5"
     },
+    "sebastian/finder-facade": {
+        "version": "1.2.2"
+    },
+    "sebastian/phpcpd": {
+        "version": "4.1.0"
+    },
     "sebastian/type": {
         "version": "1.0.0"
+    },
+    "sendgrid/php-http-client": {
+        "version": "3.9.6"
+    },
+    "sendgrid/sendgrid": {
+        "version": "7.3.0"
     },
     "symfony/asset": {
         "version": "v4.2.8"
@@ -164,6 +215,9 @@
             "package.json",
             "webpack.config.js"
         ]
+    },
+    "theseer/fdomdocument": {
+        "version": "1.6.6"
     },
     "twig/twig": {
         "version": "v2.9.0"

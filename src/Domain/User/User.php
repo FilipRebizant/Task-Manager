@@ -7,6 +7,7 @@ namespace App\Domain\User;
 use App\Domain\Task\Task;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use Ramsey\Uuid\Uuid;
 
@@ -21,32 +22,35 @@ class User
     /** @var Email */
     private $email;
 
-    /** @var Password */
+    /** @var Password|null */
     private $password;
 
     /** @var \DateTimeImmutable */
     private $createdAt;
 
-    /** @var array */
+    /** @var Task[] */
     private $tasks;
+
+    /** @var Role */
+    private $role;
 
     /**
      * User constructor.
      *
      * @param Uuid $uuid
      * @param Username $username
-     * @param Password $password
      * @param Email $email
+     * @param Role $role
      * @param array $tasks
      * @throws \Exception
      */
-    public function __construct(Uuid $uuid, Username $username, Password $password, Email $email, array $tasks)
+    public function __construct(Uuid $uuid, Username $username, Email $email, Role $role, array $tasks)
     {
         $this->id = $uuid;
         $this->userName = $username;
-        $this->password = $password;
         $this->email = $email;
         $this->createdAt = new \DateTimeImmutable('now');
+        $this->role = $role;
         $this->tasks = $tasks;
     }
 
@@ -97,18 +101,18 @@ class User
     }
 
     /**
-     * @return Password
+     * @return Password|null
      */
-    public function getPassword(): Password
+    public function getPassword(): ?Password
     {
         return $this->password;
     }
 
     /**
-     * @param Password $password
+     * @param Password|null $password
      * @return User
      */
-    public function setPassword(Password $password): User
+    public function setPassword(?Password $password): User
     {
         $this->password = $password;
 
@@ -135,11 +139,27 @@ class User
     }
 
     /**
-     * @return array
+     * @return Role
+     */
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function setRole(Role $role): void
+    {
+        $this->role = $role;
+    }
+
+    /**
+     * @return Task[]
      */
     public function getAssignedTasks(): array
     {
-        if (is_null($this->tasks)) {
+        if (!$this->tasks) {
             return array();
         }
 
@@ -147,7 +167,7 @@ class User
     }
 
     /**
-     * @param array $tasks
+     * @param Task $task
      * @return User
      */
     public function assignTask(Task $task): User

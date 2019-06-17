@@ -2,6 +2,7 @@
 
 namespace App\Interfaces\Web\Controller\Api;
 
+use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
 use App\Application\Command\DeleteUserCommand;
 use App\Application\CommandBus;
@@ -15,6 +16,7 @@ use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController
 {
@@ -47,8 +49,7 @@ class UserController
             $command = new CreateUserCommand(
                 (string)$data["username"],
                 (string)$data["email"],
-                (string)$data["password1"],
-                (string)$data["password2"]
+                (string)$data["role"]
             );
             $this->commandBus->handle($command);
         } catch (InvalidArgumentException|UserAlreadyExistsException|EmailAlreadyExistsException $e) {
@@ -129,5 +130,32 @@ class UserController
         }
 
         return new JsonResponse(["result" => "User has been deleted"], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function changePassword(Request $request): Response
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+            $command = new ChangePasswordCommand(
+                (string)$data['userId'],
+                (string)$data["password1"],
+                (string)$data["password2"]
+            );
+
+            $this->commandBus->handle($command);
+        } catch (NotFoundException $e) {
+            return new JsonResponse([
+                "error" => [
+                    "status" => 404,
+                    "message" => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return new JsonResponse(["result" => "Password has been created"], 200);
     }
 }

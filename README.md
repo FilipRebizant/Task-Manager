@@ -33,4 +33,11 @@
     ./vendor/bin/phpcs
 
 ### Code Sniffer:
+    phpmd {dir to sniff} {output format} {config} --reportfile {where to save report}
     vendor/bin/phpmd src/ xml phpmd.xml --reportfile messDetectorResultReport.xml
+    
+### Copy paste detector
+    phpcpd  --fuzzy src/
+
+### PHP Stan
+    vendor/bin/phpstan analyse src tests --level {0-7}

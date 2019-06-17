@@ -12,6 +12,7 @@ use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
@@ -26,11 +27,11 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * TaskRepository constructor.
      *
-     * @param PDOConnector $pdo
+     * @param PDOConnector $PDOConnector
      */
-    public function __construct(PDOConnector $pdo)
+    public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $pdo->getConnection();
+        $this->pdo = $PDOConnector->getConnection();
     }
 
     /**
@@ -171,8 +172,8 @@ class TaskRepository implements TaskRepositoryInterface
             $user = new User(
                 Uuid::fromBytes($result['user_id']),
                 new Username($result['username']),
-                new Password($result['password']),
                 new Email($result['email']),
+                new Role($result['role']),
                 []
             );
 
@@ -182,8 +183,7 @@ class TaskRepository implements TaskRepositoryInterface
                 new Status($result['status']),
                 $user,
                 new Priority($result['priority']),
-                new Description($result['description']),
-                $result['created_at']
+                new Description($result['description'])
             );
         } else {
             $task = new Task(
@@ -192,8 +192,7 @@ class TaskRepository implements TaskRepositoryInterface
                 new Status($result['status']),
                 null,
                 new Priority($result['priority']),
-                new Description($result['description']),
-                $result['created_at']
+                new Description($result['description'])
             );
         }
 
