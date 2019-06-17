@@ -18,8 +18,8 @@ class CommandBusTest extends WebTestCase
     {
         self::bootKernel();
 
-        $this->container = self::$kernel->getContainer();
-        $this->commandBus = $this->container->get('command_bus');
+        $container = self::$kernel->getContainer();
+        $this->commandBus = $container->get('command_bus');
     }
 
     public function testCanGetHandlerNameFromCommand()
