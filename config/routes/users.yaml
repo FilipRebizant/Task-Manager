@@ -1,4 +1,14 @@
-usersIndex:
-  path:       /users
-  controller: App\Interfaces\Web\Controller\UserController::index
+showProfile:
+  path:       /profile
+  controller: App\Interfaces\Web\Controller\UserController::showProfile
   methods:    GET
+
+createRegistration:
+  path: /activation/confirm/{token}
+  controller: App\Interfaces\Web\Controller\UserController::loadConfirmRegistrationView
+  methods: GET
+
+activateAccount:
+  path: /activation/confirm/{token}
+  controller: App\Interfaces\Web\Controller\SecurityController::activateAccount
+  methods: PATCH

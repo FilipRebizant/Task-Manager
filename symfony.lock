@@ -95,6 +95,12 @@
     "sebastian/type": {
         "version": "1.0.0"
     },
+    "sendgrid/php-http-client": {
+        "version": "3.9.6"
+    },
+    "sendgrid/sendgrid": {
+        "version": "7.3.0"
+    },
     "symfony/asset": {
         "version": "v4.2.8"
     },

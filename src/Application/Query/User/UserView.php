@@ -21,27 +21,45 @@ class UserView
     /** @var array */
     private $tasks;
 
+    /** @var string|null */
+    private $role;
+
+    /** @var string|null */
+    private $activationToken;
+
     /**
      * UserView constructor.
+     *
      * @param string $id
      * @param string $username
      * @param string $email
      * @param string $createdAt
+     * @param string|null $activationToken
+     * @param string|null $role
      * @param array $tasks
      */
-    public function __construct(string $id, string $username, string $email, string $createdAt, array $tasks)
-    {
+    public function __construct(
+        string $id,
+        string $username,
+        string $email,
+        string $createdAt,
+        ?string $activationToken,
+        ?string $role,
+        array $tasks
+    ) {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
         $this->createdAt = $createdAt;
+        $this->activationToken = $activationToken;
+        $this->role = $role;
         $this->tasks = $tasks;
     }
 
     /**
      * @return string
      */
-    public function id(): string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -49,7 +67,7 @@ class UserView
     /**
      * @return string
      */
-    public function username(): string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -79,6 +97,22 @@ class UserView
     }
 
     /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivationToken(): string
+    {
+        return $this->activationToken;
+    }
+
+    /**
      * @return array
      * @throws \Exception
      */
@@ -91,6 +125,8 @@ class UserView
             'username' => $this->username,
             'email' => $this->email,
             'created_at' => $date->format('c'),
+            'activation_token' => $this->activationToken,
+            'role' => $this->role,
             'tasks' => $this->tasks,
         ];
     }

@@ -9,8 +9,9 @@ CREATE TABLE `users` (
    `username` varchar(45) NOT NULL,
    `email` varchar(45) NOT NULL,
    `created_at` datetime DEFAULT NULL,
-   `password` varchar(60) NOT NULL,
+   `password` varchar(60) DEFAULT NULL,
    `role` varchar(15) DEFAULT NULL,
+   `activation_token` varchar(36) DEFAULT NULL,
    PRIMARY KEY (`id`),
    UNIQUE KEY `username_UNIQUE` (`username`),
    UNIQUE KEY `email_UNIQUE` (`email`)
