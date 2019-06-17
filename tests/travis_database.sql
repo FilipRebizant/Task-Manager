@@ -9,7 +9,7 @@ CREATE TABLE `users` (
    `username` varchar(45) NOT NULL,
    `email` varchar(45) NOT NULL,
    `created_at` datetime DEFAULT NULL,
-   `password` varchar(60) NOT NULL,
+   `password` varchar(60) DEFAULT NULL,
    `role` varchar(15) DEFAULT NULL,
    PRIMARY KEY (`id`),
    UNIQUE KEY `username_UNIQUE` (`username`),
@@ -30,4 +30,17 @@ KEY `user_id_idx` (`user_id`),
 CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `activation_tokens` (
+    `id` BINARY(16) NOT NULL,
+    `token` VARCHAR(36) NULL,
+    `created_at` TIMESTAMP NULL,
+    `activated_at` TIMESTAMP NULL DEFAULT NULL,
+    `user_id` BINARY(16) NULL,
+    PRIMARY KEY (`id`),
+    INDEX `user_idx` (`user_id` ASC) VISIBLE,
+    CONSTRAINT `user`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `task-manager`.`users` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION);
 
