@@ -16,7 +16,6 @@
         stopOnSkipped="false"
         verbose="false"
 >
-
     <testsuites>
         <testsuite name="Test Suite">
             <directory>tests</directory>
@@ -25,5 +24,16 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+            <exclude>
+                <directory suffix=".php">src/Domain/Security</directory>
+                <directory suffix=".php">src/Infrastructure/Listeners</directory>
+                <directory suffix=".php">src/SendGrid</directory>
+                <file>src/Kernel.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 
 </phpunit>
