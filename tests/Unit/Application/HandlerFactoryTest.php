@@ -8,21 +8,21 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HandlerFactoryTest extends WebTestCase
 {
-    static protected $container;
+     /** @var HandlerFactory */
+    private $handlerFactory;
 
     protected function setUp(): void
     {
         self::bootKernel();
-
-        $this->container = self::$kernel->getContainer();
+        $container = self::$kernel->getContainer();
+        $this->handlerFactory = new HandlerFactory($container);
     }
 
     public function testCan()
     {
-        $handlerFactory = new HandlerFactory($this::$container);
         $handlerName = CreateUserHandler::class;
 
-        $instance = $handlerFactory->make($handlerName);
+        $instance = $this->handlerFactory->make($handlerName);
 
         $this->assertInstanceOf(CreateUserHandler::class, $instance);
     }
