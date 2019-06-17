@@ -41,8 +41,8 @@ class UserService
      * @param UserRepositoryInterface $userRepository
      * @param EncoderFactoryInterface $passwordEncoder
      * @param ContainerInterface $container
+     * @param RouterInterface $router
      */
-
     public function __construct(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $passwordEncoder,

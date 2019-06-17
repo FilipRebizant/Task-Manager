@@ -21,6 +21,9 @@ class UserServiceTest extends WebTestCase
     /** @var UserService */
     private $userService;
 
+    /** @var User */
+    private $user;
+
     protected function setUp(): void
     {
         self::bootKernel();
@@ -38,14 +41,6 @@ class UserServiceTest extends WebTestCase
             []
         );
         $this->userService = $container->get('userService');
-//        $this->userRepository->create($this->user, null);
-    }
-
-    public function testWillGetInvalidArgumentException()
-    {
-//        $userService = new UserService();
-        $command = new ChangePasswordCommand(Uuid::uuid4()->toString(), 'password2', 'password2');
-        $this->expectException(NotFoundException::class);
-        $this->userService->changePassword($command);
+        $this->userRepository->create($this->user, null);
     }
 }
