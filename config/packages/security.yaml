@@ -5,7 +5,7 @@ security:
                 security_user_provider
 
     encoders:
-        App\Symfony\Security\Symfony\SessionAuth\SessionAuthUser:
+        App\Symfony\Security\SessionAuth\SessionAuthUser:
             algorithm: bcrypt
             cost: 12
 
@@ -19,11 +19,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         login:
-            pattern:  ^/api/login
             stateless: true
             anonymous: true
             json_login:
-                check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
@@ -43,7 +41,7 @@ security:
                 target: /
             guard:
                 authenticators:
-                    - App\Symfony\Security\Symfony\SessionAuth\LoginFormAuthenticator
+                    - App\Symfony\Security\SessionAuth\LoginFormAuthenticator
             provider: symfony_security_provider
 
     access_control:

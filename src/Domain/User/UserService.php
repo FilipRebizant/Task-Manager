@@ -6,7 +6,7 @@ use App\Application\Command\ActivateAccountCommand;
 use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
 use App\Domain\Exception\InvalidArgumentException;
-use App\Domain\Security\Symfony\SessionAuth\SessionAuthUser;
+use App\Symfony\Security\SessionAuth\SessionAuthUser;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\ValueObject\Email;
@@ -177,6 +177,7 @@ class UserService
     /**
      * @param ActivateAccountCommand $command
      * @throws InvalidArgumentException
+     * @throws NotFoundException
      */
     public function activateAccount(ActivateAccountCommand $command)
     {
