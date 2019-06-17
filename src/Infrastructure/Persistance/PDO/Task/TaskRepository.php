@@ -11,7 +11,6 @@ use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;

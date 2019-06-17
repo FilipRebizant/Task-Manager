@@ -5,6 +5,7 @@ namespace App\Domain\User;
 use App\Application\Command\ActivateAccountCommand;
 use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
+use App\Domain\ActivationToken\ActivationTokenRepositoryInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Symfony\Security\SessionAuth\SessionAuthUser;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
@@ -26,6 +27,9 @@ class UserService
     /** @var UserRepositoryInterface */
     private $userRepository;
 
+    /** @var ActivationTokenRepositoryInterface */
+    private $activationTokenRepository;
+
     /** @var EncoderFactoryInterface */
     private $passwordEncoder;
 
@@ -39,17 +43,20 @@ class UserService
      * UserService constructor.
      *
      * @param UserRepositoryInterface $userRepository
+     * @param ActivationTokenRepositoryInterface $activationToken
      * @param EncoderFactoryInterface $passwordEncoder
      * @param ContainerInterface $container
      * @param RouterInterface $router
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
+        ActivationTokenRepositoryInterface $activationToken,
         EncoderFactoryInterface $passwordEncoder,
         ContainerInterface $container,
         RouterInterface $router
     ) {
         $this->userRepository = $userRepository;
+        $this->activationTokenRepository = $activationToken;
         $this->passwordEncoder = $passwordEncoder;
         $this->container = $container;
         $this->router = $router;

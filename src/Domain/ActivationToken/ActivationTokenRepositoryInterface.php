@@ -2,7 +2,7 @@
 
 namespace App\Domain\ActivationToken;
 
-interface ActivationTokenInterface
+interface ActivationTokenRepositoryInterface
 {
     /**
      * @param ActivationToken $token

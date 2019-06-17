@@ -7,6 +7,9 @@ logout:
   path:       /logout
   methods:    GET
 
+api_login_check:
+  path: /api/login_check
+
 refresh_token:
   path: /api/token/refresh
   controller: App\Interfaces\Web\Controller\SecurityController::refreshToken

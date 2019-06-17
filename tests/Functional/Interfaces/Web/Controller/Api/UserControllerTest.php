@@ -9,34 +9,44 @@ use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use GuzzleHttp\Client;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zalas\Injector\PHPUnit\Symfony\TestCase\SymfonyTestContainer;
+use Zalas\Injector\PHPUnit\TestCase\ServiceContainerTestCase;
 
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
 {
+    use SymfonyTestContainer;
+
     /** @var Client */
     private $client;
 
     /** @var User */
     private $user;
 
-    /** @var UserQueryInterface */
+    /** @var UserQueryInterface
+     * @inject
+     */
     private $userQuery;
 
-    /** @var UserRepositoryInterface */
+    /**
+     * @var UserRepositoryInterface
+     * @inject
+     */
     private $userRepository;
 
     /** @var string */
     private $token;
 
+    /**
+     * @var JWTTokenManagerInterface
+     * @inject
+     */
+    private $jwtManager;
+
     protected function setUp(): void
     {
-        self::bootKernel();
-
-        $container = self::$kernel->getContainer();
-        $this->userQuery = $container->get('userQuery');
-        $this->userRepository = $container->get('userRepository');
-
         $uuid = Uuid::uuid4();
         $this->user = new User(
             $uuid,
@@ -49,9 +59,8 @@ class UserControllerTest extends WebTestCase
         $this->userRepository->create($this->user, null);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
-        $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
 
-        $this->token = $jwtManager->create($securityUser);
+        $this->token = $this->jwtManager->create($securityUser);
 
         $this->client = new Client([
             'allow_redirects' => true,

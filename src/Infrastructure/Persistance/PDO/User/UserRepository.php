@@ -38,7 +38,6 @@ class UserRepository implements UserRepositoryInterface
             "password" => $user->getPassword(),
             "email" => $user->getEmail(),
             "created_at" => $user->getCreatedAt()->format('Y-m-d H:i:s'),
-            "activation_token" => $token,
             "role" => $user->getRole(),
         ];
 
@@ -50,10 +49,9 @@ class UserRepository implements UserRepositoryInterface
                      `password`,
                      `email`,
                      `created_at`,
-                     `activation_token`,
                      `role`
                      ) 
-                    VALUES(:id, :username, :password, :email, :created_at, :activation_token, :role)";
+                    VALUES(:id, :username, :password, :email, :created_at, :role)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($data);
 

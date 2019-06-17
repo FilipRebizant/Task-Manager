@@ -31,6 +31,7 @@
                 <directory suffix=".php">src/Domain/Security</directory>
                 <directory suffix=".php">src/Infrastructure/Listeners</directory>
                 <directory suffix=".php">src/SendGrid</directory>
+                <directory suffix=".php">src/Symfony</directory>
                 <file>src/Kernel.php</file>
             </exclude>
         </whitelist>
