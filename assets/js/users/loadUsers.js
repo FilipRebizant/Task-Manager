@@ -59,7 +59,7 @@ export function loadUsers() {
                                     <td scope="row">${ user.username }</td>
                                     <td scope="row">${ user.email }</td>
                                     <td scope="row">${ user.role === null ? 'Account not activated' : user.role }</td>
-                                    <td scope="row">${ user.activation_token === null ? 'Active' : 'Not active' }</td>
+                                    <td scope="row">${ user.activated_at === null ? 'Not active' : 'Active' }</td>
                                     <td scope="row">
                                         <button class="btn btn-outline-danger deleteUserButton" data-user-id="${user.id}">Delete</button>
                                     </td>
