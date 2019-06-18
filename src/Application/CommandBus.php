@@ -2,7 +2,7 @@
 
 namespace App\Application;
 
- class CommandBus implements CommandBusInterface
+final class CommandBus implements CommandBusInterface
 {
     /** @var NameInflector */
     private $inflector;
