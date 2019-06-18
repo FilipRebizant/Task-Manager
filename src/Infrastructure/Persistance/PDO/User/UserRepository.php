@@ -173,9 +173,10 @@ class UserRepository implements UserRepositoryInterface
      */
     public function activateNewUser(string $activationToken, $password): void
     {
-        $sql = "UPDATE users 
-                SET activation_token = null, password = :password 
-                WHERE activation_token = :activation_token
+        $sql = "UPDATE users
+                INNER JOIN activation_tokens ON users.id = activation_tokens.user_id
+                SET password = :password 
+                WHERE activation_tokens.token = :activation_token
                 ";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
@@ -185,7 +186,7 @@ class UserRepository implements UserRepositoryInterface
         $result = $stmt->rowCount();
 
         if (!$result) {
-            throw new NotFoundException("Token has expired");
+            throw new NotFoundException("Activation token could't be found");
         }
     }
 }

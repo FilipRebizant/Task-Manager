@@ -22,6 +22,8 @@ class ActivateAccountHandler
 
     /**
      * @param ActivateAccountCommand $command
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     * @throws \App\Infrastructure\Exception\NotFoundException
      */
     public function handle(ActivateAccountCommand $command): void
     {

@@ -5,6 +5,7 @@ namespace App\Domain\User;
 use App\Application\Command\ActivateAccountCommand;
 use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
+use App\Domain\ActivationToken\ActivationToken;
 use App\Domain\ActivationToken\ActivationTokenRepositoryInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Symfony\Security\SessionAuth\SessionAuthUser;
@@ -82,6 +83,7 @@ class UserService
             throw new EmailAlreadyExistsException("Email address already exists");
         }
 
+        // If validation passed create User instance
         $user = new User(
             Uuid::uuid4(),
             new Username($command->username()),
@@ -89,18 +91,28 @@ class UserService
             new Role($command->role()),
             array()
         );
-        $token = Uuid::uuid4()->toString();
+        $activationToken = new ActivationToken(null, $user);
 
-        $activationLink =  $this->router->generate('activateAccount', ['token' => $token], UrlGenerator::ABSOLUTE_URL);
+        // Generate activation link
+        $activationLink =  $this->router->generate(
+            'activateAccount',
+            [
+                'token' => $activationToken->getToken()
+            ],
+            UrlGenerator::ABSOLUTE_URL
+        );
 
         $sendGrid = new SendGrid($this->container->get('twig'));
-        $sendGrid->sendEmail([
+        $success = $sendGrid->sendEmail([
             'subject' => 'Confirm Registration on Task-Manager',
             'activation_link' => $activationLink,
             'delivery_address' => $command->email(),
         ]);
 
-        $this->userRepository->create($user);
+        if ($success) {
+            $this->userRepository->create($user);
+            $this->activationTokenRepository->create($activationToken);
+        }
     }
 
     /**
@@ -195,6 +207,7 @@ class UserService
 
         $this->validatePassword($data);
         $encodedPassword = $this->encodePassword($command->password1());
+        $this->activationTokenRepository->activateAccount($command->token());
         $this->userRepository->activateNewUser($command->token(), $encodedPassword);
     }
 }

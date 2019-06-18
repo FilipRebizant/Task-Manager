@@ -2,6 +2,8 @@
 
 namespace App\Domain\ActivationToken;
 
+use App\Infrastructure\Exception\NotFoundException;
+
 interface ActivationTokenRepositoryInterface
 {
     /**
@@ -12,11 +14,13 @@ interface ActivationTokenRepositoryInterface
     /**
      * @param string $id
      * @return ActivationToken
+     * @throws NotFoundException
      */
     public function getById(string $id): ActivationToken;
 
     /**
-     * @param ActivationToken $token
+     * @param string $token
+     * @throws NotFoundException
      */
-    public function activateAccount(ActivationToken $token): void;
+    public function activateAccount(string $token): void;
 }

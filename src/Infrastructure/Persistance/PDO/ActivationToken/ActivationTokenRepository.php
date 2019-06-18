@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistance\PDO\ActivationToken;
 
 use App\Domain\ActivationToken\ActivationToken;
 use App\Domain\ActivationToken\ActivationTokenRepositoryInterface;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\User;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Role;
@@ -57,6 +58,8 @@ class ActivationTokenRepository implements ActivationTokenRepositoryInterface
     /**
      * @param string $id
      * @return ActivationToken
+     * @throws NotFoundException
+     * @throws InvalidArgumentException
      */
     public function getById(string $id): ActivationToken
     {
@@ -91,16 +94,17 @@ class ActivationTokenRepository implements ActivationTokenRepositoryInterface
     }
 
     /**
-     * @param ActivationToken $token
+     * @param string $token
+     * @throws NotFoundException
      */
-    public function activateAccount(ActivationToken $token): void
+    public function activateAccount(string $token): void
     {
         $sql = "UPDATE activation_tokens
                 SET activated_at = now()
                 WHERE token = :token";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'token' => $token->getToken(),
+            'token' => $token,
         ]);
 
         $result = $stmt->rowCount();
