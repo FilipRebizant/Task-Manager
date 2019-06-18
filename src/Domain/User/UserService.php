@@ -9,6 +9,7 @@ use App\Domain\ActivationToken\ActivationToken;
 use App\Domain\ActivationToken\ActivationTokenRepositoryInterface;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Services\EmailService\EmailServiceContext;
+use App\Services\EmailService\StrategyFactory;
 use App\Services\Symfony\Security\SessionAuth\SessionAuthUser;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
@@ -40,8 +41,8 @@ class UserService
     /** @var RouterInterface  */
     private $router;
 
-    /** @var EmailServiceContext */
-    private $context;
+    /** @var StrategyFactory */
+    private $strategyFactory;
 
     /**
      * UserService constructor.
@@ -51,7 +52,7 @@ class UserService
      * @param EncoderFactoryInterface $passwordEncoder
      * @param ContainerInterface $container
      * @param RouterInterface $router
-     * @param EmailServiceContext $context
+     * @param StrategyFactory $strategyFactory
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -59,14 +60,14 @@ class UserService
         EncoderFactoryInterface $passwordEncoder,
         ContainerInterface $container,
         RouterInterface $router,
-        EmailServiceContext $context
+        StrategyFactory $strategyFactory
     ) {
         $this->userRepository = $userRepository;
         $this->activationTokenRepository = $activationToken;
         $this->passwordEncoder = $passwordEncoder;
         $this->container = $container;
         $this->router = $router;
-        $this->context = $context;
+        $this->strategyFactory = $strategyFactory;
     }
 
     /**
@@ -107,8 +108,14 @@ class UserService
             ],
             UrlGenerator::ABSOLUTE_URL
         );
+        /**
+         * Choose Email provider, avaliable options are:
+         *  - sendgrid
+         */
+        $strategy = $this->strategyFactory->getStrategy('sendgrid');
+        $emailContext = new EmailServiceContext($strategy);
 
-        $success = $this->context->sendActivationEmail([
+        $success = $emailContext->sendActivationEmail([
             'subject' => 'Confirm Registration on Task-Manager',
             'activation_link' => $activationLink,
             'delivery_address' => $command->email(),

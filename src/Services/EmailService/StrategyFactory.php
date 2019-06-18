@@ -28,7 +28,7 @@ class StrategyFactory
             case SendGrid::NAME:
                 return $this->sendGrid;
             default:
-                throw new ProviderException(sprintf('Provider: %s was not found'), $name);
+                throw new ProviderException(sprintf('Provider: %s was not found', $name));
         }
     }
 }
