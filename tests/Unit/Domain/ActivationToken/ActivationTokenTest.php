@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Domain;
+namespace App\Tests\Unit\Domain\ActivationToken;
 
 use App\Domain\ActivationToken\ActivationToken;
 use App\Domain\User\User;
@@ -21,7 +21,6 @@ class ActivationTokenTest extends TestCase
         $activationToken = new ActivationToken(null, $this->userMock);
 
         $this->assertInstanceOf(Uuid::class, $activationToken->getId());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $activationToken->getCreatedAt());
         $this->assertEquals(36, strlen($activationToken->getToken()));
         $this->assertEquals(null, $activationToken->getActivatedAt());
         $this->assertInstanceOf(User::class, $activationToken->getUser());

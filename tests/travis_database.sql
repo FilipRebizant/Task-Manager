@@ -34,7 +34,7 @@ CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE
 CREATE TABLE `activation_tokens` (
      `id` binary(16) NOT NULL,
      `token` varchar(36) DEFAULT NULL,
-     `created_at` timestamp NULL DEFAULT NULL,
+     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
      `activated_at` timestamp NULL DEFAULT NULL,
      `user_id` binary(16) DEFAULT NULL,
      PRIMARY KEY (`id`),

@@ -25,6 +25,9 @@ class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
     /** @var User */
     private $user;
 
+    /** @var string */
+    private $token;
+
     /** @var UserQueryInterface
      * @inject
      */
@@ -36,9 +39,6 @@ class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
      */
     private $userRepository;
 
-    /** @var string */
-    private $token;
-
     /**
      * @var JWTTokenManagerInterface
      * @inject
@@ -47,9 +47,8 @@ class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
 
     protected function setUp(): void
     {
-        $uuid = Uuid::uuid4();
         $this->user = new User(
-            $uuid,
+            Uuid::uuid4(),
             new Username('username1'),
             new Email('username1@gmail.com'),
             new Role('ADMIN'),
@@ -147,58 +146,6 @@ class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
-
-//    public function testCanNotCreateUserOnWrongPassword()
-//    {
-//        $data = [
-//            'username' => 'testUsername',
-//            'email' => 'testUsername@gmail.com',
-//        ];
-//
-//        $expectedResult = json_encode([
-//            'error' => [
-//                'status' => 400,
-//                'message' => 'Provided password is invalid',
-//            ],
-//        ]);
-//
-//        $response = $this->client->post('nginx/api/users', [
-//            'body' => json_encode($data),
-//            'headers' => [
-//                'Authorization' => 'Bearer ' . $this->token,
-//            ],
-//        ]);
-//
-//        $this->assertEquals(400, $response->getStatusCode());
-//        $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
-//    }
-//
-//    public function testCanNotCreateUserWhenPasswordsDoesntMatch()
-//    {
-//        $data = [
-//            'username' => 'testUsername',
-//            'email' => 'testUsername@gmail.com',
-//            'password1' => 'password',
-//            'password2' => 'passwword',
-//        ];
-//
-//        $expectedResult = json_encode([
-//            'error' => [
-//                'status' => 400,
-//                'message' => 'Provided passwords doesn\'t match',
-//            ],
-//        ]);
-//
-//        $response = $this->client->post('nginx/api/users', [
-//            'body' => json_encode($data),
-//            'headers' => [
-//                'Authorization' => 'Bearer ' . $this->token,
-//            ],
-//        ]);
-//
-//        $this->assertEquals(400, $response->getStatusCode());
-//        $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
-//    }
 
     public function testCanGetUser()
     {

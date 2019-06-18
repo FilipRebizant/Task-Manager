@@ -161,7 +161,7 @@ class UserRepository implements UserRepositoryInterface
             'password' => $password,
         ]);
 
-        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        $result = $stmt->rowCount();
 
         if (!$result) {
             throw new NotFoundException("User was not found");
