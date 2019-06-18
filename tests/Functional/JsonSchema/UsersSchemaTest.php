@@ -59,9 +59,8 @@ class UsersSchemaTest extends WebTestCase implements ServiceContainerTestCase
             new Role('ADMIN'),
             []);
         $this->user->setPassword(new Password('testpassword'));
-        $token = Uuid::uuid4()->toString();
 
-        $this->userRepository->create($this->user, $token);
+        $this->userRepository->create($this->user);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
 

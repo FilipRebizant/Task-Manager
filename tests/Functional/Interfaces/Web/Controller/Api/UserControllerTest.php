@@ -55,7 +55,7 @@ class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
             []
         );
 
-        $this->userRepository->create($this->user, null);
+        $this->userRepository->create($this->user);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
 
@@ -186,7 +186,7 @@ class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
             new Role('ADMIN'),
             []
         );
-        $this->userRepository->create($user, null);
+        $this->userRepository->create($user);
         $returnedUser = $this->userQuery->getByUsername('testDeleteUsername');
 
         $response = $this->client->delete('nginx/api/users/' . $returnedUser->getId(), [

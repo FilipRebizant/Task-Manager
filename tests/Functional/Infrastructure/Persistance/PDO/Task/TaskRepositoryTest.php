@@ -14,7 +14,6 @@ use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
-use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Zalas\Injector\PHPUnit\Symfony\TestCase\SymfonyTestContainer;
@@ -117,7 +116,7 @@ class TaskRepositoryTest extends TestCase implements ServiceContainerTestCase
         );
 
         $this->taskRepository->create($task);
-        $this->userRepository->create($user, null);
+        $this->userRepository->create($user);
         $taskId = $task->getId()->toString();
         $this->taskRepository->assignTaskToUser($taskId, $user->getUserName());
         $actuallyAssignedUser = $this->taskQuery->getById($taskId)->user();

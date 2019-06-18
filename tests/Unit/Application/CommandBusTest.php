@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Application;
 
 use App\Application\Command\CreateUserCommand;
-use App\Application\CommandBus;
+use App\Application\CommandBusInterface;
 use App\Application\Handler\CreateUserHandler;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -11,7 +11,7 @@ class CommandBusTest extends WebTestCase
 {
     static protected $container;
 
-    /** @var CommandBus */
+    /** @var CommandBusInterface */
     private $commandBus;
 
     protected function setUp(): void

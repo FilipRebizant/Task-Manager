@@ -5,7 +5,6 @@ namespace App\Interfaces\Web\Controller\Api;
 use App\Application\Command\ChangePasswordCommand;
 use App\Application\Command\CreateUserCommand;
 use App\Application\Command\DeleteUserCommand;
-use App\Application\CommandBus;
 use App\Application\CommandBusInterface;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
@@ -13,17 +12,16 @@ use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Infrastructure\Persistance\PDO\User\UserQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController
 {
-    /** @var UserQuery */
+    /** @var UserQueryInterface */
     private $userQuery;
 
-    /** @var CommandBus */
+    /** @var CommandBusInterface */
     private $commandBus;
 
     /**

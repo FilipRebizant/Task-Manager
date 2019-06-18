@@ -38,11 +38,14 @@ class SendGrid
         $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
 
         try {
-            $sendgrid->send($email);
+            $response = $sendgrid->send($email);
+            if ($response->statusCode() === 202) {
+                return true;
+            }
         } catch (\Exception $e) {
             return false;
         }
 
-        return true;
+        return false;
     }
 }
