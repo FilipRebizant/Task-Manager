@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Persistance\PDO\ActivationToken;
 
 use App\Application\Query\ActivationToken\ActivationTokenView;
-use App\Domain\ActivationToken\ActivationToken;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -20,12 +19,13 @@ class ActivationTokenQuery
      */
     public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $PDOConnector->getConnection();
+        $this->pdo = $PDOConnector->getPDO();
     }
 
     /**
      * @param string $id
-     * @return ActivationToken
+     * @return ActivationTokenView
+     * @throws NotFoundException
      */
     public function getById(string $id): ActivationTokenView
     {

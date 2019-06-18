@@ -6,8 +6,8 @@ use PDO;
 
 class PDOConnector
 {
-    /** @var PDO */
-    private $connection;
+    /** @var PDO  */
+    protected $pdo;
 
     /** @var array */
     private $settings;
@@ -22,7 +22,7 @@ class PDOConnector
         ];
 
         try {
-            $this->connection = new PDO(
+            $this->pdo = new PDO(
                 'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
                 getenv('DB_USER'),
                 getenv('DB_PASS'),
@@ -36,8 +36,8 @@ class PDOConnector
     /**
      * @return PDO
      */
-    public function getConnection(): PDO
+    public function getPDO(): PDO
     {
-        return $this->connection;
+        return $this->pdo;
     }
 }

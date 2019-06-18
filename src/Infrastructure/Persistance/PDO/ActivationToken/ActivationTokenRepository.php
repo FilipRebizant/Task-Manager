@@ -24,7 +24,7 @@ class ActivationTokenRepository implements ActivationTokenRepositoryInterface
      */
     public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $PDOConnector->getConnection();
+        $this->pdo = $PDOConnector->getPDO();
     }
 
     /**

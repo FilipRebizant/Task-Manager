@@ -100,7 +100,7 @@ class UserService
             'delivery_address' => $command->email(),
         ]);
 
-        $this->userRepository->create($user, $token);
+        $this->userRepository->create($user);
     }
 
     /**
@@ -154,7 +154,7 @@ class UserService
     }
 
     /**
-     * @param ChangePasswordCommand $command
+     * @param array $data
      * @return bool
      * @throws InvalidArgumentException
      */

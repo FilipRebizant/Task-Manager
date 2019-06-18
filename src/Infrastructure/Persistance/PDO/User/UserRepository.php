@@ -23,14 +23,13 @@ class UserRepository implements UserRepositoryInterface
      */
     public function __construct(PDOConnector $PDOConnector)
     {
-        $this->pdo = $PDOConnector->getConnection();
+        $this->pdo = $PDOConnector->getPDO();
     }
 
     /**
      * @param User $user
-     * @param string|null $token
      */
-    public function create(User $user, ?string $token): void
+    public function create(User $user): void
     {
         $data = [
             "id" => $user->getId()->getBytes(),

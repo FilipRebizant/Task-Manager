@@ -52,9 +52,8 @@ class UserRepositoryTest extends TestCase implements ServiceContainerTestCase
             new Role('ADMIN'),
             array()
         );
-        $token = Uuid::uuid4()->toString();
 
-        $this->userRepository->create($user, $token);
+        $this->userRepository->create($user);
         $foundUser = $this->userQuery->getById($user->getId()->toString());
 
         $this->assertEquals($user->getId()->toString(), $foundUser->getId());
