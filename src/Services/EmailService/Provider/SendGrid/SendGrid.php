@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Services\EmailProvider\SendGrid;
+namespace App\Services\EmailService\Provider\SendGrid;
 
+use App\Services\EmailService\ProviderInterface;
 use Twig\Environment;
 
-class SendGrid
+class SendGrid implements ProviderInterface
 {
+    const NAME = 'sendgrid';
+
     /** @var Environment  */
     private $templating;
 
@@ -22,7 +25,7 @@ class SendGrid
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function sendEmail(array $data): bool
+    private function sendEmail(array $data): bool
     {
         $email = new \SendGrid\Mail\Mail();
         $email->setFrom(getenv('EMAIL_FROM'));
@@ -47,5 +50,18 @@ class SendGrid
         }
 
         return false;
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     * @throws \SendGrid\Mail\TypeException
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function sendActivationEmail(array $data): bool
+    {
+        return $this->sendEmail($data);
     }
 }

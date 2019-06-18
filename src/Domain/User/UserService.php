@@ -8,6 +8,7 @@ use App\Application\Command\CreateUserCommand;
 use App\Domain\ActivationToken\ActivationToken;
 use App\Domain\ActivationToken\ActivationTokenRepositoryInterface;
 use App\Domain\Exception\InvalidArgumentException;
+use App\Services\EmailService\EmailServiceContext;
 use App\Services\Symfony\Security\SessionAuth\SessionAuthUser;
 use App\Domain\User\Exception\EmailAlreadyExistsException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
@@ -16,7 +17,6 @@ use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Services\EmailProvider\SendGrid\SendGrid;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -40,6 +40,9 @@ class UserService
     /** @var RouterInterface  */
     private $router;
 
+    /** @var EmailServiceContext */
+    private $context;
+
     /**
      * UserService constructor.
      *
@@ -48,19 +51,22 @@ class UserService
      * @param EncoderFactoryInterface $passwordEncoder
      * @param ContainerInterface $container
      * @param RouterInterface $router
+     * @param EmailServiceContext $context
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         ActivationTokenRepositoryInterface $activationToken,
         EncoderFactoryInterface $passwordEncoder,
         ContainerInterface $container,
-        RouterInterface $router
+        RouterInterface $router,
+        EmailServiceContext $context
     ) {
         $this->userRepository = $userRepository;
         $this->activationTokenRepository = $activationToken;
         $this->passwordEncoder = $passwordEncoder;
         $this->container = $container;
         $this->router = $router;
+        $this->context = $context;
     }
 
     /**
@@ -102,8 +108,7 @@ class UserService
             UrlGenerator::ABSOLUTE_URL
         );
 
-        $sendGrid = new SendGrid($this->container->get('twig'));
-        $success = $sendGrid->sendEmail([
+        $success = $this->context->sendActivationEmail([
             'subject' => 'Confirm Registration on Task-Manager',
             'activation_link' => $activationLink,
             'delivery_address' => $command->email(),
