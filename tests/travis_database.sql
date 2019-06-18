@@ -14,7 +14,7 @@ CREATE TABLE `users` (
      PRIMARY KEY (`id`),
      UNIQUE KEY `username_UNIQUE` (`username`),
      UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tasks` (
      `id` binary(16) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `tasks` (
      KEY `user_id_idx` (`user_id`),
      KEY `status_idx` (`status`),
      CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `activation_tokens` (
      `id` binary(16) NOT NULL,
