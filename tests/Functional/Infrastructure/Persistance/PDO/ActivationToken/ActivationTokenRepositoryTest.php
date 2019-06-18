@@ -70,7 +70,7 @@ class ActivationTokenRepositoryTest extends TestCase implements ServiceContainer
         $this->userRepository->create($this->user);
         $this->activationTokenRepository->create($this->activationToken);
 
-        $this->activationTokenRepository->activateAccount($this->activationToken);
+        $this->activationTokenRepository->activateAccount($this->activationToken->getToken());
         $retrievedActivationToken = $this->activationTokenRepository->getById($activationTokenId);
 
         $this->assertEquals($this->activationToken->getId()->toString(), $retrievedActivationToken->getId());
