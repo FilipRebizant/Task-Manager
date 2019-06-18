@@ -5,12 +5,8 @@ export function loadProfile() {
     const userId = navItem.getAttribute('data-user-id');
     const infoContainer = document.getElementById('infoContainer');
     const errorContainer = document.getElementById('errorContainer');
-    const usersContainer = document.getElementById('usersContainer');
     const profileContainer = document.getElementById('profileContainer');
     let token = tokenContainer.innerText;
-    console.log(userId);
-
-    // errorContainer.classList.add('d-none');
 
     fetch(`/api/users/${userId}`, {
         headers: {
@@ -21,8 +17,6 @@ export function loadProfile() {
     }).then(function (response) {
         return response.json();
     }).then(function (response) {
-       console.log(response);
-
         infoContainer.classList.add('d-none');
 
         if (response.message) {
@@ -61,13 +55,12 @@ export function loadProfile() {
                             <td scope="row">${ response.username }</td>
                             <td scope="row">${ response.email }</td>
                             <td scope="row">${ response.role === null ? 'Account not activated' : response.role }</td>
-                            <td scope="row">${ response.activation_token === null ? 'Active' : 'Not active' }</td>
+                            <td scope="row">${ response.activated_at === null ? 'Not active' : 'Active' }</td>
                             <td scope="row"></td>
                         </tr>
                     </tbody>
                     </table>
                 `;
-
             profileContainer.innerHTML = markup;
         }
     });

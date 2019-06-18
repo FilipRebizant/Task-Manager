@@ -33,7 +33,7 @@ class UserQuery implements UserQueryInterface
     public function getById(string $userId): UserView
     {
         $sql = "
-            SELECT users.id, username, email, users.created_at, role, token
+            SELECT users.id, username, email, users.created_at, role, activated_at
             FROM users
             LEFT JOIN activation_tokens
             ON users.id = activation_tokens.user_id
@@ -84,7 +84,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
-            $result['token'],
+            $result['activated_at'],
             $result['role'],
             $userTasks
         );
@@ -93,7 +93,7 @@ class UserQuery implements UserQueryInterface
     public function getByUsername(string $username): UserView
     {
         $sql = "
-            SELECT users.id, username, email, users.created_at, role, token
+            SELECT users.id, username, email, users.created_at, role, activated_at
             FROM users
             LEFT JOIN activation_tokens
             ON users.id = activation_tokens.user_id
@@ -145,7 +145,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
-            $result['token'],
+            $result['activated_at'],
             $result['role'],
             $userTasks
         );
@@ -158,7 +158,7 @@ class UserQuery implements UserQueryInterface
     public function getAll(): array
     {
         $sql = "
-            SELECT users.id, username, email, users.created_at, role, token
+            SELECT users.id, username, email, users.created_at, role, activated_at
             FROM users
             LEFT JOIN activation_tokens
             ON users.id = activation_tokens.user_id
@@ -181,7 +181,7 @@ class UserQuery implements UserQueryInterface
                 $result['username'],
                 $result['email'],
                 $result['created_at'],
-                $result['token'],
+                $result['activated_at'],
                 $result['role'],
                 []
             );
