@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Symfony\Security\SessionAuth;
+namespace App\Services\Symfony\Security\SessionAuth;
 
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

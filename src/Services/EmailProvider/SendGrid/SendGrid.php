@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SendGrid;
+namespace App\Services\EmailProvider\SendGrid;
 
 use Twig\Environment;
 
