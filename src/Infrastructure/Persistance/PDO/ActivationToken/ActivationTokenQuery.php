@@ -49,7 +49,7 @@ class ActivationTokenQuery
             $result['token'],
             $result['username'],
             $result['created_at'],
-            $result['updated_at'],
+            $result['updated_at']
         );
 
         return $activationTokenView;
