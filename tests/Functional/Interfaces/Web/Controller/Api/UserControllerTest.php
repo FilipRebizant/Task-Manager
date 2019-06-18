@@ -9,37 +9,46 @@ use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use GuzzleHttp\Client;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zalas\Injector\PHPUnit\Symfony\TestCase\SymfonyTestContainer;
+use Zalas\Injector\PHPUnit\TestCase\ServiceContainerTestCase;
 
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends WebTestCase implements ServiceContainerTestCase
 {
+    use SymfonyTestContainer;
+
     /** @var Client */
     private $client;
 
     /** @var User */
     private $user;
 
-    /** @var UserQueryInterface */
-    private $userQuery;
-
-    /** @var UserRepositoryInterface */
-    private $userRepository;
-
     /** @var string */
     private $token;
 
+    /** @var UserQueryInterface
+     * @inject
+     */
+    private $userQuery;
+
+    /**
+     * @var UserRepositoryInterface
+     * @inject
+     */
+    private $userRepository;
+
+    /**
+     * @var JWTTokenManagerInterface
+     * @inject
+     */
+    private $jwtManager;
+
     protected function setUp(): void
     {
-        self::bootKernel();
-
-        $container = self::$kernel->getContainer();
-        $this->userQuery = $container->get('userQuery');
-        $this->userRepository = $container->get('userRepository');
-
-        $uuid = Uuid::uuid4();
         $this->user = new User(
-            $uuid,
+            Uuid::uuid4(),
             new Username('username1'),
             new Email('username1@gmail.com'),
             new Role('ADMIN'),
@@ -49,9 +58,8 @@ class UserControllerTest extends WebTestCase
         $this->userRepository->create($this->user, null);
 
         $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
-        $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
 
-        $this->token = $jwtManager->create($securityUser);
+        $this->token = $this->jwtManager->create($securityUser);
 
         $this->client = new Client([
             'allow_redirects' => true,
@@ -138,58 +146,6 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
     }
-
-//    public function testCanNotCreateUserOnWrongPassword()
-//    {
-//        $data = [
-//            'username' => 'testUsername',
-//            'email' => 'testUsername@gmail.com',
-//        ];
-//
-//        $expectedResult = json_encode([
-//            'error' => [
-//                'status' => 400,
-//                'message' => 'Provided password is invalid',
-//            ],
-//        ]);
-//
-//        $response = $this->client->post('nginx/api/users', [
-//            'body' => json_encode($data),
-//            'headers' => [
-//                'Authorization' => 'Bearer ' . $this->token,
-//            ],
-//        ]);
-//
-//        $this->assertEquals(400, $response->getStatusCode());
-//        $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
-//    }
-//
-//    public function testCanNotCreateUserWhenPasswordsDoesntMatch()
-//    {
-//        $data = [
-//            'username' => 'testUsername',
-//            'email' => 'testUsername@gmail.com',
-//            'password1' => 'password',
-//            'password2' => 'passwword',
-//        ];
-//
-//        $expectedResult = json_encode([
-//            'error' => [
-//                'status' => 400,
-//                'message' => 'Provided passwords doesn\'t match',
-//            ],
-//        ]);
-//
-//        $response = $this->client->post('nginx/api/users', [
-//            'body' => json_encode($data),
-//            'headers' => [
-//                'Authorization' => 'Bearer ' . $this->token,
-//            ],
-//        ]);
-//
-//        $this->assertEquals(400, $response->getStatusCode());
-//        $this->assertJsonStringEqualsJsonString($expectedResult, $response->getBody());
-//    }
 
     public function testCanGetUser()
     {

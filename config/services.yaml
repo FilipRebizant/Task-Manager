@@ -24,23 +24,7 @@ services:
             - { name: kernel.event_subscriber}
 
     security_user_provider:
-        class: App\Symfony\Security\Symfony\SessionAuth\SessionAuthUserProvider
-
-    userQuery:
-        public: true
-        class: App\Infrastructure\Persistance\PDO\User\UserQuery
-
-    taskQuery:
-        public: true
-        class: App\Infrastructure\Persistance\PDO\User\TaskQuery
-
-    userRepository:
-        public: true
-        class: App\Infrastructure\Persistance\PDO\User\UserRepository
-
-    taskRepository:
-        public: true
-        class: App\Infrastructure\Persistance\PDO\User\TaskRepository
+        class: App\Symfony\Security\SessionAuth\SessionAuthUserProvider
 
     userService:
         public: true

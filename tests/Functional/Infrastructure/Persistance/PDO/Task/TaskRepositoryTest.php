@@ -2,40 +2,45 @@
 
 namespace App\Tests\Functional\Infrastructure\Persistance\PDO\Task;
 
+use App\Application\Query\Task\TaskQueryInterface;
 use App\Domain\Task\Task;
+use App\Domain\Task\TaskRepositoryInterface;
 use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\ValueObject\Title;
 use App\Domain\User\User;
+use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
-use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
-use App\Infrastructure\Persistance\PDO\PDOConnector;
-use App\Infrastructure\Persistance\PDO\Task\TaskRepository;
-use App\Infrastructure\Persistance\PDO\Task\TaskQuery;
 use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Zalas\Injector\PHPUnit\Symfony\TestCase\SymfonyTestContainer;
+use Zalas\Injector\PHPUnit\TestCase\ServiceContainerTestCase;
 
-class TaskRepositoryTest extends TestCase
+class TaskRepositoryTest extends TestCase implements ServiceContainerTestCase
 {
-    /** @var TaskRepository */
+    use SymfonyTestContainer;
+
+    /**
+     * @var TaskRepositoryInterface
+     * @inject
+     */
     private $taskRepository;
 
-    /** @var TaskQuery */
+    /**
+     * @var UserRepositoryInterface
+     * @inject
+     */
+    private $userRepository;
+
+    /**
+     * @var TaskQueryInterface
+     * @inject
+     */
     private $taskQuery;
-
-    /** @var PDOConnector */
-    private $pdo;
-
-    protected function setUp(): void
-    {
-        $this->pdo = new PDOConnector();
-        $this->taskRepository = new TaskRepository($this->pdo);
-        $this->taskQuery = new TaskQuery($this->pdo);
-    }
 
     /**
      * @throws \App\Domain\Exception\InvalidArgumentException
@@ -110,10 +115,9 @@ class TaskRepositoryTest extends TestCase
             new Role('ADMIN'),
             array()
         );
-        $userRepository = new UserRepository($this->pdo);
 
         $this->taskRepository->create($task);
-        $userRepository->create($user, null);
+        $this->userRepository->create($user, null);
         $taskId = $task->getId()->toString();
         $this->taskRepository->assignTaskToUser($taskId, $user->getUserName());
         $actuallyAssignedUser = $this->taskQuery->getById($taskId)->user();
@@ -121,6 +125,6 @@ class TaskRepositoryTest extends TestCase
         $this->assertEquals($user->getUserName(), $actuallyAssignedUser);
 
         $this->taskRepository->delete($task->getId());
-        $userRepository->delete($user->getId());
+        $this->userRepository->delete($user->getId());
     }
 }

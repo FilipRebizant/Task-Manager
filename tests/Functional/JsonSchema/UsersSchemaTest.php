@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\JsonSchema;
 
+use App\Application\Query\User\UserQueryInterface;
 use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
@@ -9,37 +10,50 @@ use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use GuzzleHttp\Client;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationResult;
 use Opis\JsonSchema\Validator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zalas\Injector\PHPUnit\Symfony\TestCase\SymfonyTestContainer;
+use Zalas\Injector\PHPUnit\TestCase\ServiceContainerTestCase;
 
-class UsersSchemaTest extends WebTestCase
+class UsersSchemaTest extends WebTestCase implements ServiceContainerTestCase
 {
+    use SymfonyTestContainer;
+
+    /** @var User */
+    private $user;
+
     /** @var Client */
     private $client;
 
     /** @var string */
     private $token;
 
-    /** @var UserRepositoryInterface */
+    /**
+     * @var UserQueryInterface
+     * @inject
+     */
+    private $userQuery;
+
+    /**
+     * @var UserRepositoryInterface
+     * @inject
+     */
     private $userRepository;
 
-    /** @var User */
-    private $user;
+    /**
+     * @var JWTTokenManagerInterface
+     * @inject
+     */
+    private $jwtManager;
 
     protected function setUp(): void
     {
-        self::bootKernel();
-
-        $container = self::$kernel->getContainer();
-        $userQuery = $container->get('userQuery');
-        $this->userRepository = $container->get('userRepository');
-
-        $uuid = Uuid::uuid4();
         $this->user = new User(
-            $uuid,
+            Uuid::uuid4(),
             new Username('username1'),
             new Email('username1@gmail.com'),
             new Role('ADMIN'),
@@ -49,10 +63,9 @@ class UsersSchemaTest extends WebTestCase
 
         $this->userRepository->create($this->user, $token);
 
-        $securityUser = $userQuery->getSessionAuthUserByUsername('username1');
-        $jwtManager = $container->get('lexik_jwt_authentication.jwt_manager');
+        $securityUser = $this->userQuery->getSessionAuthUserByUsername('username1');
 
-        $this->token = $jwtManager->create($securityUser);
+        $this->token = $this->jwtManager->create($securityUser);
 
         $this->client = new Client([
             'allow_redirects' => true,

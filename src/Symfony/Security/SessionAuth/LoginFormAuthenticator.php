@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Symfony\Security\Symfony\SessionAuth;
+namespace App\Symfony\Security\SessionAuth;
 
 use App\Application\Query\User\UserQueryInterface;
 use App\Infrastructure\Exception\NotFoundException;

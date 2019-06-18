@@ -5,7 +5,7 @@ namespace App\Infrastructure\Persistance\PDO\User;
 use App\Application\Query\Task\TaskView;
 use App\Application\Query\User\UserQueryInterface;
 use App\Application\Query\User\UserView;
-use App\Symfony\Security\Symfony\SessionAuth\SessionAuthUser;
+use App\Symfony\Security\SessionAuth\SessionAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Persistance\PDO\PDOConnector;
 use PDO;
@@ -33,8 +33,10 @@ class UserQuery implements UserQueryInterface
     public function getById(string $userId): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at,activation_token, role
+            SELECT users.id, username, email, users.created_at, role, token
             FROM users
+            LEFT JOIN activation_tokens
+            ON users.id = activation_tokens.user_id
             WHERE users.id = :id
         ";
 
@@ -82,7 +84,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
-            $result['activation_token'],
+            $result['token'],
             $result['role'],
             $userTasks
         );
@@ -91,8 +93,10 @@ class UserQuery implements UserQueryInterface
     public function getByUsername(string $username): UserView
     {
         $sql = "
-            SELECT id, username, email, created_at, activation_token, role
+            SELECT users.id, username, email, users.created_at, role, token
             FROM users
+            LEFT JOIN activation_tokens
+            ON users.id = activation_tokens.user_id
             WHERE username = :username
         ";
 
@@ -141,7 +145,7 @@ class UserQuery implements UserQueryInterface
             $result['username'],
             $result['email'],
             $result['created_at'],
-            $result['activation_token'],
+            $result['token'],
             $result['role'],
             $userTasks
         );
@@ -154,9 +158,10 @@ class UserQuery implements UserQueryInterface
     public function getAll(): array
     {
         $sql = "
-            SELECT id, username, email, created_at, activation_token, role
+            SELECT users.id, username, email, users.created_at, role, token
             FROM users
-            GROUP BY username
+            LEFT JOIN activation_tokens
+            ON users.id = activation_tokens.user_id
         ";
 
         /**
@@ -166,50 +171,19 @@ class UserQuery implements UserQueryInterface
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        /**
-         * Query for tasks
-         */
-        $sqlTasks = "SELECT * FROM tasks";
-        $tasksStmt = $this->pdo->prepare($sqlTasks);
-        $tasksStmt->execute();
-        $tasksResults = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
-
         if (!$results) {
             throw new NotFoundException("Users were not found");
         }
-
-        /**
-         * Assign tasks to users
-         */
         $users = [];
         foreach ($results as $result) {
-            $userTasks = [];
-            foreach ($tasksResults as $tasksResult) {
-                if ($tasksResult['user_id'] == $result['id']) {
-                    $id = Uuid::fromBytes($tasksResult['id']);
-                    $userId = Uuid::fromBytes($tasksResult['user_id']);
-                    $task = new TaskView(
-                        $id,
-                        $tasksResult['title'],
-                        $tasksResult['status'],
-                        $userId,
-                        $tasksResult['priority'],
-                        $tasksResult['description'],
-                        $tasksResult['created_at'],
-                        $tasksResult['updated_at']
-                    );
-                    array_push($userTasks, $task);
-                }
-            }
-
             $user = new UserView(
                 Uuid::fromBytes($result['id'])->toString(),
                 $result['username'],
                 $result['email'],
                 $result['created_at'],
-                $result['activation_token'],
+                $result['token'],
                 $result['role'],
-                $userTasks
+                []
             );
             array_push($users, $user);
         }

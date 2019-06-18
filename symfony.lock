@@ -221,5 +221,11 @@
     },
     "twig/twig": {
         "version": "v2.9.0"
+    },
+    "zalas/injector": {
+        "version": "v1.2.0"
+    },
+    "zalas/phpunit-injector": {
+        "version": "v1.3.2"
     }
 }

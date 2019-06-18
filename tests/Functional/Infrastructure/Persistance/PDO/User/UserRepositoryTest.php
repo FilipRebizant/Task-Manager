@@ -2,34 +2,33 @@
 
 namespace App\Tests\Functional\Infrastructure\Persistance\PDO\User;
 
+use App\Application\Query\User\UserQueryInterface;
 use App\Domain\User\User;
+use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Role;
 use App\Domain\User\ValueObject\Username;
 use App\Infrastructure\Exception\NotFoundException;
-use App\Infrastructure\Persistance\PDO\PDOConnector;
-use App\Infrastructure\Persistance\PDO\User\UserQuery;
-use App\Infrastructure\Persistance\PDO\User\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Zalas\Injector\PHPUnit\Symfony\TestCase\SymfonyTestContainer;
+use Zalas\Injector\PHPUnit\TestCase\ServiceContainerTestCase;
 
-class UserRepositoryTest extends TestCase
+class UserRepositoryTest extends TestCase implements ServiceContainerTestCase
 {
-    /** @var UserRepository */
+    use SymfonyTestContainer;
+
+    /**
+     * @var UserRepositoryInterface
+     * @inject
+     */
     private $userRepository;
 
-    /** @var UserQuery */
+    /**
+     * @var UserQueryInterface
+     * @inject
+     */
     private $userQuery;
-
-    /** @var PDOConnector */
-    private $pdo;
-
-    protected function setUp(): void
-    {
-        $this->pdo = new PDOConnector();
-        $this->userRepository = new UserRepository($this->pdo);
-        $this->userQuery = new UserQuery($this->pdo);
-    }
 
     /**
      * @throws NotFoundException
