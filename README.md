@@ -1,13 +1,15 @@
 # Task-Manager
 
 ## Installation:
-    Example account aren't provided yet.
     In order to use this application you need to generate security keys and build assets using yarn, instruction is given below:
 
 ### Generate security keys:
     $ mkdir config/jwt
     $ openssl genrsa -out config/jwt/private.pem -aes256 4096
     $ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+    
+### Create Example User:
+    bin/console app:create-example-account
 
 ### Build application:
     docker-compose build
@@ -21,15 +23,18 @@
     "yarn dev --watch" to keep on watching and building assets
 
 ## Useful development commands:
+
+### Generate Fixtures:  
+    bin/console app:load-fixtures
         
 ### Run composer:
     docker-compose run composer install
 
-### Run tests open php-fpm container and run:
+### Run tests
     ./vendor/bin/phpunit
     vendor/bin/phpunit tests --coverage-html ./ --whitelist=tests
     
-### Run code sniffer open php-fpm container and run:
+### Run code sniffer
     ./vendor/bin/phpcs
 
 ### Code Sniffer:
