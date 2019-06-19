@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadFixturesCommand extends Command
 {
+    const NUMBER_OF_OBJECTS = 10;
+
     /** @var UserFixture  */
     private $userFixture;
 
@@ -34,29 +36,32 @@ class LoadFixturesCommand extends Command
         $this->setDescription('Command creates fixtures');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void|null
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln([
-            '============',
-        ]);
+        for ($i = 0; $i <= self::NUMBER_OF_OBJECTS; $i++) {
+            $output->writeln([
+                '============',
+                'Generating fixtures',
+                '============',
+                '',
+            ]);
 
-        $output->writeln([
-            'Generating users...',
-        ]);
+            $user = $this->userFixture->loadUser();
+            $task = $this->taskFixture->loadTask(['user' => $user]);
+            $taskWithoutUser = $this->taskFixture->loadTaskWithoutUser();
 
-        $this->userFixture->loadUsers();
+            $output->writeln([
+                '============',
+                'Finished generating fixtures',
+                '============',
 
-        $output->writeln([
-            'Generating tasks...',
-        ]);
-
-        $this->taskFixture->loadTasks();
-
-        $output->writeln([
-            '============',
-            'Finished generating fixtures',
-            '============',
-            '',
-        ]);
+            ]);
+        }
     }
 }

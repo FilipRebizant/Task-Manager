@@ -2,6 +2,7 @@
 
 namespace App\Services\DataFixtures;
 
+use App\Domain\Task\Task;
 use App\Domain\Task\TaskFactory;
 use App\Domain\Task\TaskRepositoryInterface;
 use Ramsey\Uuid\Uuid;
@@ -13,6 +14,12 @@ class TaskFixture extends BaseFixture
 
     /** @var TaskRepositoryInterface  */
     private $taskRepository;
+
+    private $statuses = [
+        'Todo',
+        'Pending',
+        'Done'
+    ];
 
     /**
      * TaskFixture constructor.
@@ -26,19 +33,43 @@ class TaskFixture extends BaseFixture
         $this->taskFactory = new TaskFactory();
     }
 
-    public function loadTasks(array $objects = [])
+    /**
+     * @param array $objects
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
+    public function loadTask(array $objects = []): Task
     {
-        for ($i = 0; $i <= self::NUMBER_OF_OBJECTS; $i++) {
-            $data = [
-                'id' => Uuid::uuid4()->toString(),
-                'title' => $this->faker->words(3, true),
-                'status' => 'Todo',
-                'user' => $objects['user'],
-                'priority' => $this->faker->numberBetween(1, 10),
-                'description' => $this->faker->words(10, true),
-            ];
-            $task = $this->taskFactory->create($data);
-            $this->taskRepository->create($task);
-        }
+        $data = [
+            'id' => Uuid::uuid4()->toString(),
+            'title' => $this->faker->words(3, true),
+            'status' => $this->statuses[$this->faker->numberBetween(0,2)],
+            'user' => $objects['user'],
+            'priority' => $this->faker->numberBetween(1, 10),
+            'description' => $this->faker->words(10, true),
+        ];
+        $task = $this->taskFactory->create($data);
+        $this->taskRepository->create($task);
+
+        return $task;
+    }
+
+    /**
+     * @return Task
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
+    public function loadTaskWithoutUser(): Task
+    {
+        $data = [
+            'id' => Uuid::uuid4()->toString(),
+            'title' => $this->faker->words(3, true),
+            'status' => 'Todo',
+            'user' => null,
+            'priority' => $this->faker->numberBetween(1, 10),
+            'description' => $this->faker->words(10, true),
+        ];
+        $task = $this->taskFactory->create($data);
+        $this->taskRepository->create($task);
+
+        return $task;
     }
 }

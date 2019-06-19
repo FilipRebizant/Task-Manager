@@ -6,7 +6,6 @@ use App\Domain\Task\ValueObject\Description;
 use App\Domain\Task\ValueObject\Priority;
 use App\Domain\Task\ValueObject\Status;
 use App\Domain\Task\ValueObject\Title;
-use App\Domain\User\UserFactory;
 use Ramsey\Uuid\Uuid;
 
 class TaskFactory
@@ -14,18 +13,12 @@ class TaskFactory
     /**
      * @param array $data
      * [
-     *      'id' => string
-     *      'title' => string
-     *      'status' => string
-     *      'user' => array [
-     *              'id' => string
-     *              'username' => string
-     *              'email' => string
-     *              'role' => string
-     *              'tasks' => Task|null
-     *      ]
-     *      'priority' => int
-     *      'description' => string
+     *      'id' => string,
+     *      'title' => string,
+     *      'status' => string,
+     *      'user' => User|null,
+     *      'priority' => int,
+     *      'description' => string,
      * ]
      * @return Task
      * @throws \App\Domain\Exception\InvalidArgumentException
@@ -34,10 +27,8 @@ class TaskFactory
     {
         $user = null;
 
-        if (array_key_exists('id', $data['user'])) {
-            $userFactory = new UserFactory();
-            $userDataArray = $data['user'];
-            $user = $userFactory->create($userDataArray);
+        if (array_key_exists('user', $data)) {
+            $user = $data['user'];
         }
 
         $task = new Task(
@@ -48,6 +39,7 @@ class TaskFactory
             new Priority($data['priority']),
             new Description($data['description'])
         );
+
         return $task;
     }
 }

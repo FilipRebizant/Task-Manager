@@ -7,8 +7,6 @@ use Faker\Generator;
 
 abstract class BaseFixture
 {
-    const NUMBER_OF_OBJECTS = 10;
-
     /** @var Generator */
     protected $faker;
 

@@ -2,6 +2,7 @@
 
 namespace App\Services\DataFixtures;
 
+use App\Domain\User\User;
 use App\Domain\User\UserFactory;
 use App\Domain\User\UserRepositoryInterface;
 use Ramsey\Uuid\Uuid;
@@ -25,17 +26,18 @@ class UserFixture extends BaseFixture
     /**
      * @throws \App\Domain\Exception\InvalidArgumentException
      */
-    public function loadUsers(): void
+    public function loadUser(): User
     {
-        for ($i = 0; $i <= self::NUMBER_OF_OBJECTS; $i++) {
-            $data = [
-                'id' => Uuid::uuid4()->toString(),
-                'username' => $this->faker->userName,
-                'email' => $this->faker->email,
-                'role' => 'USER',
-            ];
-            $user = $this->userFactory->create($data);
-            $this->userRepository->create($user);
-        }
+         $data = [
+            'id' => Uuid::uuid4()->toString(),
+            'username' => $this->faker->userName,
+            'email' => $this->faker->email,
+            'role' => 'USER',
+        ];
+        $user = $this->userFactory->create($data);
+        $this->userRepository->create($user);
+
+        return $user;
     }
+
 }
