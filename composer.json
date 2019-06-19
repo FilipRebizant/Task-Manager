@@ -26,7 +26,6 @@
     "symfony/yaml": "^4.2"
   },
   "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "^3.2",
     "fzaninotto/faker": "^1.8",
     "opis/json-schema": "^1.0",
     "phpmd/phpmd": "^2.6",
