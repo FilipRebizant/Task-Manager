@@ -26,10 +26,13 @@ class EmailTest extends TestCase
     public function validEmailsProvider() {
         return [
             'email with numbers' => ['validemail_2000@gmail.com'],
+            'email with dots' => ['valid.email_20@gmail.com'],
             'with dot' => ['valid.email_2000@gmail.com'],
             'two part domain' => ['validEmail@gmail.co.uk'],
             'domain with dash' => ['validEmail@two-part.com'],
             'two part domain with dash' => ['validEmail@two-part.co.uk'],
+            'long_domain' => ['lesch.elliott@gusikowski.info'],
+            'long_domain_and_long_second_part_domain' => ['lesch.elliott@gusikowski.info.com'],
         ];
     }
 

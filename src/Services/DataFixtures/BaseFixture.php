@@ -7,12 +7,13 @@ use Faker\Generator;
 
 abstract class BaseFixture
 {
-//    /** @var Generator */
-//    protected $faker;
-//
-//    public function __construct()
-//    {
-//        var_dump('construct');
-//        $this->faker = Factory::create();
-//    }
+    const NUMBER_OF_OBJECTS = 10;
+
+    /** @var Generator */
+    protected $faker;
+
+    public function __construct()
+    {
+        $this->faker = Factory::create();
+    }
 }
