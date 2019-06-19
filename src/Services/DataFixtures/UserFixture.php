@@ -40,4 +40,23 @@ class UserFixture extends BaseFixture
         return $user;
     }
 
+    /**
+     * @param string $username
+     * @param string $role
+     * @return User
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
+    public function loadExampleUser(string $username, string $role)
+    {
+        $data = [
+            'id' => Uuid::uuid4()->toString(),
+            'username' => $username,
+            'email' => $this->faker->email,
+            'role' => $role,
+        ];
+        $user = $this->userFactory->create($data);
+        $this->userRepository->create($user);
+
+        return $user;
+    }
 }

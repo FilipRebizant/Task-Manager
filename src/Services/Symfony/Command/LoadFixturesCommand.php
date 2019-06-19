@@ -2,6 +2,7 @@
 
 namespace App\Services\Symfony\Command;
 
+use App\Services\DataFixtures\ActivationTokenFixture;
 use App\Services\DataFixtures\TaskFixture;
 use App\Services\DataFixtures\UserFixture;
 use Symfony\Component\Console\Command\Command;
@@ -18,17 +19,22 @@ class LoadFixturesCommand extends Command
     /** @var TaskFixture */
     private $taskFixture;
 
+    /** @var ActivationTokenFixture */
+    private $activationTokenFixture;
+
     /** @var string  */
     protected static $defaultName = 'app:load-fixtures';
 
     public function __construct(
         UserFixture $userFixture,
-        TaskFixture $taskFixture
+        TaskFixture $taskFixture,
+        ActivationTokenFixture $activationTokenFixture
     ) {
         parent::__construct();
 
         $this->userFixture = $userFixture;
         $this->taskFixture = $taskFixture;
+        $this->activationTokenFixture = $activationTokenFixture;
     }
 
     protected function configure()
@@ -53,6 +59,7 @@ class LoadFixturesCommand extends Command
             ]);
 
             $user = $this->userFixture->loadUser();
+
             $task = $this->taskFixture->loadTask(['user' => $user]);
             $taskWithoutUser = $this->taskFixture->loadTaskWithoutUser();
 

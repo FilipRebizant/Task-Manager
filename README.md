@@ -21,15 +21,18 @@
     "yarn dev --watch" to keep on watching and building assets
 
 ## Useful development commands:
+
+### Generate Fixtures:  
+    bin/console app:load-fixtures
         
 ### Run composer:
     docker-compose run composer install
 
-### Run tests open php-fpm container and run:
+### Run tests
     ./vendor/bin/phpunit
     vendor/bin/phpunit tests --coverage-html ./ --whitelist=tests
     
-### Run code sniffer open php-fpm container and run:
+### Run code sniffer
     ./vendor/bin/phpcs
 
 ### Code Sniffer:
