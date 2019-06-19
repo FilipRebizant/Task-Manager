@@ -50,25 +50,27 @@ class LoadFixturesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln([
+            '============',
+            'Generating fixtures',
+            '============',
+            '',
+        ]);
+
         for ($i = 0; $i <= self::NUMBER_OF_OBJECTS; $i++) {
-            $output->writeln([
-                '============',
-                'Generating fixtures',
-                '============',
-                '',
-            ]);
 
             $user = $this->userFixture->loadUser();
 
             $task = $this->taskFixture->loadTask(['user' => $user]);
             $taskWithoutUser = $this->taskFixture->loadTaskWithoutUser();
-
-            $output->writeln([
-                '============',
-                'Finished generating fixtures',
-                '============',
-
-            ]);
+            $activationToken = $this->activationTokenFixture->loadActivationToken(['user' => $user]);
         }
+
+        $output->writeln([
+            '============',
+            'Finished generating fixtures',
+            '============',
+
+        ]);
     }
 }

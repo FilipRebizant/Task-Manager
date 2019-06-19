@@ -46,40 +46,44 @@ class CreateExampleAccountCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $helper = $this->getHelper('question');
+        if (getenv('APP_ENV') === 'dev') {
+            $helper = $this->getHelper('question');
 
-        $usernameQuestion = new Question('Please provide username: ');
-        $passwordQuestion = new Question('Password: ');
-        $passwordConfirmQuestion = new Question('Confirm Password: ');
-        $roleQuestion = new Question('Please provide role: ');
+            $usernameQuestion = new Question('Please provide username: ');
+            $passwordQuestion = new Question('Password: ');
+            $passwordConfirmQuestion = new Question('Confirm Password: ');
+            $roleQuestion = new Question('Please provide role: ');
 
-        $username = $helper->ask($input, $output, $usernameQuestion);
-        $password1 = $helper->ask($input, $output, $passwordQuestion);
-        $password2 = $helper->ask($input, $output, $passwordConfirmQuestion);
-        $role = $helper->ask($input, $output, $roleQuestion);
+            $username = $helper->ask($input, $output, $usernameQuestion);
+            $password1 = $helper->ask($input, $output, $passwordQuestion);
+            $password2 = $helper->ask($input, $output, $passwordConfirmQuestion);
+            $role = $helper->ask($input, $output, $roleQuestion);
 
-        $output->writeln([
-            'Valid roles:',
-            'ADMIN',
-            'USER',
-        ]);
+            $output->writeln([
+                'Valid roles:',
+                'ADMIN',
+                'USER',
+            ]);
 
-        // Create Account
-        $user = $this->userFixture->loadExampleUser((string)$username, (string)$role);
-        $activationToken = $this->activationTokenFixture->loadActivationToken(['user' => $user]);
+            // Create Account
+            $user = $this->userFixture->loadExampleUser((string)$username, (string)$role);
+            $activationToken = $this->activationTokenFixture->loadActivationToken(['user' => $user]);
 
-        // Activate Account
-        try {
-            $activateAccountCommand = new ActivateAccountCommand(
-                $activationToken->getToken(),
-                $password1,
-                $password2
-            );
+            // Activate Account
+            try {
+                $activateAccountCommand = new ActivateAccountCommand(
+                    $activationToken->getToken(),
+                    $password1,
+                    $password2
+                );
 
-            $this->commandBus->handle($activateAccountCommand);
-        } catch (InvalidArgumentException $exception) {
-            $output->writeln($exception->getMessage());
+                $this->commandBus->handle($activateAccountCommand);
+            } catch (InvalidArgumentException $exception) {
+                $output->writeln($exception->getMessage());
+            }
+            return $output->writeln('User Created');
         }
-        $output->writeln('User Created');
+
+        return $output->writeln('Command only avaliable in dev mode');
     }
 }
