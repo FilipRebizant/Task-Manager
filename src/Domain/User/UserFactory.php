@@ -22,7 +22,6 @@ class UserFactory
             new Email($data['email']),
             new Role($data['role']),
             array_key_exists('tasks', $data) ? $data['tasks']: []
-
         );
     }
 }

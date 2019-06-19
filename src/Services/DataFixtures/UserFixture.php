@@ -22,7 +22,10 @@ class UserFixture extends BaseFixture
         $this->userFactory = new UserFactory();
     }
 
-    public function loadUsers()
+    /**
+     * @throws \App\Domain\Exception\InvalidArgumentException
+     */
+    public function loadUsers(): void
     {
         for ($i = 0; $i <= self::NUMBER_OF_OBJECTS; $i++) {
             $data = [
