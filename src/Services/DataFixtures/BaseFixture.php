@@ -2,22 +2,17 @@
 
 namespace App\Services\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-abstract class BaseFixture extends Fixture
+abstract class BaseFixture
 {
-    /** @var Generator */
-    protected $faker;
-
-    /** @var ObjectManager */
-    protected $manager;
-
-    public function load(ObjectManager $manager)
-    {
-        $this->manager = $manager;
-        $this->faker = Factory::create();
-    }
+//    /** @var Generator */
+//    protected $faker;
+//
+//    public function __construct()
+//    {
+//        var_dump('construct');
+//        $this->faker = Factory::create();
+//    }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Services\Symfony\Command;
 
-use App\Domain\User\UserRepositoryInterface;
+use App\Services\DataFixtures\UserFixture;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadFixturesCommand extends Command
 {
-    private $userRepository;
+    private $userFixture;
 
     protected static $defaultName = 'app:load-fixtures';
 
@@ -26,7 +26,7 @@ class LoadFixturesCommand extends Command
             '',
         ]);
 
-        var_dump($this->userRepository);
+        $this->userFixture->loadUsers();
 
         $output->writeln([
             'Users had been generated',
@@ -35,10 +35,10 @@ class LoadFixturesCommand extends Command
         ]);
     }
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserFixture $baseFixture)
     {
         parent::__construct();
 
-        $this->userRepository = $userRepository;
+        $this->userFixture = $baseFixture;
     }
 }
