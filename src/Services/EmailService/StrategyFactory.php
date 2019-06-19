@@ -24,7 +24,7 @@ class StrategyFactory
      */
     public function getStrategy(string $name = self::DEFAULT_STRATEGY): ProviderInterface
     {
-        switch (strtolower($name)){
+        switch (strtolower($name)) {
             case SendGrid::NAME:
                 return $this->sendGrid;
             default:
