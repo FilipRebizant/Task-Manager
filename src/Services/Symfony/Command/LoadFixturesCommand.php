@@ -9,8 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadFixturesCommand extends Command
 {
+    /** @var UserFixture  */
     private $userFixture;
 
+    /** @var string  */
     protected static $defaultName = 'app:load-fixtures';
 
     protected function configure()
@@ -21,6 +23,7 @@ class LoadFixturesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln([
+            '============',
             'Generating users...',
             '============',
             '',
@@ -29,6 +32,7 @@ class LoadFixturesCommand extends Command
         $this->userFixture->loadUsers();
 
         $output->writeln([
+            '============',
             'Users had been generated',
             '============',
             '',
