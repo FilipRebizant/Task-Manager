@@ -2,8 +2,8 @@
 
 namespace App\Application\Query\User;
 
-use App\Symfony\Security\SessionAuth\SessionAuthUser;
 use App\Infrastructure\Exception\NotFoundException;
+use App\Services\Symfony\Security\SessionAuth\SessionAuthUser;
 
 interface UserQueryInterface
 {

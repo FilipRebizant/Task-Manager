@@ -80,7 +80,9 @@ class UsersSchemaTest extends WebTestCase implements ServiceContainerTestCase
     public function testIsGetUsersSchemaValid()
     {
         $path = dirname(__DIR__);
-        $schema = Schema::fromJsonString(file_get_contents($path . '/../../src/JsonSchema/get_user_schema.json'));
+        $schema = Schema::fromJsonString(
+            file_get_contents($path . '/../../src/Services/JsonSchema/get_user_schema.json')
+        );
         $validator = new Validator();
 
         $response = $this->client->get('nginx/api/users', [
