@@ -16,7 +16,7 @@ class UserFactory
      */
     public function create(array $data): User
     {
-        return new User (
+        return new User(
             Uuid::fromString($data['id']),
             new Username($data['username']),
             new Email($data['email']),

@@ -58,7 +58,6 @@ class LoadFixturesCommand extends Command
         ]);
 
         for ($i = 0; $i <= self::NUMBER_OF_OBJECTS; $i++) {
-
             $user = $this->userFixture->loadUser();
 
             $task = $this->taskFixture->loadTask(['user' => $user]);

@@ -28,11 +28,11 @@ class UserFixture extends BaseFixture
      */
     public function loadUser(): User
     {
-         $data = [
-            'id' => Uuid::uuid4()->toString(),
-            'username' => $this->faker->userName,
-            'email' => $this->faker->email,
-            'role' => 'USER',
+        $data = [
+           'id' => Uuid::uuid4()->toString(),
+           'username' => $this->faker->userName,
+           'email' => $this->faker->email,
+           'role' => 'USER',
         ];
         $user = $this->userFactory->create($data);
         $this->userRepository->create($user);

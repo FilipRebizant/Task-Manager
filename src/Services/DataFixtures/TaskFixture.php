@@ -42,7 +42,7 @@ class TaskFixture extends BaseFixture
         $data = [
             'id' => Uuid::uuid4()->toString(),
             'title' => $this->faker->words(3, true),
-            'status' => $this->statuses[$this->faker->numberBetween(0,2)],
+            'status' => $this->statuses[$this->faker->numberBetween(0, 2)],
             'user' => $objects['user'],
             'priority' => $this->faker->numberBetween(1, 10),
             'description' => $this->faker->words(10, true),
