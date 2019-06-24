@@ -69,7 +69,6 @@ class LoadFixturesCommand extends Command
             '============',
             'Finished generating fixtures',
             '============',
-
         ]);
     }
 }
