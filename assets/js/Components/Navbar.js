@@ -7,6 +7,8 @@ import {
     NavItem,
     NavLink
 } from 'mdbreact';
+import AuthButton from './Auth/AuthButton';
+
 
 class NavBar extends Component {
     constructor(props) {
@@ -54,7 +56,7 @@ class NavBar extends Component {
                             <NavLink to="/tasks" token={this.state.token}>Tasks</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink to="/login">Login</NavLink>
+                            <AuthButton/>
                         </NavItem>
                     </NavbarNav>
                 </Collapse>

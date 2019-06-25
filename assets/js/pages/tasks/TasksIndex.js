@@ -13,10 +13,11 @@ export default class TasksIndex extends Component {
 
     loadTasks(status) {
         let loaders = document.querySelectorAll('.loader');
+        let token = localStorage.getItem('token');
 
         fetch(`/api/tasks?status=${status}`, {
             headers: {
-                'Authorization': `Bearer ${this.props.token}`
+                'Authorization': `Bearer ${token}`
             }
         }).then(function (response) {
             return response.json();

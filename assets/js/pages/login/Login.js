@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
-import {MDBContainer, MDBRow, MDBCol, MDBBtn, MDBAlert} from 'mdbreact';
+import {MDBContainer, MDBRow, MDBCol} from 'mdbreact';
+import Auth from '../../Components/Auth/Auth';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            errors: {},
+            isShowingError: false,
             username: '',
-            password: ''
+            password: '',
+            redirectToReferer: false
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,15 +40,27 @@ class Login extends Component {
                 // If there is an authorisation error
                 if (response.code === 401) {
                     // Show error
+                    this.setState({isShowingError: true});
                     const loginErrorContainer = document.getElementById('loginErrorContainer');
                     loginErrorContainer.innerText = response.message;
-                    loginErrorContainer.classList.remove('d-none');
+
+                    return;
                 }
 
                 // Save token to localStorage
                 if (typeof (Storage) !== "undefined") {
                     localStorage.setItem("token", response.token);
                 }
+
+                // Authorise
+                Auth.authenticate(() => {
+                   this.setState(() => ({
+                       redirectToReferer: true
+                   }));
+                });
+
+                // Redirect to homepage
+                this.props.history.push("/");
             });
     }
 
@@ -61,12 +75,17 @@ class Login extends Component {
     }
 
     render() {
+        let errorContainer;
+        if (this.state.isShowingError) {
+            errorContainer = <div className="alert alert-danger" id="loginErrorContainer"></div>;
+        }
+
         return (
             <MDBContainer>
-                <MDBRow>
+                <MDBRow center>
                     <MDBCol md="6">
                         <form method="post" action="/login_check" className="login__form" onSubmit={this.handleFormSubmit}>
-                            <div className="alert alert-danger d-none" id="loginErrorContainer"></div>
+                            {errorContainer}
                             <h1 className="h3 my-3 font-weight-normal">Please sign in</h1>
 
                             <div className="form-group">
@@ -77,8 +96,9 @@ class Login extends Component {
                                        onChange={this.handleInputChange}
                                        onKeyDown={this.handleKeyPress}
                                        required
-                                    />
+                                />
                             </div>
+
                             <div className="form-group">
                                 <label htmlFor="inputPassword" className="sr-only">Password</label>
                                 <input type="password" name="password" id="inputPassword" className="form-control"
@@ -87,21 +107,17 @@ class Login extends Component {
                                        onKeyDown={this.handleKeyPress}
                                        required/>
                             </div>
-                            <input type="hidden" name="_csrf_token"
-                                   value="{{ csrf_token('authenticate') }}"
-                            />
+
                             <div className="form-group">
-                                <MDBBtn className="btn btn-lg btn-primary" type="submit">
+                                <button className="btn btn-lg btn-primary" type="submit">
                                     Sign in
-                                </MDBBtn>
+                                </button>
                             </div>
                         </form>
                     </MDBCol>
                 </MDBRow>
-
             </MDBContainer>
         );
-
     }
 }
 

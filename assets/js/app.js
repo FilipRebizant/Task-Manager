@@ -13,38 +13,33 @@ import {
 } from "react-router-dom";
 
 import Navbar from './Components/Navbar';
+import PrivateRoute from './Components/Auth/PrivateRoute';
 
 import Home from './pages/Home';
 import TasksIndex from './pages/tasks/TasksIndex';
 import UsersIndex from './pages/users/UsersIndex';
 import Login from './pages/login/Login';
+import RestrictedPage from  './pages/restricted/RestrictedPage';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-             token: ''
+             token: '',
+            isAuthenticated: false,
         }
-   };
-
-    componentWillMount() {
-        const tokenContainer = document.getElementById('token');
-        let token = tokenContainer.innerText;
-        this.setState({
-                          token: token
-                      });
-        console.log(this.state.token);
-    }
+    };
 
     render() {
         return (
             <Router>
-                <Navbar token={this.state.token}/>
+                <Navbar/>
                 <Switch>
-                    <Route path="/" component={Home} exact/>
-                    <Route path="/users" render={(props) => <UsersIndex token={this.state.token}/>}/>
-                    <Route path="/tasks" render={(props) => <TasksIndex token={this.state.token}/>}/>
-                    <Route path="/login" component={Login}/>
+                    <PrivateRoute path="/" component={Home} exact/>
+                    <PrivateRoute path="/users" component={UsersIndex} />
+                    <PrivateRoute path="/tasks" component={TasksIndex} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/restricted" component={RestrictedPage} />
                 </Switch>
             </Router>
         );
