@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "mdbreact": "^4.17.0",
+        "react-router-dom": "^5.0.1",
         "regenerator-runtime": "^0.13.2"
     }
 }

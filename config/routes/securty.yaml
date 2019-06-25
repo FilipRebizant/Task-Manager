@@ -1,14 +1,15 @@
 login:
   path:       /login
-  controller: App\Interfaces\Web\Controller\SecurityController::login
-  methods:    GET|POST
+#  controller: App\Interfaces\Web\Controller\SecurityController::login
+#  methods:    GET|POST
 
-logout:
-  path:       /logout
-  methods:    GET
+#logout:
+#  path:       /logout
+#  methods:    GET
 
-api_login_check:
-  path: /api/login_check
+login_check:
+  path: /login_check
+  methods: [POST]
 
 refresh_token:
   path: /api/token/refresh

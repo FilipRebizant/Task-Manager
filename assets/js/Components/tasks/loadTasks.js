@@ -1,4 +1,4 @@
-import { dateToString } from '../utils';
+import { dateToString } from '../../utils';
 
 export function loadTasks(taskStatus) {
     const tokenContainer = document.getElementById('token');
