@@ -1,0 +1,1 @@
+docker inspect <cntainer id> | grep IPAddress
