@@ -24,10 +24,6 @@ import RestrictedPage from  './pages/restricted/RestrictedPage';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-             token: '',
-            isAuthenticated: false,
-        }
     };
 
     render() {

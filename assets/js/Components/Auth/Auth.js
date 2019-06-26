@@ -1,5 +1,6 @@
 const Auth = {
-    isAuthenticated: false,
+    isAuthenticated: localStorage.getItem('token') ? true : false,
+
     // TODO: Check for token every minute
     authenticate(callback) {
         //Ajax
@@ -8,6 +9,7 @@ const Auth = {
 
     signOut(callback) {
         this.isAuthenticated = false;
+        localStorage.removeItem('token');
     }
 };
 

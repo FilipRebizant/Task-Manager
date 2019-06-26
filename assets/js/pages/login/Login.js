@@ -17,10 +17,6 @@ class Login extends Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    componentDidMount() {
-
-    }
-
     handleFormSubmit(e) {
         e.preventDefault();
         const loginForm = e.target;

@@ -6,7 +6,7 @@ function PrivateRoute({ component: Component, ...rest }) {
         return <Route
             {...rest}
             render = { (props) => (
-            Auth.isAuthenticated === true
+            Auth.isAuthenticated === true || localStorage.getItem('token')
                 ? <Component {...props} />
                 : <Redirect to={{
                         pathname: "/restricted",
