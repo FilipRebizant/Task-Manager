@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { dateToString } from "../../utils";
+import { dateToString } from "../../_helpers/utils";
 
 export default class TasksIndex extends Component {
     constructor(props) {
