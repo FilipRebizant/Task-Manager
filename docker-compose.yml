@@ -30,12 +30,12 @@ services:
     build:
       context: ./docker/node
     volumes:
-      - './FrontEnd:/var/www'
+      - ./FrontEnd:/var/www:cached
     environment:
       - NODE_ENV=development
     stop_signal: SIGINT
-#    command: tail -F anything
-    command: gatsby develop -H 0.0.0.0
+    command: tail -F anything
+#    command: gatsby develop -H 0.0.0.0
     ports:
       - "8000:8000"
     expose:
