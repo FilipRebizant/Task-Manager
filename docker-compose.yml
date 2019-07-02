@@ -28,14 +28,18 @@ services:
   react:
     container_name: react
     build:
-      context: ./docker/react
+      context: ./docker/node
     volumes:
       - './FrontEnd:/var/www'
     environment:
       - NODE_ENV=development
+    stop_signal: SIGINT
+#    command: tail -F anything
+    command: gatsby develop -H 0.0.0.0
+    ports:
+      - "8000:8000"
     expose:
-      - '8080'
-    command: npm start
+      - "8000"
 
   composer:
     image: composer:latest

@@ -1,1 +1,6 @@
 docker inspect <cntainer id> | grep IPAddress
+
+
+command: tail -F anything - utrzymuje wlaczony kontener
+
+docker-compose kill -s SIGINT
