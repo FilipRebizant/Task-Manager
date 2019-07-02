@@ -224,7 +224,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,0,"<a href=\"InvalidArgumentException.php.html#5\">TaskManager\\Domain\\Exception\\InvalidArgumentException<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,0,"<a href=\"InvalidArgumentException.php.html#5\">App\\Domain\\Exception\\InvalidArgumentException<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);

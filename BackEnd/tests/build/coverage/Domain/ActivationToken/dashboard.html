@@ -224,7 +224,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,10,"<a href=\"ActivationToken.php.html#8\">TaskManager\\Domain\\ActivationToken\\ActivationToken<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,10,"<a href=\"ActivationToken.php.html#8\">App\\Domain\\ActivationToken\\ActivationToken<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -248,7 +248,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,3,"<a href=\"ActivationToken.php.html#28\">TaskManager\\Domain\\ActivationToken\\ActivationToken::__construct<\/a>"],[100,1,"<a href=\"ActivationToken.php.html#39\">TaskManager\\Domain\\ActivationToken\\ActivationToken::getId<\/a>"],[100,2,"<a href=\"ActivationToken.php.html#47\">TaskManager\\Domain\\ActivationToken\\ActivationToken::getActivatedAt<\/a>"],[100,2,"<a href=\"ActivationToken.php.html#56\">TaskManager\\Domain\\ActivationToken\\ActivationToken::setActivatedAt<\/a>"],[100,1,"<a href=\"ActivationToken.php.html#66\">TaskManager\\Domain\\ActivationToken\\ActivationToken::getToken<\/a>"],[100,1,"<a href=\"ActivationToken.php.html#74\">TaskManager\\Domain\\ActivationToken\\ActivationToken::getUser<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,3,"<a href=\"ActivationToken.php.html#28\">App\\Domain\\ActivationToken\\ActivationToken::__construct<\/a>"],[100,1,"<a href=\"ActivationToken.php.html#39\">App\\Domain\\ActivationToken\\ActivationToken::getId<\/a>"],[100,2,"<a href=\"ActivationToken.php.html#47\">App\\Domain\\ActivationToken\\ActivationToken::getActivatedAt<\/a>"],[100,2,"<a href=\"ActivationToken.php.html#56\">App\\Domain\\ActivationToken\\ActivationToken::setActivatedAt<\/a>"],[100,1,"<a href=\"ActivationToken.php.html#66\">App\\Domain\\ActivationToken\\ActivationToken::getToken<\/a>"],[100,1,"<a href=\"ActivationToken.php.html#74\">App\\Domain\\ActivationToken\\ActivationToken::getUser<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
