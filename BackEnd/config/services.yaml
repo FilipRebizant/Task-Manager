@@ -11,6 +11,11 @@ services:
         resource: '../src/Interfaces/Web/Controller'
         tags: ['controller.service_arguments']
 
+    acme_api.event.authentication_success_listener:
+        class: App\Infrastructure\Listeners\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
     command_handlers:
         public: true
         namespace: App\Application\Handler\

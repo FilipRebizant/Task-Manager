@@ -57,7 +57,7 @@ class Login extends Component {
                 // });
 
                 // Redirect to homepage
-                navigate('/');
+                // navigate('/');
             }).catch(error => console.error('Error', error));
     }
 
