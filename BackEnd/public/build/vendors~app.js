@@ -19663,7 +19663,7 @@ function isControlled(props) {
  * Implements an <input> host component that allows setting these optional
  * props: `checked`, `value`, `defaultChecked`, and `defaultValue`.
  *
- * If `checked` or `value` are not supplied (or null/undefined), user actions
+ * If `checked` or `value` are not supplied (or null/undefined), user _actions
  * that affect the checked state or value will trigger updates to the element.
  *
  * If they are supplied (and not null/undefined), the rendered element will not
@@ -22294,11 +22294,11 @@ function updateOptions(node, multiple, propValue, setDefaultSelected) {
  * props `value` and `defaultValue`. If `multiple` is false, the prop must be a
  * stringable. If `multiple` is true, the prop must be an array of stringables.
  *
- * If `value` is not supplied (or null/undefined), user actions that change the
+ * If `value` is not supplied (or null/undefined), user _actions that change the
  * selected option will trigger updates to the rendered options.
  *
  * If it is supplied (and not null/undefined), the rendered options will not
- * update in response to user actions. Instead, the `value` prop must change in
+ * update in response to user _actions. Instead, the `value` prop must change in
  * order for the rendered options to update.
  *
  * If `defaultValue` is provided, any options with the supplied values will be
@@ -22375,7 +22375,7 @@ var didWarnValDefaultVal = false;
  * `defaultValue`. This differs from the traditional DOM API because value is
  * usually set as PCDATA children.
  *
- * If `value` is not supplied (or null/undefined), user actions that affect the
+ * If `value` is not supplied (or null/undefined), user _actions that affect the
  * value will trigger updates to the element.
  *
  * If `value` is supplied (and not null/undefined), the rendered element will
