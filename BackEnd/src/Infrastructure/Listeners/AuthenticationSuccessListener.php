@@ -15,7 +15,7 @@ class AuthenticationSuccessListener
         $data = $event->getData();
 
         $data['data'] = array(
-            'user' => $user->getUsername(),
+            'username' => $user->getUsername(),
             'roles' => $user->getRoles(),
         );
 

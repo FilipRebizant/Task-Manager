@@ -3,6 +3,10 @@ module.exports = {
     title: `Task-Manager`,
     description: `Task-Manager`,
   },
+  proxy: {
+    prefix: "/api",
+    url: "http://localhost:8080",
+  },
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
@@ -26,7 +30,11 @@ module.exports = {
         icon: `src/assets/images/gatsby-icon.png`,
       },
     },
-
-    `gatsby-plugin-offline`
+    `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/app`] },
+    },
+    `@wardpeet/gatsby-plugin-static-site`
   ],
 };

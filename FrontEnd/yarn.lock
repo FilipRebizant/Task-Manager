@@ -1212,7 +1212,7 @@
     hey-listen "^1.0.8"
     style-value-types "^3.1.4"
 
-"@reach/router@^1.1.1":
+"@reach/router@^1.1.1", "@reach/router@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.2.1.tgz#34ae3541a5ac44fa7796e5506a5d7274a162be4e"
   integrity sha512-kTaX08X4g27tzIFQGRukaHmNbtMYDS3LEWIS8+l6OayGIw6Oyo1HIF/JzeuR2FoF9z6oV+x/wJSVSq4v8tcUGQ==
@@ -1358,6 +1358,11 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-google-analytics/-/plugin-google-analytics-1.0.2.tgz#c5754d55d01bf7e1a9a5b1ff5fde07a08e4a797d"
   integrity sha512-NdU18hTBW4TkNK80dgpPu4yq/smNkIUZi9gL5hCiuW43BnXFA7WFfhGcvZJ61+keNDr6gw9UIv4HQuFFPoRXQA==
+
+"@wardpeet/gatsby-plugin-static-site@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@wardpeet/gatsby-plugin-static-site/-/gatsby-plugin-static-site-0.1.0.tgz#f87b7abe1f04fc8ec03e91611897f400e0e15b0e"
+  integrity sha512-QRw2XrLLQK2or24g3dt4mc/2dwbXD/eLRVW9UIBhPFKKZ5kQiPpu49JXucI20W3QzEXzcMkeelX00/ObLQJqPw==
 
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
@@ -5282,6 +5287,13 @@ gatsby-page-utils@^0.0.2:
     lodash "^4.17.10"
     micromatch "^3.1.10"
     slash "^1.0.0"
+
+gatsby-plugin-create-client-paths@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-create-client-paths/-/gatsby-plugin-create-client-paths-2.1.1.tgz#d20b68c73268d191d3bcabc3f45bc526e51cd025"
+  integrity sha512-6srKmNrBucWFCC83MU5kCyhPAtuWUINaM5cMk9byERGFqFT02ppNdVqKE2PrridjIdSN6bVe/U+6Pgu95t1exA==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
 
 gatsby-plugin-exclude@^1.0.0:
   version "1.0.0"

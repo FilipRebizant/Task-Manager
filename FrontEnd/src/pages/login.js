@@ -1,64 +1,68 @@
 import React, {Component} from "react"
 import {navigate} from "gatsby"
 import {MDBContainer, MDBRow, MDBCol} from 'mdbreact';
+import { handleLogin, isLoggedIn } from "../services/auth";
 
-import Layout from "../components/layout"
+import Layout from "../templates/Layout/Layout"
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShowingError: false,
+            // isShowingError: false,
             username: '',
             password: '',
-            redirectToReferer: false
+            // redirectToReferer: false
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        // this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    handleFormSubmit(e) {
+    handleFormSubmit = e => {
         e.preventDefault();
-
-        fetch('http://localhost:8080/api/login_check', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
-        }).then((response) => response.json())
-            .then((response) => {
-
-                // If there is an authorisation error
-                if (response.code === 401) {
-                    // Show error
-                    this.setState({isShowingError: true});
-                    const loginErrorContainer = document.getElementById('loginErrorContainer');
-                    loginErrorContainer.innerText = response.message;
-
-                    return;
-                }
-
-                // Save token to localStorage
-                if (typeof (Storage) !== "undefined") {
-                    localStorage.setItem("token", response.token);
-                }
-
-                // // Authorise
-                // Auth.authenticate(() => {
-                //     this.setState(() => ({
-                //         redirectToReferer: true
-                //     }));
-                // });
-
-                // Redirect to homepage
-                // navigate('/');
-            }).catch(error => console.error('Error', error));
+        console.log(this.state);
+        handleLogin(this.state);
+    //     fetch('http://localhost:8080/api/login_check', {
+    //         method: 'POST',
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             username: this.state.username,
+    //             password: this.state.password
+    //         })
+    //     }).then((response) => response.json())
+    //         .then((response) => {
+    //
+    //             // If there is an authorisation error
+    //             if (response.code === 401) {
+    //                 // Show error
+    //                 this.setState({isShowingError: true});
+    //                 const loginErrorContainer = document.getElementById('loginErrorContainer');
+    //                 loginErrorContainer.innerText = response.message;
+    //
+    //                 return;
+    //             }
+    //
+    //             // Save token to localStorage
+    //             if (typeof (Storage) !== "undefined") {
+    //                 localStorage.setItem("token", response.token);
+    //                 localStorage.setItem("username", response.data['username'])
+    //             }
+    //
+    //             // // Authorise
+    //             // Auth.authenticate(() => {
+    //             //     this.setState(() => ({
+    //             //         redirectToReferer: true
+    //             //     }));
+    //             // });
+    //
+    //             // Redirect to homepage
+    //             // navigate('/');
+    //
+    //         }).catch(error => console.error('Error', error));
     }
 
     handleInputChange(e) {

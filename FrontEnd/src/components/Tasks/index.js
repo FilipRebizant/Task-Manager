@@ -1,7 +1,5 @@
-import React, {Component} from "react"
-import Layout from "../templates/Layout/Layout"
-
-import { dateToString } from "../helpers/date-to-string";
+import React, { Component } from 'react';
+import { dateToString } from "../../helpers/date-to-string";
 
 export default class TasksIndex extends Component {
     constructor(props) {
@@ -17,7 +15,7 @@ export default class TasksIndex extends Component {
         let loaders = document.querySelectorAll('.loader');
         let token = localStorage.getItem('token');
 
-        fetch(`http://localhost:8080/api/tasks?status=${status}`, {
+        fetch(`/api/tasks?status=${status}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -54,10 +52,9 @@ export default class TasksIndex extends Component {
                     </div>
                 )
             });
-
             this.setState({[status]: tasks});
 
-        }).catch(error => console.error('Error', error));
+        });
     }
 
     componentDidMount() {
@@ -68,39 +65,37 @@ export default class TasksIndex extends Component {
 
     render() {
         return (
-            <Layout>
-                <div className="container">
-                    <h2 className="text-center my-3">Tasks</h2>
-                    <div id="tasksContainer">
-                        <div className="row">
-                            <div id="todo" className="col-sm-4">
-                                {this.state.todo}
-                                <div className="loader">
-                                    <div className="spinner-border" role="status">
-                                        <span className="sr-only">Loading...</span>
-                                    </div>
+            <div className="container">
+                <h2 className="text-center my-3">Tasks</h2>
+                <div id="tasksContainer">
+                    <div className="row">
+                        <div id="todo" className="col-sm-4">
+                            {this.state.todo}
+                            <div className="loader">
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
-                            <div id="pending" className="col-sm-4">
-                                {this.state.pending}
-                                <div className="loader">
-                                    <div className="spinner-border" role="status">
-                                        <span className="sr-only">Loading...</span>
-                                    </div>
+                        </div>
+                        <div id="pending" className="col-sm-4">
+                            {this.state.pending}
+                            <div className="loader">
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
-                            <div id="done" className="col-sm-4">
-                                {this.state.done}
-                                <div className="loader">
-                                    <div className="spinner-border" role="status">
-                                        <span className="sr-only">Loading...</span>
-                                    </div>
+                        </div>
+                        <div id="done" className="col-sm-4">
+                            {this.state.done}
+                            <div className="loader">
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </Layout>
+            </div>
         );
     };
 }
