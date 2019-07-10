@@ -33,12 +33,14 @@ services:
     environment:
       - NODE_ENV=development
     stop_signal: SIGINT
-    command: tail -F anything
-#    command: npm run start
+#    command: tail -F anything
+    command: npm run start
     ports:
       - "8000:8000"
+      - "35729:35729"
     expose:
       - "8000"
+      - "35729"
 
   composer:
     image: composer:latest

@@ -3,7 +3,7 @@
   "private": true,
   "description": "Task-Manager",
   "scripts": {
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server",
     "dev": "webpack --open"
   },
   "dependencies": {

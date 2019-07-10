@@ -9,9 +9,12 @@ import {App} from './App';
 console.log('app');
 
 if (module.hot) {
+    console.log('hot reload');
     module.hot.accept('./index.js', function() {
-        console.log('Accepting the updated printMe module!');
-
+        render(
+            <App/>,
+            document.getElementById('app')
+        );
     })
 }
 

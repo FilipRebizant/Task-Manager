@@ -22,13 +22,20 @@ module.exports = {
     },
 
     devServer: {
+        port: 8000,
+        host: '0.0.0.0',
+        watchOptions: {
+            aggregateTimeout: 500,
+            poll: true
+        },
         historyApiFallback: true,
-        contentBase: './dist',
-
-        hot: true
+        contentBase: ['./dist'],
+        inline: true,
+        hot: true,
+        writeToDisk: true
     },
     plugins: [
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Task-Manager',
             template: './src/index.html'
@@ -43,7 +50,7 @@ module.exports = {
     },
 
     output: {
-        filename: 'public/index.js',
+        filename: 'public/bundle.js',
         path: path.resolve(__dirname, 'dist')
     }
 }

@@ -7,7 +7,7 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 
 // import { AdminPage } from '@/AdminPage';
-// import { LoginPage } from '@/LoginPage';
+import { LoginPage } from '../LoginPage/LoginPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -34,7 +34,6 @@ class App extends React.Component {
     copymethod() {
         /**
         <PrivateRoute path="/admin" roles={[Role.Admin]} component={AdminPage} />
-        <Route path="/login" component={LoginPage} />
          **/
     }
 
@@ -57,6 +56,7 @@ class App extends React.Component {
                             <div className="row">
                                 <div className="col-md-6 offset-md-3">
                                     <PrivateRoute exact path="/" component={HomePage} />
+                                    <Route path="/login" component={LoginPage} />
 
                                 </div>
                             </div>

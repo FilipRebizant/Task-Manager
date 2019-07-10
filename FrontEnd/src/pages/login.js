@@ -1,7 +1,6 @@
 import React, {Component} from "react"
-import {navigate} from "gatsby"
 import {MDBContainer, MDBRow, MDBCol} from 'mdbreact';
-import { handleLogin, isLoggedIn } from "../services/auth";
+import { handleLogin, isLoggedIn } from "../_services/auth";
 
 import Layout from "../templates/Layout/Layout"
 
