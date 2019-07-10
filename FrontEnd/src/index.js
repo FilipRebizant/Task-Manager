@@ -16,6 +16,11 @@ render(
 
 
 if (module.hot) {
-    console.log('hot reload');
-    module.hot.accept();
+    module.hot.dispose(function() {
+        // module is about to be replaced
+    })
+
+    module.hot.accept(function() {
+        // module or one of its dependencies was just updated
+    })
 }
