@@ -3,9 +3,9 @@ import { Router } from "@reach/router"
 import Layout from "../templates/Layout/Layout"
 // import Profile from "../components/profile"
 // import Login from "../components/login"
-import PrivateRoute from "../components/Auth/PrivateRoute";
-import Tasks from "../components/Tasks";
-import Profile from "../components/Profile/Profile";
+// import PrivateRoute from "../components/Auth/PrivateRoute";
+// import Tasks from "../components/Tasks";
+// import Profile from "../components/Profile/Profile";
 
 const App = () => (
     <Layout>

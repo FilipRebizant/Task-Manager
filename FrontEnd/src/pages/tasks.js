@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import Layout from "../templates/Layout/Layout"
 
-import { dateToString } from "../helpers/date-to-string";
+// import { dateToString } from "../helpers/date-to-string";
 
 export default class TasksIndex extends Component {
     constructor(props) {

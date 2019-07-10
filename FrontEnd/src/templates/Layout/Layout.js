@@ -1,27 +1,16 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 
-
-import Header from "../../components/Header/header"
-import Navigation from "../../components/Navigation/Navigation";
+import Header from "../../_components/Header/header"
+import Navigation from "../../_components/Navigation/Navigation";
 import "./index.css"
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
 
   return (
-    <>
+    <div>
       <Header siteTitle={data.site.siteMetadata.title} />
-      <Navigation />
+
       <div
         style={{
           margin: `0 auto`,
@@ -32,7 +21,7 @@ const Layout = ({ children }) => {
       >
         <main>{children}</main>
       </div>
-    </>
+    </div>
   )
 }
 
