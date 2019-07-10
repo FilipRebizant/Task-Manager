@@ -8,17 +8,14 @@ import {App} from './App';
 // configureFakeBackend();
 console.log('app');
 
-if (module.hot) {
-    console.log('hot reload');
-    module.hot.accept('./index.js', function() {
-        render(
-            <App/>,
-            document.getElementById('app')
-        );
-    })
-}
 
 render(
     <App/>,
     document.getElementById('app')
 );
+
+
+if (module.hot) {
+    console.log('hot reload');
+    module.hot.accept();
+}

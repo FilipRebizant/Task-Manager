@@ -7,7 +7,7 @@ class LoginPage extends React.Component {
     render() {
         return (
             <div>
-                <h1>Login2</h1>
+                <h1>Login</h1>
                 <p>test</p>
             </div>
         );

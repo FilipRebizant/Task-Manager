@@ -3,9 +3,21 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
+const jsEntryPath = path.resolve(__dirname, 'src', 'index.js');
+const htmlEntryPath = path.resolve(__dirname, 'src', 'index.html');
+const buildPath = path.resolve(__dirname, 'dist', 'index.js');
+
 module.exports = {
     mode: 'development',
-    entry: { app: './src/index.js'},
+    entry: {
+        app: './src/index.js'
+        // jsEntryPath,
+        // htmlEntryPath
+    },
+    output: {
+        filename: 'js/app.js',
+        path: path.resolve(__dirname, 'dist')
+    },
 
     devtool: 'inline-source-map',
 
@@ -13,11 +25,16 @@ module.exports = {
         extensions: ['.js', '.jsx']
     },
     module: {
+
         rules: [
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader'
-            }
+            },
+            // {
+            //     test: /\.html$/,
+            //     loader: 'file?name=[name].[ext]'
+            // }
         ]
     },
 
@@ -29,10 +46,12 @@ module.exports = {
             poll: true
         },
         historyApiFallback: true,
-        contentBase: ['./dist'],
+        contentBase: path.join(__dirname, 'dist'),
         inline: true,
         hot: true,
-        writeToDisk: true
+        noInfo: false,
+        public: ''
+        // writeToDisk: true
     },
     plugins: [
         // new CleanWebpackPlugin(),
@@ -42,15 +61,12 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin()
     ],
+
+    // Global variables
     externals: {
     //     // global app config object
         config: JSON.stringify({
             apiUrl: 'http://localhost'
         })
-    },
-
-    output: {
-        filename: 'public/bundle.js',
-        path: path.resolve(__dirname, 'dist')
     }
-}
+};
