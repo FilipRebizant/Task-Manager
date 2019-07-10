@@ -6,7 +6,6 @@ import {
     NavbarNav,
     NavbarToggler,
     NavItem,
-    MDBNavLink
 } from 'mdbreact';
 
 import {authenticationService} from "../../_services";
@@ -57,55 +56,6 @@ class Navigation extends Component {
         history.push('/login');
     }
 
-    copy() {
-/**
- *                    <NavbarNav left>
- <NavItem>
- <Link to="/">Task-Manager</Link>
- </NavItem>
- <NavItem>
- <Link to="/app/users">Users</Link>
- </NavItem>
- <NavItem>
- <Link to="/app/tasks">Tasks</Link>
- </NavItem>
- <NavItem>
- <Link to="/app/profile">profile</Link>
- </NavItem>
- <NavItem>
- <Link to="/login">Login</Link>
- </NavItem>
- </NavbarNav>
- *
- * **/
-
-
-
-        /**{currentUser &&
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <div className="navbar-nav">
-                <Link to="/" className="nav-item nav-link">Home</Link>
-                {isAdmin && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
-                <a onClick={this.logout} className="nav-item nav-link">Logout</a>
-            </div>
-        </nav>
-        } **/
-      /**  <h1>Hello {isLoggedIn() ? getUser().name : "world"}!</h1>
-        <p>
-        {isLoggedIn() ? (
-            <div>
-                You are logged in, so check your{" "}
-                <Link to="/app/profile">profile</Link>
-            </div>
-        ) : (
-            <div>
-                You should <Link to="/app/login">log in</Link> to see restricted
-                content
-            </div>
-        )}
-    </p>**/
-    }
-
     render() {
         const { currentUser, isAdmin } = this.state;
 
@@ -127,15 +77,17 @@ class Navigation extends Component {
                             <NavItem>
                                 <Link to="/profile" className="nav-item nav-link">Profile</Link>
                             </NavItem>
-                            <NavItem>
+                            {!currentUser && <NavItem>
                                 <Link to="/login" className="nav-item nav-link">Login</Link>
                             </NavItem>
+                            }
                             <NavItem>
                                 {isAdmin && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
                             </NavItem>
-                            <NavItem>
+                            {currentUser && <NavItem>
                                 <a onClick={this.logout} className="nav-item nav-link">Logout</a>
                             </NavItem>
+                            }
                         </div>
                     </nav>
                 </Collapse>
