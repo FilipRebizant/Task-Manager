@@ -20,10 +20,10 @@ class LoginPage extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
+        // console.log(this.state);
         authenticationService.login(this.state.username, this.state.password);
 
-        return false;
+        // return false;
         // handleLogin(this.state);
     }
 

@@ -19,7 +19,8 @@ class Navigation extends Component {
             collapse: false,
             isWideEnough: false,
             currentUser: null,
-            isAdmin: false
+            isAdmin: false,
+            isLogged: false
         };
         this.onClick = this.onClick.bind(this);
     }
@@ -57,14 +58,15 @@ class Navigation extends Component {
     }
 
     render() {
-        const { currentUser, isAdmin } = this.state;
+        const { currentUser, isAdmin, isLogged } = this.state;
 
         return (
-            <Navbar color="white" light expand="md" scrolling>
+            <Navbar color="bg-dark" light expand="md" scrolling>
                 {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick}/>}
                 <Collapse isOpen={this.state.collapse} navbar>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <div className="navbar-nav">
+                    <NavbarNav>
+
                             <NavItem>
                                 <Link to="/" className="nav-item nav-link">Task-Manager</Link>
                             </NavItem>
@@ -85,10 +87,11 @@ class Navigation extends Component {
                                 {isAdmin && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
                             </NavItem>
                             {currentUser && <NavItem>
-                                <a onClick={this.logout} className="nav-item nav-link">Logout</a>
+                                <Link to="/" onClick={this.logout} className="nav-item nav-link">Logout</Link>
                             </NavItem>
                             }
-                        </div>
+                    </NavbarNav>
+
                     </nav>
                 </Collapse>
             </Navbar>

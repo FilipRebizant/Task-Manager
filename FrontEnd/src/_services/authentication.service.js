@@ -20,15 +20,19 @@ function login(username, password) {
 
     return fetch(`${config.apiUrl}/api/login_check`, requestOptions)
         .then(handleResponse)
-        .then(user => {
+        .then(response => {
+            let user = JSON.stringify({
+                "token": response.token,
+                "id": response.data.id,
+                "username": response.data.username,
+                "roles": response.data.roles
+            });
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('currentUser', user);
             currentUserSubject.next(user);
 
             return user;
         });
-
-
 }
 
 function logout() {

@@ -3,7 +3,7 @@
   "private": true,
   "description": "Task-Manager",
   "scripts": {
-    "parcel": "parcel ./src/index.html --hmr-port 1235"
+    "parcel-dev": "parcel ./src/index.html --hmr-port 1235"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
