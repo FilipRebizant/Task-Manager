@@ -6,7 +6,7 @@ import { PrivateRoute } from '../_components';
 import  Navigation  from '../_components/Navigation/Navigation';
 
 
-// import { AdminPage } from '@/AdminPage';
+import { UsersPage } from '../UsersPage';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { TasksPage } from '../TasksPage';
@@ -21,10 +21,11 @@ class App extends React.Component {
                     <div className="jumbotron">
                         <div className="container">
                             <div className="row">
-                                <div className="col-md-6 offset-md-3">
+                                <div className="col-md-12">
                                     <Route exact path="/" component={HomePage} />
                                     <Route path="/login" component={LoginPage} />
                                     <PrivateRoute path="/tasks" component={TasksPage} />
+                                    <PrivateRoute path="/users" component={UsersPage} />
                                     <PrivateRoute path="/profile" component={ProfilePage} />
                                 </div>
                             </div>

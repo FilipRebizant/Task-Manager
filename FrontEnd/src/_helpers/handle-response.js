@@ -4,17 +4,35 @@ export function handleResponse(response) {
     return response.json().then(response => {
         // const data = response && JSON.parse(response);
 
-        console.log(response);
         // if (!response.token) {
-            if ([401, 403].indexOf(response.status) !== -1) {
-                // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                authenticationService.logout();
-                // location.reload(true);
+            if ([401, 403].indexOf(response.code) !== -1) {
+                if (response.message === "Expired JWT Token") {
+                    authenticationService.refreshToken(authenticationService.currentUserValue.username);
+                    // location.reload(true);
+                }
             }
 
             // const error = (response && response.message) || response.statusText;
             // return Promise.reject(error);
         // }
+
+        return response;
+    });
+}
+
+export function handleLoginResponse(response) {
+    return response.json().then(response => {
+        // const data = response && JSON.parse(response);
+
+        // console.log(response);
+        if (!response.token) {
+            if ([401, 403].indexOf(response.status) !== -1) {
+                console.log(response);
+            }
+
+            const error = (response && response.message) || response.statusText;
+            return Promise.reject(error);
+        }
 
         return response;
     });

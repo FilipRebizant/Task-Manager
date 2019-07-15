@@ -14,16 +14,12 @@ class ProfilePage extends React.Component {
 
     componentDidMount() {
         const { currentUser } = this.state;
-        console.log(currentUser.id);
-        console.log(userService.getById(currentUser.id));
         userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
-        // console.log(this.state.userFromApi);
     }
 
     render() {
         const {currentUser, userFromApi} = this.state;
-        console.log(userFromApi);
-        console.log(currentUser);
+
         return(
             <div>
                 <p>Your role is: {userFromApi && <strong>{userFromApi.role}</strong>}</p>

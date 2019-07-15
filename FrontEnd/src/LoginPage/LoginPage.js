@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { userService, authenticationService } from '../_services';
+import { authenticationService } from '../_services';
 import {MDBCol, MDBRow} from "mdbreact";
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // isShowingError: false,
+            isShowingError: false,
             username: '',
             password: '',
-            // redirectToReferer: false
+            error: ''
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,11 +20,19 @@ class LoginPage extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        // console.log(this.state);
-        authenticationService.login(this.state.username, this.state.password);
+        let loginPromise = authenticationService.login(this.state.username, this.state.password);
 
-        // return false;
-        // handleLogin(this.state);
+        loginPromise.catch((error) => {
+            this.setState({
+                isShowingError: true,
+                error: error
+            });
+        });
+
+        loginPromise.then((result) => {
+            this.props.history.push('/');
+        });
+
     }
 
     handleInputChange(e) {
@@ -39,10 +47,10 @@ class LoginPage extends React.Component {
     }
 
     render() {
-
         let errorContainer;
+
         if (this.state.isShowingError) {
-            errorContainer = <div className="alert alert-danger" id="loginErrorContainer"></div>;
+            errorContainer = <div className="alert alert-danger" id="loginErrorContainer">{this.state.error}</div>;
         }
 
         return (

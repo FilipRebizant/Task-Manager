@@ -1,12 +1,13 @@
 import { BehaviorSubject } from 'rxjs';
 import { config } from '../_config';
-import { handleResponse } from '../_helpers';
+import { handleLoginResponse } from '../_helpers';
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
 export const authenticationService = {
     login,
     logout,
+    refreshToken,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value }
 };
@@ -19,7 +20,7 @@ function login(username, password) {
     };
 
     return fetch(`${config.apiUrl}/api/login_check`, requestOptions)
-        .then(handleResponse)
+        .then(handleLoginResponse)
         .then(response => {
             let user = JSON.stringify({
                 "token": response.token,
@@ -39,4 +40,24 @@ function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
+}
+
+function refreshToken(username) {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({"username": username})
+    };
+    return fetch(`${config.apiUrl}/api/token/refresh`, requestOptions)
+        .then(handleLoginResponse)
+        .then(response => {
+            let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            currentUser.token = response.token;
+            let refreshedUser = JSON.stringify(currentUser);
+            localStorage.setItem('currentUser', refreshedUser);
+            currentUserSubject.next(currentUser);
+
+            return refreshedUser;
+        });
 }

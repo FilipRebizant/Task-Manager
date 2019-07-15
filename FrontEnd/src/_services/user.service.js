@@ -6,13 +6,12 @@ export const userService = {
     getById
 };
 
-function getAll() {
-    const requestOptions = { method: 'GET', headers: authHeader() };
+function getAll(signal) {
+    const requestOptions = { method: 'GET', headers: authHeader(), signal};
     return fetch(`${config.apiUrl}/api/users`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    console.log(fetch(`${config.apiUrl}/api/users/${id}`, requestOptions).then(handleResponse));
     return fetch(`${config.apiUrl}/api/users/${id}`, requestOptions).then(handleResponse);
 }

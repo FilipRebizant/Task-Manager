@@ -19,8 +19,7 @@ class Navigation extends Component {
             collapse: false,
             isWideEnough: false,
             currentUser: null,
-            isAdmin: false,
-            isLogged: false
+            isAdmin: false
         };
         this.onClick = this.onClick.bind(this);
     }
@@ -45,7 +44,7 @@ class Navigation extends Component {
             };
         }
 
-        // Handle auth
+        // Handle auth <nav className="navbar navbar-expand navbar-dark bg-dark">
         authenticationService.currentUser.subscribe(x => this.setState({
             currentUser: x,
             isAdmin: x && x.role === Role.Admin
@@ -58,41 +57,61 @@ class Navigation extends Component {
     }
 
     render() {
-        const { currentUser, isAdmin, isLogged } = this.state;
+        const { currentUser, isAdmin } = this.state;
+        let navItems;
+        if (currentUser) {
+            navItems =
+                <div className="d-flex justify-content-between w-100">
+                    <NavbarNav left>
+
+                        <NavItem>
+                            <Link to="/" className="nav-item nav-link">Task-Manager</Link>
+                        </NavItem>
+
+                        <NavItem>
+                            <Link to="/users" className="nav-item nav-link">Users</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to="/tasks" className="nav-item nav-link">Tasks</Link>
+                        </NavItem>
+
+
+                        <NavItem>
+                            {isAdmin && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
+                        </NavItem>
+
+                    </NavbarNav>
+                    <NavbarNav right>
+
+                        <NavItem>
+                            <Link to="/profile" className="nav-item nav-link">{ currentUser.username }</Link>
+                         </NavItem>
+
+                        <NavItem>
+                            <Link to="/" onClick={this.logout} className="nav-item nav-link">Logout</Link>
+                        </NavItem>
+                    </NavbarNav>
+                </div>
+        } else {
+            navItems =
+            <NavbarNav className="justify-content-md-start">
+
+                <NavItem>
+                    <Link to="/" className="nav-item nav-link">Task-Manager</Link>
+                </NavItem>
+
+                 <NavItem>
+                    <Link to="/login" className="nav-item nav-link">Login</Link>
+                </NavItem>
+
+            </NavbarNav>
+        }
 
         return (
-            <Navbar color="bg-dark" light expand="md" scrolling>
+            <Navbar color="bg-dark navbar-dark" expand="md" scrolling>
                 {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick}/>}
                 <Collapse isOpen={this.state.collapse} navbar>
-                    <nav className="navbar navbar-expand navbar-dark bg-dark">
-                    <NavbarNav>
-
-                            <NavItem>
-                                <Link to="/" className="nav-item nav-link">Task-Manager</Link>
-                            </NavItem>
-                            <NavItem>
-                                <Link to="/users" className="nav-item nav-link">Users</Link>
-                            </NavItem>
-                            <NavItem>
-                                <Link to="/tasks" className="nav-item nav-link">Tasks</Link>
-                            </NavItem>
-                            <NavItem>
-                                <Link to="/profile" className="nav-item nav-link">Profile</Link>
-                            </NavItem>
-                            {!currentUser && <NavItem>
-                                <Link to="/login" className="nav-item nav-link">Login</Link>
-                            </NavItem>
-                            }
-                            <NavItem>
-                                {isAdmin && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
-                            </NavItem>
-                            {currentUser && <NavItem>
-                                <Link to="/" onClick={this.logout} className="nav-item nav-link">Logout</Link>
-                            </NavItem>
-                            }
-                    </NavbarNav>
-
-                    </nav>
+                        {navItems}
                 </Collapse>
             </Navbar>
         );
