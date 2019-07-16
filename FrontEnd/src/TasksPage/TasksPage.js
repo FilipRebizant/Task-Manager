@@ -1,65 +1,68 @@
 import React, {Component} from "react"
 
-import { authenticationService } from '../_services';
-import { dateToString } from "../_helpers/date-to-string";
+import { authHeader } from '../_helpers/auth-header';
+import { handleAbort } from '../_helpers/handle-abort';
+import { config } from '../_config';
+import { handleResponse } from "../_helpers";
+import  Task  from '../_components/Task';
 
 class TasksPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: authenticationService.currentUserValue,
-            todo: [],
-            pending: [],
-            done: [],
-        }
+            tasks: {
+                Todo: [],
+                Pending: [],
+                Done: []
+            },
+            info: null
+        };
+        this.abortController = new AbortController();
     };
 
     loadTasks(status) {
-        const { currentUser } = this.state;
         let loaders = document.querySelectorAll('.loader');
 
-        fetch(`http://localhost/api/tasks?status=${status}`, {
-            headers: {
-                'Authorization': `Bearer ${currentUser.token}`
-            }
+        fetch(`${config.apiUrl}/api/tasks?status=${status}`, {
+            headers: authHeader(),
+            signal: this.abortController.signal
         }).then(function (response) {
             return response.json();
         }).then((response) => {
             for (var loader of loaders) {
                 loader.classList.add('d-none');
             }
-            let tasks = response.tasks.map((task) => {
-                return(
-                    <div key={task.id} className="col-sm-12 mb-3">
-                        <div className="card text-center">
-                            <div className="task__main_header">
-                                <p className="card-text">Created: <span className="task__date"> {dateToString(task.created_at)}</span></p>
-                                <p className="card-text">{task.updated_at === null ? "Not updated" : `Updated: <span className="task__date"> {dateToString(task.updated_at)}</span>`}</p>
-                            </div>
-                            <div className="task__secondary_header">
-                                <button className="task__text_button deleteTaskButton" data-task-status="{task.status}"
-                                        data-task-id="{task.id}">Delete
-                                </button>
-                                <p className="card-text">{task.user === null && task.status === 'Todo' ? <button data-task-id={task.id} className="assignTaskButton">Assign to me</button> : task.user}</p>
-                                <p className="card-text">Priority: {task.priority}</p>
-                            </div>
-                            <div className="card-body">
-                                <h5 className="card-title">{task.title}</h5>
-                                <p className="card-text">Status: <span className="font-weight-bold">{task.status}</span>
-                                </p>
-                                <p className="card-text">{task.description}</p>
-                                <button data-task-status="${task.status}" data-task-id="${task.id}"
-                                        className="btn btn-primary changeStatusButton">{task.status === "Todo" ? "Move to Pending" : task.status === "Pending" ? "Move to Done" : "Need work"}</button>
-                            </div>
-                        </div>
-                    </div>
-                )
-            });
 
-            this.setState({[status]: tasks});
+            const status = response.tasks[0].status;
 
-        }).catch(error => console.error('Error', error));
+            let currState = Object.assign({},  this.state);
+            currState.tasks[status.toString()] = response.tasks;
+
+
+            this.setState(currState);
+
+        }).catch(error => handleAbort(error));
     }
+
+    deleteTask = (index, e) => {
+        const status = e.target.dataset.taskStatus;
+        const tasks = Object.assign([], this.state.tasks[status.toString()]);
+        const stateCopy = Object.assign({}, this.state);
+        const taskId = e.target.dataset.taskId;
+
+        tasks.splice(index, 1);
+        stateCopy.tasks[status.toString()] = tasks;
+        this.setState({ stateCopy });
+
+        fetch(`${config.apiUrl}/api/tasks/${taskId}`, {
+            method: "DELETE",
+            headers: authHeader()
+        }).then(handleResponse)
+            .then(response => {
+                console.log(response);
+                this.setState({ info: response.response });
+            });
+    };
 
     componentDidMount() {
         this.loadTasks('todo');
@@ -67,22 +70,60 @@ class TasksPage extends Component {
         this.loadTasks('done');
     }
 
+    componentWillUnmount() {
+        this.abortController.abort();
+    }
+
     render() {
+        const { info } = this.state;
+
         return (
             <div className="container">
                 <h2 className="text-center my-3">Tasks</h2>
+
+                { info &&
+                    <div className="alert alert-info">{ info }</div>
+                }
+
                 <div id="tasksContainer">
                     <div className="row">
-                        <div id="todo" className="col-sm-4">
-                            {this.state.todo}
+                        <ul id="todo" className="col-sm-4">
+                            {this.state.tasks['Todo'].map((task, index) => {
+                                return <Task
+                                    key={task.id}
+                                    id={task.id}
+                                    status={task.status}
+                                    description={task.description}
+                                    priority={task.priority}
+                                    user={task.user}
+                                    createdAt={task.created_at}
+                                    updatedAt={task.updated_at}
+                                    deleteEvent = {this.deleteTask.bind(this, index)}
+                                />
+                            })}
+
                             <div className="loader">
                                 <div className="spinner-border" role="status">
                                     <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
-                        </div>
+                        </ul>
                         <div id="pending" className="col-sm-4">
-                            {this.state.pending}
+
+                            {this.state.tasks['Pending'].map((task, index) => {
+                                return <Task
+                                    key={task.id}
+                                    id={task.id}
+                                    status={task.status}
+                                    description={task.description}
+                                    priority={task.priority}
+                                    user={task.user}
+                                    createdAt={task.created_at}
+                                    updatedAt={task.updated_at}
+                                    deleteEvent = {this.deleteTask.bind(this, index)}
+                                />
+                            })}
+
                             <div className="loader">
                                 <div className="spinner-border" role="status">
                                     <span className="sr-only">Loading...</span>
@@ -90,7 +131,21 @@ class TasksPage extends Component {
                             </div>
                         </div>
                         <div id="done" className="col-sm-4">
-                            {this.state.done}
+
+                            {this.state.tasks['Done'].map((task, index) => {
+                                return <Task
+                                    key={task.id}
+                                    id={task.id}
+                                    status={task.status}
+                                    description={task.description}
+                                    priority={task.priority}
+                                    user={task.user}
+                                    createdAt={task.created_at}
+                                    updatedAt={task.updated_at}
+                                    deleteEvent = {this.deleteTask.bind(this, index)}
+                                />
+                            })}
+
                             <div className="loader">
                                 <div className="spinner-border" role="status">
                                     <span className="sr-only">Loading...</span>

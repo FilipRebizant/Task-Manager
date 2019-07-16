@@ -2,7 +2,7 @@ import React from "react";
 
 import { userService, authenticationService } from '../_services';
 
-class ProfilePage extends React.Component {
+class ProfilePage extends React.PureComponent {
     constructor(props) {
         super(props);
 

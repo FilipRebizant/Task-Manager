@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { config } from '../_config';
-import { handleLoginResponse } from '../_helpers';
+import { handleResponse } from '../_helpers';
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
@@ -20,7 +20,7 @@ function login(username, password) {
     };
 
     return fetch(`${config.apiUrl}/api/login_check`, requestOptions)
-        .then(handleLoginResponse)
+        .then(handleResponse)
         .then(response => {
             let user = JSON.stringify({
                 "token": response.token,
@@ -43,14 +43,14 @@ function logout() {
 }
 
 function refreshToken(username) {
-
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"username": username})
     };
+
     return fetch(`${config.apiUrl}/api/token/refresh`, requestOptions)
-        .then(handleLoginResponse)
+        .then(handleResponse)
         .then(response => {
             let currentUser = JSON.parse(localStorage.getItem('currentUser'));
             currentUser.token = response.token;

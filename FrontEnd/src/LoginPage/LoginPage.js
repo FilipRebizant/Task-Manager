@@ -20,21 +20,20 @@ class LoginPage extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        let loginPromise = authenticationService.login(this.state.username, this.state.password);
-
-        loginPromise.catch((error) => {
-            this.setState({
-                isShowingError: true,
-                error: error
+        authenticationService
+            .login(this.state.username, this.state.password)
+            .then((result) => {
+                this.props.history.push('/');
+            })
+            .catch((error) => {
+                this.setState({
+                    isShowingError: true,
+                    error: error
+                });
             });
-        });
-
-        loginPromise.then((result) => {
-            this.props.history.push('/');
-        });
-
     }
 
+    // Update state values
     handleInputChange(e) {
         this.setState({
             [e.target.name]: e.target.value
