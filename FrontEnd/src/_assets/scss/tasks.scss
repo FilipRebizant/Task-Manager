@@ -24,6 +24,10 @@
     display: block;
     font-size: 0.8em;
   }
+
+  &__list_item {
+    list-style: none;
+  }
 }
 
 .assignTaskButton {
