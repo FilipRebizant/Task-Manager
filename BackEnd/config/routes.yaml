@@ -1,0 +1,7 @@
+users_api:
+  resource: 'routes/users_api.yaml'
+  prefix: api/
+
+tasks_api:
+  resource: 'routes/tasks_api.yaml'
+  prefix: api/

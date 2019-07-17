@@ -1,0 +1,40 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{Tests,Kernel.php}'
+
+    App\Interfaces\Web\Controller\:
+        resource: '../src/Interfaces/Web/Controller'
+        tags: ['controller.service_arguments']
+
+    acme_api.event.authentication_success_listener:
+        class: App\Infrastructure\Listeners\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+    command_handlers:
+        public: true
+        namespace: App\Application\Handler\
+        resource: '../src/Application/Handler/*'
+        tags: [command_handler]
+
+    api_exception_subscriber:
+        class: App\Infrastructure\Listeners\ApiExceptionSubscriber
+        arguments: []
+        tags:
+            - { name: kernel.event_subscriber}
+
+    security_user_provider:
+        class: App\Services\Symfony\Security\SessionAuth\SessionAuthUserProvider
+
+    userService:
+        public: true
+        class: App\Domain\User\UserService
+
+    command_bus:
+        public: true
+        class: App\Application\CommandBus

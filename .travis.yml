@@ -1,5 +1,8 @@
 language: php
 
+services:
+  - mysql
+
 env:
   global:
       - DB_HOST=localhost
@@ -11,8 +14,8 @@ php:
   - '7.3'
 
 before_script:
+  - cd BackEnd
   - composer install
-
 
 script:
   - phpunit --configuration ./travisPhpUnit.xml
@@ -20,20 +23,14 @@ script:
 
 sudo: required
 
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
-      - mysql-client
+dist: xenial
 
 
 before_install:
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
   - sudo mysql_upgrade -u root -pnew_password
   - sudo service mysql restart
-  - mysql -u root --password="new_password" < tests/travis_database.sql
+  - mysql -u root --password="new_password" < BackEnd/tests/travis_database.sql
 
 notifications:
   email: false
