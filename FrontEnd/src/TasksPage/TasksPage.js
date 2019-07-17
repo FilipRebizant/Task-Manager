@@ -3,8 +3,9 @@ import React, {Component} from "react"
 import { authHeader } from '../_helpers/auth-header';
 import { handleAbort } from '../_helpers/handle-abort';
 import { config } from '../_config';
-import { handleResponse } from "../_helpers";
-import  Task  from '../_components/Task';
+import {handleResponse, Role} from "../_helpers";
+import  { AddTaskModal, Task } from '../_components/Task';
+import {authenticationService} from "../_services";
 
 class TasksPage extends Component {
     constructor(props) {
@@ -15,43 +16,69 @@ class TasksPage extends Component {
                 Pending: [],
                 Done: []
             },
+            users: [],
             info: null,
-            error: null
+            error: null,
+            currentUser: authenticationService.currentUserValue
         };
         this.abortController = new AbortController();
     };
 
-    loadTasks(status) {
+    assignUser = (index, e) => {
+        const id = e.target.dataset.taskId;
+        const username = this.state.currentUser.username;
+        const currentTaskList = Object.assign([], this.state.tasks['Todo']);
+        const currentState = Object.assign({}, this.state);
+        let elem = currentTaskList[index];
+
+        elem.user = username;
+
+        this.setState({
+            currentState
+        });
+
+        fetch(`${config.apiUrl}/api/tasks/${id}/users/${username}`, {
+            method: 'PATCH',
+            headers: authHeader(),
+            body: JSON.stringify({
+                username: username
+            })
+        }).then(handleResponse).then((response) => {
+            this.setState({
+                info: response.response,
+                error: null
+            });
+        });
+    };
+
+    loadTasks = (status) => {
         let loaders = document.querySelectorAll('.loader');
 
         fetch(`${config.apiUrl}/api/tasks?status=${status}`, {
             headers: authHeader(),
             signal: this.abortController.signal
         }).then(handleResponse).then((response) => {
+            let currState = Object.assign({},  this.state);
+            const status = response.tasks[0].status;
+
             for (var loader of loaders) {
                 loader.classList.add('d-none');
             }
 
-            const status = response.tasks[0].status;
-            let currState = Object.assign({},  this.state);
-
             currState.tasks[status.toString()] = response.tasks;
             this.setState(currState);
-
         }).catch(error => handleAbort(error));
-    }
+    };
 
     changeStatus = (index, e) => {
         let newStatus;
         const status = e.target.dataset.taskStatus;
         const id = e.target.dataset.taskId;
 
-        if (status === "Todo") {
-            newStatus = "Pending";
-        } else if (status === "Pending") {
-            newStatus = "Done";
-        } else {
-            newStatus = "Todo";
+        switch (status) {
+            case 'Todo': newStatus = 'Pending'; break;
+            case "Pending": newStatus = 'Done'; break;
+            default: newStatus = 'Todo'; break;
         }
 
         fetch(`${config.apiUrl}/api/tasks/${id}`, {
@@ -64,20 +91,20 @@ class TasksPage extends Component {
         }).then(handleResponse).then((response) => {
 
             // Remove from old list
-            const currentList = Object.assign([], this.state.tasks[status.toString()]);
-            const stateCopy = Object.assign({}, this.state);
-            let elem = currentList[index];
+            const currentTaskList = Object.assign([], this.state.tasks[status.toString()]);
+            const currentState = Object.assign({}, this.state);
+            let elem = currentTaskList[index];
 
-            currentList.splice(index, 1);
-            stateCopy.tasks[status.toString()] = currentList;
+            currentTaskList.splice(index, 1);
+            currentState.tasks[status.toString()] = currentTaskList;
 
             // Change
             elem.status = newStatus;
 
-            stateCopy.tasks[newStatus.toString()].push(elem);
+            currentState.tasks[newStatus.toString()].push(elem);
 
             this.setState({
-                stateCopy,
+                currentState,
                 info: response.response,
                 error: null
             });
@@ -92,12 +119,12 @@ class TasksPage extends Component {
     deleteTask = (index, e) => {
         const status = e.target.dataset.taskStatus;
         const tasks = Object.assign([], this.state.tasks[status.toString()]);
-        const stateCopy = Object.assign({}, this.state);
+        const currentState = Object.assign({}, this.state);
         const taskId = e.target.dataset.taskId;
 
         tasks.splice(index, 1);
-        stateCopy.tasks[status.toString()] = tasks;
-        this.setState({ stateCopy });
+        currentState.tasks[status.toString()] = tasks;
+        this.setState({ currentState });
 
         fetch(`${config.apiUrl}/api/tasks/${taskId}`, {
             method: "DELETE",
@@ -111,10 +138,21 @@ class TasksPage extends Component {
             });
     };
 
+    loadUsers() {
+        fetch(`${config.apiUrl}/api/users`, {
+            headers: authHeader(),
+            signal: this.abortController.signal
+        }).then(handleResponse)
+            .then((response => {
+                this.setState({users: response.users})
+            })).catch(error => handleAbort(error))
+    }
+
     componentDidMount() {
         this.loadTasks('todo');
         this.loadTasks('pending');
         this.loadTasks('done');
+        this.loadUsers();
     }
 
     componentWillUnmount() {
@@ -122,7 +160,7 @@ class TasksPage extends Component {
     }
 
     render() {
-        const { info, error } = this.state;
+        const { info, error, users, tasks } = this.state;
 
         return (
             <div className="container">
@@ -136,18 +174,19 @@ class TasksPage extends Component {
                     <div className="alert alert-danger">{ error }</div>
                 }
 
+                <AddTaskModal users={users} addTaskEvent={(e) => this.loadTasks('Todo')}/>
+
                 <div id="tasksContainer">
                     <div className="row">
 
-                        {Object.keys(this.state.tasks).map((set, index) => {
-                            console.log(set);
-                            console.log(index);
+                        {Object.keys(tasks).map((set, index) => {
 
                            return <ul id={set} className="col-sm-4" key={index}>
-                                {this.state.tasks[set].map((task, index) => {
+                                {tasks[set].map((task, index) => {
                                     return <Task
                                         key={task.id}
                                         id={task.id}
+                                        title={task.title}
                                         status={task.status}
                                         description={task.description}
                                         priority={task.priority}
@@ -155,6 +194,7 @@ class TasksPage extends Component {
                                         createdAt={task.created_at}
                                         updatedAt={task.updated_at}
 
+                                        assignUserEvent = {this.assignUser.bind(this, index)}
                                         changeStatusEvent = {this.changeStatus.bind(this, index)}
                                         deleteEvent = {this.deleteTask.bind(this, index)}
                                     />
@@ -166,7 +206,6 @@ class TasksPage extends Component {
                                     </div>
                                 </div>
                             </ul>
-
                         })}
 
                     </div>

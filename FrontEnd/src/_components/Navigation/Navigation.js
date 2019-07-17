@@ -44,7 +44,7 @@ class Navigation extends Component {
             };
         }
 
-        // Handle auth <nav className="navbar navbar-expand navbar-dark bg-dark">
+        // Handle auth
         authenticationService.currentUser.subscribe(x => this.setState({
             currentUser: x,
             isAdmin: x && x.role === Role.Admin
