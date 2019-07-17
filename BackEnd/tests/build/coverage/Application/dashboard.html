@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /var/www/html/src/Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../_css/nv.d3.min.css" rel="stylesheet" type="text/css">
+  <link href="../_css/style.css" rel="stylesheet" type="text/css">
+  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../index.html">/var/www/html/src</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Application</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Command/ActivateAccountCommand.php.html#7">TaskManager\Application\Command\ActivateAccountCommand</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/AssignTaskToUserCommand.php.html#7">TaskManager\Application\Command\AssignTaskToUserCommand</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/ActivationToken/ActivationTokenView.php.html#5">TaskManager\Application\Query\ActivationToken\ActivationTokenView</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/DeleteUserHandler.php.html#8">TaskManager\Application\Handler\DeleteUserHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/DeleteTaskHandler.php.html#8">TaskManager\Application\Handler\DeleteTaskHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/CreateTaskHandler.php.html#17">TaskManager\Application\Handler\CreateTaskHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ChangeTaskStatusHandler.php.html#9">TaskManager\Application\Handler\ChangeTaskStatusHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ChangePasswordHandler.php.html#8">TaskManager\Application\Handler\ChangePasswordHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/AssignTaskToUserHandler.php.html#8">TaskManager\Application\Handler\AssignTaskToUserHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ActivateAccountHandler.php.html#8">TaskManager\Application\Handler\ActivateAccountHandler</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/DeleteUserCommand.php.html#7">TaskManager\Application\Command\DeleteUserCommand</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/DeleteTaskCommand.php.html#7">TaskManager\Application\Command\DeleteTaskCommand</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangeTaskStatusCommand.php.html#7">TaskManager\Application\Command\ChangeTaskStatusCommand</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangePasswordCommand.php.html#7">TaskManager\Application\Command\ChangePasswordCommand</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#5">TaskManager\Application\Query\Task\TaskView</a></td><td class="text-right">36%</td></tr>
+       <tr><td><a href="CommandBus.php.html#5">TaskManager\Application\CommandBus</a></td><td class="text-right">40%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#7">TaskManager\Application\Query\User\UserView</a></td><td class="text-right">43%</td></tr>
+       <tr><td><a href="Handler/CreateUserHandler.php.html#8">TaskManager\Application\Handler\CreateUserHandler</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#7">TaskManager\Application\Command\CreateTaskCommand</a></td><td class="text-right">55%</td></tr>
+       <tr><td><a href="Command/CreateUserCommand.php.html#7">TaskManager\Application\Command\CreateUserCommand</a></td><td class="text-right">57%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Query/Task/TaskView.php.html#5">TaskManager\Application\Query\Task\TaskView</a></td><td class="text-right">81</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#7">TaskManager\Application\Query\User\UserView</a></td><td class="text-right">32</td></tr>
+       <tr><td><a href="Handler/CreateTaskHandler.php.html#17">TaskManager\Application\Handler\CreateTaskHandler</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#7">TaskManager\Application\Command\CreateTaskCommand</a></td><td class="text-right">11</td></tr>
+       <tr><td><a href="Query/ActivationToken/ActivationTokenView.php.html#5">TaskManager\Application\Query\ActivationToken\ActivationTokenView</a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Command/ActivateAccountCommand.php.html#25"><abbr title="TaskManager\Application\Command\ActivateAccountCommand::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/ActivationToken/ActivationTokenView.php.html#31"><abbr title="TaskManager\Application\Query\ActivationToken\ActivationTokenView::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ChangePasswordHandler.php.html#18"><abbr title="TaskManager\Application\Handler\ChangePasswordHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ChangePasswordHandler.php.html#28"><abbr title="TaskManager\Application\Handler\ChangePasswordHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ChangeTaskStatusHandler.php.html#19"><abbr title="TaskManager\Application\Handler\ChangeTaskStatusHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ChangeTaskStatusHandler.php.html#31"><abbr title="TaskManager\Application\Handler\ChangeTaskStatusHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/CreateTaskHandler.php.html#30"><abbr title="TaskManager\Application\Handler\CreateTaskHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/CreateTaskHandler.php.html#41"><abbr title="TaskManager\Application\Handler\CreateTaskHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/CreateUserHandler.php.html#29"><abbr title="TaskManager\Application\Handler\CreateUserHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/DeleteTaskHandler.php.html#18"><abbr title="TaskManager\Application\Handler\DeleteTaskHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/DeleteTaskHandler.php.html#27"><abbr title="TaskManager\Application\Handler\DeleteTaskHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/DeleteUserHandler.php.html#17"><abbr title="TaskManager\Application\Handler\DeleteUserHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/DeleteUserHandler.php.html#26"><abbr title="TaskManager\Application\Handler\DeleteUserHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#73"><abbr title="TaskManager\Application\Query\Task\TaskView::title">title</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ActivateAccountCommand.php.html#35"><abbr title="TaskManager\Application\Command\ActivateAccountCommand::token">token</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#81"><abbr title="TaskManager\Application\Query\Task\TaskView::status">status</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#89"><abbr title="TaskManager\Application\Query\Task\TaskView::priority">priority</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#109"><abbr title="TaskManager\Application\Query\Task\TaskView::description">description</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#117"><abbr title="TaskManager\Application\Query\Task\TaskView::createdAt">createdAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#125"><abbr title="TaskManager\Application\Query\Task\TaskView::updatedAt">updatedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#134"><abbr title="TaskManager\Application\Query\Task\TaskView::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#157"><abbr title="TaskManager\Application\Query\Task\TaskView::__toString">__toString</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#78"><abbr title="TaskManager\Application\Query\User\UserView::getEmail">getEmail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#86"><abbr title="TaskManager\Application\Query\User\UserView::getCreatedAt">getCreatedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#94"><abbr title="TaskManager\Application\Query\User\UserView::getTasks">getTasks</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#102"><abbr title="TaskManager\Application\Query\User\UserView::getRole">getRole</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#110"><abbr title="TaskManager\Application\Query\User\UserView::getActivatedAt">getActivatedAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/AssignTaskToUserHandler.php.html#28"><abbr title="TaskManager\Application\Handler\AssignTaskToUserHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/AssignTaskToUserHandler.php.html#18"><abbr title="TaskManager\Application\Handler\AssignTaskToUserHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ActivateAccountHandler.php.html#28"><abbr title="TaskManager\Application\Handler\ActivateAccountHandler::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangeTaskStatusCommand.php.html#38"><abbr title="TaskManager\Application\Command\ChangeTaskStatusCommand::status">status</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ActivateAccountCommand.php.html#43"><abbr title="TaskManager\Application\Command\ActivateAccountCommand::password1">password1</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ActivateAccountCommand.php.html#51"><abbr title="TaskManager\Application\Command\ActivateAccountCommand::password2">password2</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/AssignTaskToUserCommand.php.html#20"><abbr title="TaskManager\Application\Command\AssignTaskToUserCommand::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/AssignTaskToUserCommand.php.html#31"><abbr title="TaskManager\Application\Command\AssignTaskToUserCommand::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/AssignTaskToUserCommand.php.html#39"><abbr title="TaskManager\Application\Command\AssignTaskToUserCommand::task">task</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangePasswordCommand.php.html#24"><abbr title="TaskManager\Application\Command\ChangePasswordCommand::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangePasswordCommand.php.html#34"><abbr title="TaskManager\Application\Command\ChangePasswordCommand::userId">userId</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangePasswordCommand.php.html#42"><abbr title="TaskManager\Application\Command\ChangePasswordCommand::password1">password1</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangePasswordCommand.php.html#50"><abbr title="TaskManager\Application\Command\ChangePasswordCommand::password2">password2</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangeTaskStatusCommand.php.html#21"><abbr title="TaskManager\Application\Command\ChangeTaskStatusCommand::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/ChangeTaskStatusCommand.php.html#30"><abbr title="TaskManager\Application\Command\ChangeTaskStatusCommand::taskId">taskId</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#43"><abbr title="TaskManager\Application\Command\CreateTaskCommand::description">description</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Handler/ActivateAccountHandler.php.html#18"><abbr title="TaskManager\Application\Handler\ActivateAccountHandler::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#51"><abbr title="TaskManager\Application\Command\CreateTaskCommand::priority">priority</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#59"><abbr title="TaskManager\Application\Command\CreateTaskCommand::title">title</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#67"><abbr title="TaskManager\Application\Command\CreateTaskCommand::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateUserCommand.php.html#35"><abbr title="TaskManager\Application\Command\CreateUserCommand::username">username</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateUserCommand.php.html#43"><abbr title="TaskManager\Application\Command\CreateUserCommand::email">email</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/CreateUserCommand.php.html#51"><abbr title="TaskManager\Application\Command\CreateUserCommand::role">role</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/DeleteTaskCommand.php.html#16"><abbr title="TaskManager\Application\Command\DeleteTaskCommand::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/DeleteTaskCommand.php.html#24"><abbr title="TaskManager\Application\Command\DeleteTaskCommand::id">id</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/DeleteUserCommand.php.html#16"><abbr title="TaskManager\Application\Command\DeleteUserCommand::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Command/DeleteUserCommand.php.html#24"><abbr title="TaskManager\Application\Command\DeleteUserCommand::id">id</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CommandBus.php.html#30"><abbr title="TaskManager\Application\CommandBus::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CommandBus.php.html#50"><abbr title="TaskManager\Application\CommandBus::buildHandler">buildHandler</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/User/UserView.php.html#119"><abbr title="TaskManager\Application\Query\User\UserView::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#97"><abbr title="TaskManager\Application\Query\Task\TaskView::user">user</abbr></a></td><td class="text-right">66%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Command/CreateTaskCommand.php.html#67"><abbr title="TaskManager\Application\Command\CreateTaskCommand::user">user</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Handler/CreateTaskHandler.php.html#41"><abbr title="TaskManager\Application\Handler\CreateTaskHandler::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Query/ActivationToken/ActivationTokenView.php.html#31"><abbr title="TaskManager\Application\Query\ActivationToken\ActivationTokenView::__construct">__construct</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#125"><abbr title="TaskManager\Application\Query\Task\TaskView::updatedAt">updatedAt</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#134"><abbr title="TaskManager\Application\Query\Task\TaskView::toArray">toArray</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Query/Task/TaskView.php.html#97"><abbr title="TaskManager\Application\Query\Task\TaskView::user">user</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 7.0.5</a> using <a href="https://secure.php.net/" target="_top">PHP 7.3.6</a> with <a href="https://xdebug.org/">Xdebug 2.7.2</a> and <a href="https://phpunit.de/">PHPUnit 8.2.3</a> at Mon Jun 24 7:07:14 UTC 2019.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../_js/jquery.min.js" type="text/javascript"></script>
+  <script src="../_js/d3.min.js" type="text/javascript"></script>
+  <script src="../_js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([14,0,0,0,1,2,3,0,0,0,0,2], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([57,0,0,0,0,0,0,1,0,0,0,13], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,4,"<a href=\"Command\/ActivateAccountCommand.php.html#7\">TaskManager\\Application\\Command\\ActivateAccountCommand<\/a>"],[0,3,"<a href=\"Command\/AssignTaskToUserCommand.php.html#7\">TaskManager\\Application\\Command\\AssignTaskToUserCommand<\/a>"],[0,4,"<a href=\"Command\/ChangePasswordCommand.php.html#7\">TaskManager\\Application\\Command\\ChangePasswordCommand<\/a>"],[0,3,"<a href=\"Command\/ChangeTaskStatusCommand.php.html#7\">TaskManager\\Application\\Command\\ChangeTaskStatusCommand<\/a>"],[55.55555555555556,7,"<a href=\"Command\/CreateTaskCommand.php.html#7\">TaskManager\\Application\\Command\\CreateTaskCommand<\/a>"],[57.14285714285714,4,"<a href=\"Command\/CreateUserCommand.php.html#7\">TaskManager\\Application\\Command\\CreateUserCommand<\/a>"],[0,2,"<a href=\"Command\/DeleteTaskCommand.php.html#7\">TaskManager\\Application\\Command\\DeleteTaskCommand<\/a>"],[0,2,"<a href=\"Command\/DeleteUserCommand.php.html#7\">TaskManager\\Application\\Command\\DeleteUserCommand<\/a>"],[40,4,"<a href=\"CommandBus.php.html#5\">TaskManager\\Application\\CommandBus<\/a>"],[0,2,"<a href=\"Handler\/ActivateAccountHandler.php.html#8\">TaskManager\\Application\\Handler\\ActivateAccountHandler<\/a>"],[0,2,"<a href=\"Handler\/AssignTaskToUserHandler.php.html#8\">TaskManager\\Application\\Handler\\AssignTaskToUserHandler<\/a>"],[0,2,"<a href=\"Handler\/ChangePasswordHandler.php.html#8\">TaskManager\\Application\\Handler\\ChangePasswordHandler<\/a>"],[0,2,"<a href=\"Handler\/ChangeTaskStatusHandler.php.html#9\">TaskManager\\Application\\Handler\\ChangeTaskStatusHandler<\/a>"],[0,3,"<a href=\"Handler\/CreateTaskHandler.php.html#17\">TaskManager\\Application\\Handler\\CreateTaskHandler<\/a>"],[50,2,"<a href=\"Handler\/CreateUserHandler.php.html#8\">TaskManager\\Application\\Handler\\CreateUserHandler<\/a>"],[0,2,"<a href=\"Handler\/DeleteTaskHandler.php.html#8\">TaskManager\\Application\\Handler\\DeleteTaskHandler<\/a>"],[0,2,"<a href=\"Handler\/DeleteUserHandler.php.html#8\">TaskManager\\Application\\Handler\\DeleteUserHandler<\/a>"],[100,2,"<a href=\"HandlerFactory.php.html#7\">TaskManager\\Application\\HandlerFactory<\/a>"],[100,1,"<a href=\"NameInflector.php.html#4\">TaskManager\\Application\\NameInflector<\/a>"],[0,2,"<a href=\"Query\/ActivationToken\/ActivationTokenView.php.html#5\">TaskManager\\Application\\Query\\ActivationToken\\ActivationTokenView<\/a>"],[36.36363636363637,16,"<a href=\"Query\/Task\/TaskView.php.html#5\">TaskManager\\Application\\Query\\Task\\TaskView<\/a>"],[43.47826086956522,11,"<a href=\"Query\/User\/UserView.php.html#7\">TaskManager\\Application\\Query\\User\\UserView<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"Command\/ActivateAccountCommand.php.html#25\">TaskManager\\Application\\Command\\ActivateAccountCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/ActivateAccountCommand.php.html#35\">TaskManager\\Application\\Command\\ActivateAccountCommand::token<\/a>"],[0,1,"<a href=\"Command\/ActivateAccountCommand.php.html#43\">TaskManager\\Application\\Command\\ActivateAccountCommand::password1<\/a>"],[0,1,"<a href=\"Command\/ActivateAccountCommand.php.html#51\">TaskManager\\Application\\Command\\ActivateAccountCommand::password2<\/a>"],[0,1,"<a href=\"Command\/AssignTaskToUserCommand.php.html#20\">TaskManager\\Application\\Command\\AssignTaskToUserCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/AssignTaskToUserCommand.php.html#31\">TaskManager\\Application\\Command\\AssignTaskToUserCommand::user<\/a>"],[0,1,"<a href=\"Command\/AssignTaskToUserCommand.php.html#39\">TaskManager\\Application\\Command\\AssignTaskToUserCommand::task<\/a>"],[0,1,"<a href=\"Command\/ChangePasswordCommand.php.html#24\">TaskManager\\Application\\Command\\ChangePasswordCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/ChangePasswordCommand.php.html#34\">TaskManager\\Application\\Command\\ChangePasswordCommand::userId<\/a>"],[0,1,"<a href=\"Command\/ChangePasswordCommand.php.html#42\">TaskManager\\Application\\Command\\ChangePasswordCommand::password1<\/a>"],[0,1,"<a href=\"Command\/ChangePasswordCommand.php.html#50\">TaskManager\\Application\\Command\\ChangePasswordCommand::password2<\/a>"],[0,1,"<a href=\"Command\/ChangeTaskStatusCommand.php.html#21\">TaskManager\\Application\\Command\\ChangeTaskStatusCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/ChangeTaskStatusCommand.php.html#30\">TaskManager\\Application\\Command\\ChangeTaskStatusCommand::taskId<\/a>"],[0,1,"<a href=\"Command\/ChangeTaskStatusCommand.php.html#38\">TaskManager\\Application\\Command\\ChangeTaskStatusCommand::status<\/a>"],[100,2,"<a href=\"Command\/CreateTaskCommand.php.html#28\">TaskManager\\Application\\Command\\CreateTaskCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/CreateTaskCommand.php.html#43\">TaskManager\\Application\\Command\\CreateTaskCommand::description<\/a>"],[0,1,"<a href=\"Command\/CreateTaskCommand.php.html#51\">TaskManager\\Application\\Command\\CreateTaskCommand::priority<\/a>"],[0,1,"<a href=\"Command\/CreateTaskCommand.php.html#59\">TaskManager\\Application\\Command\\CreateTaskCommand::title<\/a>"],[0,2,"<a href=\"Command\/CreateTaskCommand.php.html#67\">TaskManager\\Application\\Command\\CreateTaskCommand::user<\/a>"],[100,1,"<a href=\"Command\/CreateUserCommand.php.html#25\">TaskManager\\Application\\Command\\CreateUserCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/CreateUserCommand.php.html#35\">TaskManager\\Application\\Command\\CreateUserCommand::username<\/a>"],[0,1,"<a href=\"Command\/CreateUserCommand.php.html#43\">TaskManager\\Application\\Command\\CreateUserCommand::email<\/a>"],[0,1,"<a href=\"Command\/CreateUserCommand.php.html#51\">TaskManager\\Application\\Command\\CreateUserCommand::role<\/a>"],[0,1,"<a href=\"Command\/DeleteTaskCommand.php.html#16\">TaskManager\\Application\\Command\\DeleteTaskCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/DeleteTaskCommand.php.html#24\">TaskManager\\Application\\Command\\DeleteTaskCommand::id<\/a>"],[0,1,"<a href=\"Command\/DeleteUserCommand.php.html#16\">TaskManager\\Application\\Command\\DeleteUserCommand::__construct<\/a>"],[0,1,"<a href=\"Command\/DeleteUserCommand.php.html#24\">TaskManager\\Application\\Command\\DeleteUserCommand::id<\/a>"],[100,1,"<a href=\"CommandBus.php.html#21\">TaskManager\\Application\\CommandBus::__construct<\/a>"],[0,1,"<a href=\"CommandBus.php.html#30\">TaskManager\\Application\\CommandBus::handle<\/a>"],[100,1,"<a href=\"CommandBus.php.html#42\">TaskManager\\Application\\CommandBus::getHandlerName<\/a>"],[0,1,"<a href=\"CommandBus.php.html#50\">TaskManager\\Application\\CommandBus::buildHandler<\/a>"],[0,1,"<a href=\"Handler\/ActivateAccountHandler.php.html#18\">TaskManager\\Application\\Handler\\ActivateAccountHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/ActivateAccountHandler.php.html#28\">TaskManager\\Application\\Handler\\ActivateAccountHandler::handle<\/a>"],[0,1,"<a href=\"Handler\/AssignTaskToUserHandler.php.html#18\">TaskManager\\Application\\Handler\\AssignTaskToUserHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/AssignTaskToUserHandler.php.html#28\">TaskManager\\Application\\Handler\\AssignTaskToUserHandler::handle<\/a>"],[0,1,"<a href=\"Handler\/ChangePasswordHandler.php.html#18\">TaskManager\\Application\\Handler\\ChangePasswordHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/ChangePasswordHandler.php.html#28\">TaskManager\\Application\\Handler\\ChangePasswordHandler::handle<\/a>"],[0,1,"<a href=\"Handler\/ChangeTaskStatusHandler.php.html#19\">TaskManager\\Application\\Handler\\ChangeTaskStatusHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/ChangeTaskStatusHandler.php.html#31\">TaskManager\\Application\\Handler\\ChangeTaskStatusHandler::handle<\/a>"],[0,1,"<a href=\"Handler\/CreateTaskHandler.php.html#30\">TaskManager\\Application\\Handler\\CreateTaskHandler::__construct<\/a>"],[0,2,"<a href=\"Handler\/CreateTaskHandler.php.html#41\">TaskManager\\Application\\Handler\\CreateTaskHandler::handle<\/a>"],[100,1,"<a href=\"Handler\/CreateUserHandler.php.html#18\">TaskManager\\Application\\Handler\\CreateUserHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/CreateUserHandler.php.html#29\">TaskManager\\Application\\Handler\\CreateUserHandler::handle<\/a>"],[0,1,"<a href=\"Handler\/DeleteTaskHandler.php.html#18\">TaskManager\\Application\\Handler\\DeleteTaskHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/DeleteTaskHandler.php.html#27\">TaskManager\\Application\\Handler\\DeleteTaskHandler::handle<\/a>"],[0,1,"<a href=\"Handler\/DeleteUserHandler.php.html#17\">TaskManager\\Application\\Handler\\DeleteUserHandler::__construct<\/a>"],[0,1,"<a href=\"Handler\/DeleteUserHandler.php.html#26\">TaskManager\\Application\\Handler\\DeleteUserHandler::handle<\/a>"],[100,1,"<a href=\"HandlerFactory.php.html#17\">TaskManager\\Application\\HandlerFactory::__construct<\/a>"],[100,1,"<a href=\"HandlerFactory.php.html#25\">TaskManager\\Application\\HandlerFactory::make<\/a>"],[100,1,"<a href=\"NameInflector.php.html#10\">TaskManager\\Application\\NameInflector::inflect<\/a>"],[0,2,"<a href=\"Query\/ActivationToken\/ActivationTokenView.php.html#31\">TaskManager\\Application\\Query\\ActivationToken\\ActivationTokenView::__construct<\/a>"],[100,3,"<a href=\"Query\/Task\/TaskView.php.html#42\">TaskManager\\Application\\Query\\Task\\TaskView::__construct<\/a>"],[100,1,"<a href=\"Query\/Task\/TaskView.php.html#65\">TaskManager\\Application\\Query\\Task\\TaskView::id<\/a>"],[0,1,"<a href=\"Query\/Task\/TaskView.php.html#73\">TaskManager\\Application\\Query\\Task\\TaskView::title<\/a>"],[0,1,"<a href=\"Query\/Task\/TaskView.php.html#81\">TaskManager\\Application\\Query\\Task\\TaskView::status<\/a>"],[0,1,"<a href=\"Query\/Task\/TaskView.php.html#89\">TaskManager\\Application\\Query\\Task\\TaskView::priority<\/a>"],[66.66666666666666,2,"<a href=\"Query\/Task\/TaskView.php.html#97\">TaskManager\\Application\\Query\\Task\\TaskView::user<\/a>"],[0,1,"<a href=\"Query\/Task\/TaskView.php.html#109\">TaskManager\\Application\\Query\\Task\\TaskView::description<\/a>"],[0,1,"<a href=\"Query\/Task\/TaskView.php.html#117\">TaskManager\\Application\\Query\\Task\\TaskView::createdAt<\/a>"],[0,2,"<a href=\"Query\/Task\/TaskView.php.html#125\">TaskManager\\Application\\Query\\Task\\TaskView::updatedAt<\/a>"],[0,2,"<a href=\"Query\/Task\/TaskView.php.html#134\">TaskManager\\Application\\Query\\Task\\TaskView::toArray<\/a>"],[0,1,"<a href=\"Query\/Task\/TaskView.php.html#157\">TaskManager\\Application\\Query\\Task\\TaskView::__toString<\/a>"],[100,3,"<a href=\"Query\/User\/UserView.php.html#41\">TaskManager\\Application\\Query\\User\\UserView::__construct<\/a>"],[100,1,"<a href=\"Query\/User\/UserView.php.html#62\">TaskManager\\Application\\Query\\User\\UserView::getId<\/a>"],[100,1,"<a href=\"Query\/User\/UserView.php.html#70\">TaskManager\\Application\\Query\\User\\UserView::getUsername<\/a>"],[0,1,"<a href=\"Query\/User\/UserView.php.html#78\">TaskManager\\Application\\Query\\User\\UserView::getEmail<\/a>"],[0,1,"<a href=\"Query\/User\/UserView.php.html#86\">TaskManager\\Application\\Query\\User\\UserView::getCreatedAt<\/a>"],[0,1,"<a href=\"Query\/User\/UserView.php.html#94\">TaskManager\\Application\\Query\\User\\UserView::getTasks<\/a>"],[0,1,"<a href=\"Query\/User\/UserView.php.html#102\">TaskManager\\Application\\Query\\User\\UserView::getRole<\/a>"],[0,1,"<a href=\"Query\/User\/UserView.php.html#110\">TaskManager\\Application\\Query\\User\\UserView::getActivatedAt<\/a>"],[0,1,"<a href=\"Query\/User\/UserView.php.html#119\">TaskManager\\Application\\Query\\User\\UserView::toArray<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>
