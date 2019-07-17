@@ -225,7 +225,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,0,"<a href=\"InvalidStatusOrderException.php.html#5\">TaskManager\\Domain\\Task\\Exception\\InvalidStatusOrderException<\/a>"],[100,0,"<a href=\"UserAlreadyAssignedException.php.html#5\">TaskManager\\Domain\\Task\\Exception\\UserAlreadyAssignedException<\/a>"],[100,0,"<a href=\"UserNotAssignedException.php.html#5\">TaskManager\\Domain\\Task\\Exception\\UserNotAssignedException<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,0,"<a href=\"InvalidStatusOrderException.php.html#5\">App\\Domain\\Task\\Exception\\InvalidStatusOrderException<\/a>"],[100,0,"<a href=\"UserAlreadyAssignedException.php.html#5\">App\\Domain\\Task\\Exception\\UserAlreadyAssignedException<\/a>"],[100,0,"<a href=\"UserNotAssignedException.php.html#5\">App\\Domain\\Task\\Exception\\UserNotAssignedException<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);

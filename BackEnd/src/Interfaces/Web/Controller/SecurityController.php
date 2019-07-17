@@ -66,6 +66,10 @@ class SecurityController extends AbstractController
     {
         $session = $request->getSession();
         $username = $session->get('_security.last_username');
+        $data = json_decode($request->getContent(), true);
+        if ($data['username']) {
+            $username = $data['username'];
+        }
 
         try {
             $user = $this->userQuery->getSessionAuthUserByUsername($username);

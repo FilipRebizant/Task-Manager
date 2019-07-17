@@ -225,7 +225,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,3,"<a href=\"Description.php.html#9\">TaskManager\\Domain\\Task\\ValueObject\\Description<\/a>"],[100,3,"<a href=\"Priority.php.html#9\">TaskManager\\Domain\\Task\\ValueObject\\Priority<\/a>"],[100,3,"<a href=\"Status.php.html#9\">TaskManager\\Domain\\Task\\ValueObject\\Status<\/a>"],[100,3,"<a href=\"Title.php.html#9\">TaskManager\\Domain\\Task\\ValueObject\\Title<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,3,"<a href=\"Description.php.html#9\">App\\Domain\\Task\\ValueObject\\Description<\/a>"],[100,3,"<a href=\"Priority.php.html#9\">App\\Domain\\Task\\ValueObject\\Priority<\/a>"],[100,3,"<a href=\"Status.php.html#9\">App\\Domain\\Task\\ValueObject\\Status<\/a>"],[100,3,"<a href=\"Title.php.html#9\">App\\Domain\\Task\\ValueObject\\Title<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -249,7 +249,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"Description.php.html#19\">TaskManager\\Domain\\Task\\ValueObject\\Description::__construct<\/a>"],[100,1,"<a href=\"Description.php.html#28\">TaskManager\\Domain\\Task\\ValueObject\\Description::__toString<\/a>"],[100,2,"<a href=\"Priority.php.html#19\">TaskManager\\Domain\\Task\\ValueObject\\Priority::__construct<\/a>"],[100,1,"<a href=\"Priority.php.html#31\">TaskManager\\Domain\\Task\\ValueObject\\Priority::getPriority<\/a>"],[100,2,"<a href=\"Status.php.html#29\">TaskManager\\Domain\\Task\\ValueObject\\Status::__construct<\/a>"],[100,1,"<a href=\"Status.php.html#41\">TaskManager\\Domain\\Task\\ValueObject\\Status::__toString<\/a>"],[100,2,"<a href=\"Title.php.html#19\">TaskManager\\Domain\\Task\\ValueObject\\Title::__construct<\/a>"],[100,1,"<a href=\"Title.php.html#31\">TaskManager\\Domain\\Task\\ValueObject\\Title::__toString<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,2,"<a href=\"Description.php.html#19\">App\\Domain\\Task\\ValueObject\\Description::__construct<\/a>"],[100,1,"<a href=\"Description.php.html#28\">App\\Domain\\Task\\ValueObject\\Description::__toString<\/a>"],[100,2,"<a href=\"Priority.php.html#19\">App\\Domain\\Task\\ValueObject\\Priority::__construct<\/a>"],[100,1,"<a href=\"Priority.php.html#31\">App\\Domain\\Task\\ValueObject\\Priority::getPriority<\/a>"],[100,2,"<a href=\"Status.php.html#29\">App\\Domain\\Task\\ValueObject\\Status::__construct<\/a>"],[100,1,"<a href=\"Status.php.html#41\">App\\Domain\\Task\\ValueObject\\Status::__toString<\/a>"],[100,2,"<a href=\"Title.php.html#19\">App\\Domain\\Task\\ValueObject\\Title::__construct<\/a>"],[100,1,"<a href=\"Title.php.html#31\">App\\Domain\\Task\\ValueObject\\Title::__toString<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

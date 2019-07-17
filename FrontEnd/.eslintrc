@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "prettier",
+    "prettier/react"
+  ],
+  "global": {
+    "window": true,
+    "document": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["./src"],
+        "extensions": ["*.js"]
+      }
+    }
+  },
+  "rules": {
+    "react/jsx-filename-extensions": 0
+  }
+}
