@@ -18,7 +18,7 @@ before_script:
   - composer install
 
 script:
-  - phpunit --configuration ./BackEnd/travisPhpUnit.xml
+  - phpunit --configuration ./travisPhpUnit.xml
   - vendor/bin/phpcs
 
 sudo: required
@@ -30,7 +30,7 @@ before_install:
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
   - sudo mysql_upgrade -u root -pnew_password
   - sudo service mysql restart
-  - mysql -u root --password="new_password" < BackEnd/tests/travis_database.sql
+  - mysql -u root --password="new_password" < tests/travis_database.sql
 
 notifications:
   email: false
