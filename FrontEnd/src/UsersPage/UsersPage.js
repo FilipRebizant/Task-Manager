@@ -89,6 +89,7 @@ class UsersPage extends React.Component {
                                     <th>Username</th>
                                     <th>Email</th>
                                     <th>Activation status</th>
+                                    <th>Role</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -100,6 +101,7 @@ class UsersPage extends React.Component {
                                    id={user.id}
                                    username={user.username}
                                    email={user.email}
+                                   role={user.role}
                                    deleteUserEvent={(e) => this.deleteUser(e, index)}/>
                             })}
 
