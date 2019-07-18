@@ -45,11 +45,20 @@ class UsersPage extends React.Component {
                     </div>
                     }
                     {users &&
-                    <ul className="list-group">
+                    <table>
+                        <thead>
+                        <th>Username</th>
+                        <th>Email</th>
+                        </thead>
+                        <tbody>
+
                         {users.map(user =>
-                            <User key={user.id} id={user.id} username={user.username}/>
+                            <tr>
+                                <User key={user.id} id={user.id} username={user.username}/>
+                            </tr>
                         )}
-                    </ul>
+                        </tbody>
+                    </table>
                     }
                 </div>
             </div>
