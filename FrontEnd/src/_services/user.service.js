@@ -1,17 +1,38 @@
 import { config } from '../_config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, handleError } from '../_helpers';
 
 export const userService = {
     getAll,
-    getById
+    getById,
+    deleteUser
 };
 
 function getAll(signal) {
-    const requestOptions = { method: 'GET', headers: authHeader(), signal};
-    return fetch(`${config.apiUrl}/api/users`, requestOptions).then(handleResponse);
+    let status;
+    const requestOptions = { method: 'GET', headers: authHeader(), signal: signal};
+
+    return fetch(`${config.apiUrl}/api/users`, requestOptions)
+        .then((response) => {status = response.status; return response})
+        .then(handleResponse)
+        .catch((error) => handleError(error, status));
 }
 
-function getById(id) {
-    const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/api/users/${id}`, requestOptions).then(handleResponse);
+function getById(id, signal) {
+    let status;
+    const requestOptions = { method: 'GET', headers: authHeader(), signal: signal };
+
+    return fetch(`${config.apiUrl}/api/users/${id}`, requestOptions)
+        .then((response) => {status = response.status; return response})
+        .then(handleResponse)
+        .catch((error) => handleError(error, status));
+}
+
+function deleteUser(id, signal) {
+    let status;
+    const requestOption = { method: 'DELETE', headers: authHeader(), signal: signal};
+
+    return fetch(`${config.apiUrl}/api/users/${id}`, requestOption)
+        .then((response) => {status = response.status; return response})
+        .then(handleResponse)
+        .catch((error) => handleError(error, status));
 }
