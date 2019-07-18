@@ -1,6 +1,7 @@
 import React from "react";
 
 import { userService, authenticationService } from '../_services';
+import { handleError } from '../_helpers';
 
 class ProfilePage extends React.PureComponent {
     constructor(props) {
@@ -10,29 +11,46 @@ class ProfilePage extends React.PureComponent {
             currentUser: authenticationService.currentUserValue,
             userFromApi: null
         };
+        this.abortController = new AbortController();
     }
 
     componentDidMount() {
         const { currentUser } = this.state;
-        userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
+        userService.getById(currentUser.id, this.abortController.signal)
+            .then(userFromApi => {
+                if (userFromApi) this.setState({ userFromApi })
+            })
+            .catch((error) => handleError(error));
+    }
+
+    componentWillUnmount() {
+        this.abortController.abort();
     }
 
     render() {
-        const {currentUser, userFromApi} = this.state;
+        const {userFromApi} = this.state;
 
         return(
             <div>
-                <p>Your role is: {userFromApi && <strong>{userFromApi.role}</strong>}</p>
-                <p>This page can be accessed by all authenticated users.</p>
-                <div>
-                    Current user from secure api end point:
-                    {userFromApi &&
-                    <ul>
-                        <li>{userFromApi.id}</li>
-                        <li>{userFromApi.username}</li>
-                    </ul>
-                    }
-                </div>
+                {!userFromApi &&
+                    <div className="loader">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                }
+
+                {userFromApi &&
+                    <div>
+                        <p>Your role is: {userFromApi && <strong>{userFromApi.role}</strong>}</p>
+                        Account info:
+                        <ul>
+                            <li>ID: {userFromApi.id}</li>
+                            <li>Username: {userFromApi.username}</li>
+                            <li>Email: {userFromApi.email}</li>
+                        </ul>
+                    </div>
+                }
             </div>
         );
     }

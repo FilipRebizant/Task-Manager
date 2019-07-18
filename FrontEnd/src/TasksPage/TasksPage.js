@@ -1,11 +1,10 @@
 import React, {Component} from "react"
 
 import { authHeader } from '../_helpers/auth-header';
-import { handleAbort } from '../_helpers/handle-abort';
 import { config } from '../_config';
-import {handleResponse, Role} from "../_helpers";
+import { handleResponse } from "../_helpers";
 import  { AddTaskModal, Task } from '../_components/Task';
-import {authenticationService} from "../_services";
+import { authenticationService, taskService, userService } from "../_services";
 
 class TasksPage extends Component {
     constructor(props) {
@@ -54,20 +53,21 @@ class TasksPage extends Component {
     loadTasks = (status) => {
         let loaders = document.querySelectorAll('.loader');
 
-        fetch(`${config.apiUrl}/api/tasks?status=${status}`, {
-            headers: authHeader(),
-            signal: this.abortController.signal
-        }).then(handleResponse).then((response) => {
-            let currState = Object.assign({},  this.state);
-            const status = response.tasks[0].status;
-
+        taskService.getAll(status, this.abortController.signal)
+          .then((response) => {
             for (var loader of loaders) {
                 loader.classList.add('d-none');
             }
 
-            currState.tasks[status.toString()] = response.tasks;
-            this.setState(currState);
-        }).catch(error => handleAbort(error));
+            if (response && response.tasks.length > 0) {
+                let currState = Object.assign({},  this.state);
+                const status = response.tasks[0].status;
+
+                currState.tasks[status.toString()] = response.tasks;
+                this.setState(currState);
+            }
+
+          })
     };
 
     changeStatus = (index, e) => {
@@ -126,26 +126,22 @@ class TasksPage extends Component {
         currentState.tasks[status.toString()] = tasks;
         this.setState({ currentState });
 
-        fetch(`${config.apiUrl}/api/tasks/${taskId}`, {
-            method: "DELETE",
-            headers: authHeader()
-        }).then(handleResponse)
+        taskService.deleteTask(taskId, this.abortController.signal)
             .then(response => {
-                this.setState({
-                    info: response.response,
-                    error: null
-                });
+                if (response) {
+                    this.setState({
+                        info: response.response,
+                        error: null
+                    });
+                }
             });
     };
 
     loadUsers() {
-        fetch(`${config.apiUrl}/api/users`, {
-            headers: authHeader(),
-            signal: this.abortController.signal
-        }).then(handleResponse)
+        userService.getAll(this.abortController.signal)
             .then((response => {
-                this.setState({users: response.users})
-            })).catch(error => handleAbort(error))
+                if (response) this.setState({users: response.users})
+            }))
     }
 
     componentDidMount() {

@@ -162,6 +162,7 @@ class UserQuery implements UserQueryInterface
             FROM users
             LEFT JOIN activation_tokens
             ON users.id = activation_tokens.user_id
+            ORDER BY username
         ";
 
         /**
