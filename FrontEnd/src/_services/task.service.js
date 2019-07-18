@@ -4,7 +4,7 @@ import { authHeader, handleResponse, handleError } from '../_helpers';
 export const userService = {
     getAll,
     getById,
-    deleteUser
+    deleteTask
 };
 
 function getAll(signal) {
@@ -25,7 +25,7 @@ function getById(id) {
         .catch((error) => handleError(error, status));
 }
 
-function deleteUser(id) {
+function deleteTask(id) {
     let status;
     const requestOption = { method: 'DELETE', headers: authHeader() };
     return fetch(`${config.apiUrl}/api/users/${id}`, requestOption)

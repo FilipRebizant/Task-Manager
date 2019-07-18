@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 
 import { authHeader } from '../_helpers/auth-header';
-import { handleAbort } from '../_helpers/handle-abort';
+import { handleError } from '../_helpers';
 import { config } from '../_config';
 import {handleResponse, Role} from "../_helpers";
 import  { AddTaskModal, Task } from '../_components/Task';
@@ -67,7 +67,7 @@ class TasksPage extends Component {
 
             currState.tasks[status.toString()] = response.tasks;
             this.setState(currState);
-        }).catch(error => handleAbort(error));
+        }).catch(error => handleError(error));
     };
 
     changeStatus = (index, e) => {
@@ -145,7 +145,7 @@ class TasksPage extends Component {
         }).then(handleResponse)
             .then((response => {
                 this.setState({users: response.users})
-            })).catch(error => handleAbort(error))
+            })).catch(error => handleError(error))
     }
 
     componentDidMount() {

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { userService } from '../_services';
-import { handleAbort } from '../_helpers';
 import { User, AddUserModal } from '../_components/User';
 
 class UsersPage extends React.Component {
@@ -9,7 +8,9 @@ class UsersPage extends React.Component {
         super(props);
 
         this.state = {
-            users: null
+            users: [],
+            info: null,
+            error: null
         };
         this.abortController = new AbortController();
     }
@@ -17,7 +18,32 @@ class UsersPage extends React.Component {
     loadUsers = () => {
         userService.getAll( this.abortController.signal )
             .then(response => this.setState({users: response.users}))
-            .catch((error) => handleAbort(error))
+    };
+
+    deleteUser = (e, index) => {
+      const userId = e.target.dataset.userId;
+      const users = Object.assign([], this.state.users);
+      const user = users[index];
+
+      users.splice(index, 1);
+
+      this.setState({users: users});
+
+      userService.deleteUser(userId)
+          .then((response) => {
+              this.setState({
+                  info: response.result,
+                  error: null
+              });
+          })
+          .catch((error) => {
+            users.splice(index, 0, user);
+            this.setState({
+                users: users,
+                info: null,
+                error: error
+            });
+          });
     };
 
     componentDidMount() {
@@ -29,36 +55,52 @@ class UsersPage extends React.Component {
     }
 
     render() {
-        const {users} = this.state;
-
+        const { users, error, info } = this.state;
         return (
             <div>
                 <h1 className="text-center">Users</h1>
                 <div>
-
                     <AddUserModal addUserEvent={this.loadUsers}/>
 
-                    {!users && <div className="loader">
-                        <div className="spinner-border" role="status">
-                            <span className="sr-only">Loading...</span>
+                    {!users &&
+                        <div className="loader">
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
                         </div>
-                    </div>
                     }
-                    {users &&
-                    <table>
-                        <thead>
-                        <th>Username</th>
-                        <th>Email</th>
-                        </thead>
-                        <tbody>
 
-                        {users.map(user =>
-                            <tr>
-                                <User key={user.id} id={user.id} username={user.username}/>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
+                    {info &&
+                        <div className="alert alert-info">{info}</div>
+                    }
+
+                    {error &&
+                        <div className="alert alert-danger">{error}</div>
+                    }
+
+                    {users &&
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Activation status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            {users.map( (user, index) => {
+                               return <User
+                                   key={user.id}
+                                   id={user.id}
+                                   username={user.username}
+                                   email={user.email}
+                                   deleteUserEvent={(e) => this.deleteUser(e, index)}/>
+                            })}
+
+                            </tbody>
+                        </table>
                     }
                 </div>
             </div>
