@@ -30,8 +30,6 @@ export class AddUserModal extends Component {
 
 
     addUser = () => {
-    console.log('added');
-
         const {role, username, email} = this.state;
         let newRole = role.toUpperCase();
 

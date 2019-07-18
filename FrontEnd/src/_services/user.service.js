@@ -9,25 +9,28 @@ export const userService = {
 
 function getAll(signal) {
     let status;
-    const requestOptions = { method: 'GET', headers: authHeader(), signal};
+    const requestOptions = { method: 'GET', headers: authHeader(), signal: signal};
+
     return fetch(`${config.apiUrl}/api/users`, requestOptions)
         .then((response) => {status = response.status; return response})
         .then(handleResponse)
         .catch((error) => handleError(error, status));
 }
 
-function getById(id) {
+function getById(id, signal) {
     let status;
-    const requestOptions = { method: 'GET', headers: authHeader() };
+    const requestOptions = { method: 'GET', headers: authHeader(), signal: signal };
+
     return fetch(`${config.apiUrl}/api/users/${id}`, requestOptions)
         .then((response) => {status = response.status; return response})
         .then(handleResponse)
         .catch((error) => handleError(error, status));
 }
 
-function deleteUser(id) {
+function deleteUser(id, signal) {
     let status;
-    const requestOption = { method: 'DELETE', headers: authHeader() };
+    const requestOption = { method: 'DELETE', headers: authHeader(), signal: signal};
+
     return fetch(`${config.apiUrl}/api/users/${id}`, requestOption)
         .then((response) => {status = response.status; return response})
         .then(handleResponse)

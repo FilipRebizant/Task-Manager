@@ -4,6 +4,5 @@ export function handleError(error, status) {
      }
 
      if (error.name === 'AbortError') return;
-
      throw(error);
 }

@@ -16,8 +16,12 @@ class UsersPage extends React.Component {
     }
 
     loadUsers = () => {
-        userService.getAll( this.abortController.signal )
-            .then(response => this.setState({users: response.users}))
+        userService.getAll(this.abortController.signal)
+            .then((response) => {
+                if (response){
+                    this.setState({users: response.users})
+                }
+            })
     };
 
     deleteUser = (e, index) => {
@@ -29,7 +33,7 @@ class UsersPage extends React.Component {
 
       this.setState({users: users});
 
-      userService.deleteUser(userId)
+      userService.deleteUser(userId, this.abortController.signal)
           .then((response) => {
               this.setState({
                   info: response.result,
@@ -105,7 +109,6 @@ class UsersPage extends React.Component {
                 </div>
             </div>
         );
-
     }
 }
 

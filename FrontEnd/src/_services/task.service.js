@@ -1,35 +1,38 @@
 import { config } from '../_config';
 import { authHeader, handleResponse, handleError } from '../_helpers';
 
-export const userService = {
+export const taskService = {
     getAll,
     getById,
     deleteTask
 };
 
-function getAll(signal) {
-    let status;
-    const requestOptions = { method: 'GET', headers: authHeader(), signal};
-    return fetch(`${config.apiUrl}/api/users`, requestOptions)
-        .then((response) => {status = response.status; return response})
+function getAll(status, signal) {
+    let responseStatus;
+    const requestOptions = { method: 'GET', headers: authHeader(), signal: signal};
+
+    return fetch(`${config.apiUrl}/api/tasks?status=${status}`, requestOptions)
+        .then((response) => {responseStatus = response.status; return response})
         .then(handleResponse)
-        .catch((error) => handleError(error, status));
+        .catch((error) => handleError(error, responseStatus));
 }
 
 function getById(id) {
-    let status;
+    let responseStatus;
     const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/api/users/${id}`, requestOptions)
-        .then((response) => {status = response.status; return response})
+
+    return fetch(`${config.apiUrl}/api/tasks/${id}`, requestOptions)
+        .then((response) => {responseStatus = response.status; return response})
         .then(handleResponse)
-        .catch((error) => handleError(error, status));
+        .catch((error) => handleError(error, responseStatus));
 }
 
-function deleteTask(id) {
-    let status;
-    const requestOption = { method: 'DELETE', headers: authHeader() };
-    return fetch(`${config.apiUrl}/api/users/${id}`, requestOption)
-        .then((response) => {status = response.status; return response})
+function deleteTask(id, signal) {
+    let responseStatus;
+    const requestOption = { method: 'DELETE', headers: authHeader(), signal: signal };
+
+    return fetch(`${config.apiUrl}/api/tasks/${id}`, requestOption)
+        .then((response) => {responseStatus = response.status; return response})
         .then(handleResponse)
-        .catch((error) => handleError(error, status));
+        .catch((error) => handleError(error, responseStatus));
 }
