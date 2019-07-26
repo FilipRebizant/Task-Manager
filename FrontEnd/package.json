@@ -4,8 +4,7 @@
   "description": "Task-Manager",
   "scripts": {
     "parcel-dev": "parcel ./src/index.html --hmr-port 1235",
-    "parcel-prod": "parcel build ./src/index.html",
-    "parcel-dev-vagrant": "parcel ./src/index.html --hmr-hostname task-manager.local --hmr-port 1260"
+    "parcel-prod": "parcel build ./src/index.html"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
