@@ -1,3 +1,3 @@
 export const config = {
-    apiUrl: 'http://localhost'
+    apiUrl: 'http://task-manager.local:9000'
 };

@@ -43,6 +43,7 @@ function logout() {
 }
 
 function refreshToken(username) {
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,14 +51,15 @@ function refreshToken(username) {
     };
 
     return fetch(`${config.apiUrl}/api/token/refresh`, requestOptions)
-        .then(handleResponse)
-        .then(response => {
-            let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            currentUser.token = response.token;
-            let refreshedUser = JSON.stringify(currentUser);
-            localStorage.setItem('currentUser', refreshedUser);
-            currentUserSubject.next(currentUser);
+            .then(handleResponse)
+            .then(response => {
+                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                currentUser.token = response.token;
+                currentUser.user = 'changed';
+                let refreshedUser = JSON.stringify(currentUser);
+                localStorage.setItem('currentUser', refreshedUser);
+                currentUserSubject.next(currentUser);
 
-            return refreshedUser;
-        });
+                return refreshedUser;
+            });
 }
