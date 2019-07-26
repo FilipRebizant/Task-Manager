@@ -3,6 +3,14 @@
 ## Installation:
     In order to use this application you need to generate security keys and build assets using yarn, instruction is given below:
 
+### Build application:
+    docker-compose build
+
+### Run application:
+    docker-compose up
+    or
+    vagrant up 
+
 ### Generate security keys:
     $ mkdir config/jwt
     $ openssl genrsa -out config/jwt/private.pem -aes256 4096
@@ -11,11 +19,6 @@
 ### Create Example User:
     bin/console app:create-example-account
 
-### Build application:
-    docker-compose build
-
-### Run application:
-    docker-compose up 
 
 ### Run/compile yarn:
     "docker-compose exec php-fpm bash" - open php-fpm container 
